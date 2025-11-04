@@ -1,0 +1,13 @@
+{
+  "itemGroup.indus": "Example Mod Tab",
+  "block.indus.example_block": "Example Block",
+  "item.indus.example_item": "Example Item",
+
+  "indus.configuration.title": "Indus Configs",
+  "indus.configuration.section.indus.common.toml": "Indus Configs",
+  "indus.configuration.section.indus.common.toml.title": "Indus Configs",
+  "indus.configuration.items": "Item List",
+  "indus.configuration.logDirtBlock": "Log Dirt Block",
+  "indus.configuration.magicNumberIntroduction": "Magic Number Text",
+  "indus.configuration.magicNumber": "Magic Number"
+}
