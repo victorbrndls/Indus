@@ -3,18 +3,22 @@ package com.victorbrndls.indus.blocks;
 
 import com.victorbrndls.indus.Indus;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class IndusBlocks {
 
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Indus.MODID);
 
-    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("indus_block", () ->
-            BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+    public static final DeferredHolder<Block, TreeFarmBlock> TREE_FARM = BLOCKS.registerBlock(
+            "tree_farm",
+            TreeFarmBlock::new,
+            () -> BlockBehaviour.Properties.of()
+                    .sound(SoundType.METAL)
+                    .strength(1.5F, 6.0F)
     );
 
     public static void init(IEventBus eventBus) {
