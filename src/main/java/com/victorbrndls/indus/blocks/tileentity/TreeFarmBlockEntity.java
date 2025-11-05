@@ -26,10 +26,10 @@ public class TreeFarmBlockEntity extends BlockEntity {
 
         tickCounter++;
 
-        if (tickCounter >= 20) {
+        if (tickCounter >= 100) {
             tickCounter = 0;
 
-            BlockPos target = BlockHelper.offsetFrontFacing(pos, state, 2, 1, 0);
+            BlockPos target = BlockHelper.offsetFrontFacing(pos, state, 7, 0, 1);
             if (!level.isLoaded(target)) return;
 
             BlockState ts = level.getBlockState(target);
