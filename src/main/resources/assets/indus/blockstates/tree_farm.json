@@ -1,5 +1,20 @@
 {
   "variants": {
-    "": { "model": "indus:block/tree_farm" }
+    "facing=north": {
+      "model": "indus:block/tree_farm",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "indus:block/tree_farm",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "indus:block/tree_farm",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indus:block/tree_farm",
+      "y": 270
+    }
   }
 }
