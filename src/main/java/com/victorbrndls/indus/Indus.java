@@ -3,11 +3,14 @@ package com.victorbrndls.indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.client.IndusStructureCache;
+import com.victorbrndls.indus.client.screen.TreeFarmScreen;
+import com.victorbrndls.indus.inventory.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.network.ReceiveStructureMessage;
 import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +18,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -49,11 +53,17 @@ public class Indus {
         IndusBlocks.init(eventBus);
         IndusItems.init(eventBus);
         IndusTileEntities.init(eventBus);
+        IndusMenus.init(eventBus);
         CREATIVE_MODE_TABS.register(eventBus);
 
+        eventBus.addListener(this::handleRegisterMenuScreens);
         eventBus.addListener(this::registerPayloads);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    public static ResourceLocation rl(String path) {
+        return ResourceLocation.fromNamespaceAndPath(Indus.MODID, path);
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
@@ -61,5 +71,9 @@ public class Indus {
 
         RequestStructureMessage.register(registrar);
         ReceiveStructureMessage.register(registrar);
+    }
+
+    private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(IndusMenus.TREE_FARM.get(), TreeFarmScreen::new);
     }
 }
