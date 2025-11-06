@@ -1,7 +1,7 @@
 package com.victorbrndls.indus.blocks.structure;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.IndusClient;
+import com.victorbrndls.indus.blocks.structure.orientation.QuarryStructureOrientation;
 import com.victorbrndls.indus.blocks.structure.orientation.TreeFarmStructureOrientation;
 import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.Direction;
@@ -25,7 +25,7 @@ public class IndusStructureHelper {
         };
     }
 
-    public static Optional<StructureTemplate> load(MinecraftServer server, IndusStructure structure) {
+    public static Optional<StructureTemplate> loadTemplate(MinecraftServer server, IndusStructure structure) {
         var resourcePath = IndusStructureHelper.getResourcePath(structure);
 
         var resourceManager = server.getResourceManager();
@@ -45,17 +45,30 @@ public class IndusStructureHelper {
         });
     }
 
+    public static Optional<IndusStructureInfo> loadStructureInfo(MinecraftServer server, IndusStructure structure) {
+        var maybeTemplate = loadTemplate(server, structure);
+        if (maybeTemplate.isEmpty()) return Optional.empty();
+
+        var template = maybeTemplate.get();
+        var palette = template.palettes.getFirst();
+
+        var pos = palette.blocks().stream().map(StructureTemplate.StructureBlockInfo::pos).toList();
+        var state = palette.blocks().stream().map(StructureTemplate.StructureBlockInfo::state).toList();
+
+        return Optional.of(new IndusStructureInfo(structure, pos, state));
+    }
+
     // client side only
     public static void requestStructure(IndusStructure structure) {
-        if (!IndusClient.STRUCTURE_CACHE.shouldRequest(structure)) return;
-        IndusClient.STRUCTURE_CACHE.onRequestMade(structure);
+        if (!Indus.STRUCTURE_CACHE.shouldRequest(structure)) return;
+        Indus.STRUCTURE_CACHE.onRequestMade(structure);
         ClientPacketDistributor.sendToServer(new RequestStructureMessage(structure));
     }
 
     public static IndusStructureOrientation getOrientation(IndusStructure structure, Direction direction) {
         return switch (structure) {
             case TREE_FARM -> new TreeFarmStructureOrientation(direction);
-            case QUARRY -> new TreeFarmStructureOrientation(direction);
+            case QUARRY -> new QuarryStructureOrientation(direction);
         };
     }
 

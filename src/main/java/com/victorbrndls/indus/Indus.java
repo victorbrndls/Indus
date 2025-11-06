@@ -2,6 +2,7 @@ package com.victorbrndls.indus;
 
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
+import com.victorbrndls.indus.client.IndusStructureCache;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.network.ReceiveStructureMessage;
 import com.victorbrndls.indus.network.RequestStructureMessage;
@@ -25,6 +26,8 @@ public class Indus {
     public static final String MODID = "indus";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
+
+    public static IndusStructureCache STRUCTURE_CACHE = new IndusStructureCache();
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);

@@ -30,7 +30,7 @@ public class IndusStructureItem extends BlockItem {
         super.inventoryTick(stack, level, entity, slot);
         if (!level.isClientSide()) return;
 
-        var structureCache = IndusClient.STRUCTURE_CACHE;
+        var structureCache = Indus.STRUCTURE_CACHE;
 
         if (structureCache.shouldRequest(structure)) {
             structureCache.onRequestMade(structure);

@@ -1,6 +1,6 @@
 package com.victorbrndls.indus.blocks.structure;
 
-import com.victorbrndls.indus.IndusClient;
+import com.victorbrndls.indus.Indus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,7 +23,15 @@ public class IndusStructurePlacer {
     ) {
         var serverLevel = (ServerLevel) level;
 
-        var structure = IndusClient.STRUCTURE_CACHE.get(struct);
+        var structure = Indus.STRUCTURE_CACHE.get(struct);
+        if (structure == null) {
+            structure = IndusStructureHelper.loadStructureInfo(level.getServer(), struct).orElse(null);
+            if (structure == null) {
+                Indus.LOGGER.error("Failed to load structure: {}", struct);
+                return;
+            }
+        }
+
         var orientation = IndusStructureHelper.getOrientation(struct, direction);
 
         List<BlockPos> positions = structure.pos();
@@ -32,14 +40,12 @@ public class IndusStructurePlacer {
         BlockPos offset = BlockPos.containing(orientation.getOffset());
 
         for (int i = 0; i < positions.size(); i++) {
-            BlockState state = states.get(i);
-            if (state.isAir()) continue;
-
             BlockPos rel = positions.get(i);
             BlockPos relRot = rotateAroundPivot(rel, toRotation(orientation.rotationDegrees()));
 
             BlockPos worldPos = pos.offset(offset).offset(relRot);
 
+            BlockState state = states.get(i);
             state = rotateState(level, relRot, state, toRotation(360 - orientation.rotationDegrees()));
 
             if (!serverLevel.isLoaded(worldPos)) continue;

@@ -2,6 +2,7 @@ package com.victorbrndls.indus.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.IndusClient;
 import com.victorbrndls.indus.blocks.structure.IndusStructure;
 import com.victorbrndls.indus.blocks.structure.IndusStructureHelper;
@@ -73,7 +74,7 @@ public class GhostStructures {
     }
 
     private void render(PoseStack ms, MultiBufferSource buffer, Vec3 camera, Direction direction, IndusStructure structure) {
-        var structureInfo = IndusClient.STRUCTURE_CACHE.get(structure);
+        var structureInfo = Indus.STRUCTURE_CACHE.get(structure);
         if (structureInfo == null) return;
 
         var blocks = structureInfo.pos();

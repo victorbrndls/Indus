@@ -42,7 +42,7 @@ public record ReceiveStructureMessage(
     public static void handle(ReceiveStructureMessage message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Indus.LOGGER.debug("Received structure: {}", message.structure.name());
-            IndusClient.STRUCTURE_CACHE.add(
+            Indus.STRUCTURE_CACHE.add(
                     new IndusStructureInfo(message.structure(), message.positions(), message.states)
             );
         });

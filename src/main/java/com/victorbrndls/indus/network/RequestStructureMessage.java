@@ -8,12 +8,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
-import java.util.ArrayList;
 
 public record RequestStructureMessage(
         IndusStructure structure
@@ -38,21 +35,12 @@ public record RequestStructureMessage(
             var sender = (ServerPlayer) ctx.player();
             var level = sender.level();
 
-            IndusStructureHelper.load(level.getServer(), message.structure)
-                    .ifPresent(struct -> {
-                        var palette = struct.palettes.getFirst();
-
-                        var blocks = new ArrayList<>(palette.blocks());
-                        blocks.removeIf(blockInfo -> blockInfo.state().isAir());
-
-                        var pos = blocks.stream().map(StructureTemplate.StructureBlockInfo::pos).toList();
-                        var state = blocks.stream().map(StructureTemplate.StructureBlockInfo::state).toList();
-
-                        PacketDistributor.sendToPlayer(
-                                sender,
-                                new ReceiveStructureMessage(message.structure, pos, state)
-                        );
-                    });
+            IndusStructureHelper.loadStructureInfo(level.getServer(), message.structure).ifPresent(info -> {
+                Indus.STRUCTURE_CACHE.add(info);
+                PacketDistributor.sendToPlayer(
+                        sender, new ReceiveStructureMessage(message.structure, info.pos(), info.blockState())
+                );
+            });
         });
     }
 
