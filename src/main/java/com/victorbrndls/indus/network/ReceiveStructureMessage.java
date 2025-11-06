@@ -1,7 +1,9 @@
 package com.victorbrndls.indus.network;
 
 import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.IndusClient;
 import com.victorbrndls.indus.blocks.structure.IndusStructure;
+import com.victorbrndls.indus.blocks.structure.IndusStructureInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -40,6 +42,9 @@ public record ReceiveStructureMessage(
     public static void handle(ReceiveStructureMessage message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             Indus.LOGGER.debug("Received structure: {}", message.structure.name());
+            IndusClient.STRUCTURE_CACHE.add(
+                    new IndusStructureInfo(message.structure(), message.positions(), message.states)
+            );
         });
     }
 
