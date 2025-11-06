@@ -3,8 +3,7 @@ package com.victorbrndls.indus.blocks.structure.orientation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.victorbrndls.indus.blocks.structure.IndusStructureOrientation;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.Vec3;
 
 public class TreeFarmStructureOrientation implements IndusStructureOrientation {
@@ -16,30 +15,18 @@ public class TreeFarmStructureOrientation implements IndusStructureOrientation {
     }
 
     @Override
-    public void updateSettings(StructurePlaceSettings settings) {
-        switch (direction) {
-            case NORTH -> settings.setRotation(Rotation.CLOCKWISE_180);
-            case SOUTH -> settings.setRotation(Rotation.NONE);
-            case WEST -> settings.setRotation(Rotation.CLOCKWISE_90);
-            case EAST -> settings.setRotation(Rotation.COUNTERCLOCKWISE_90);
-            default -> {
-            }
-        }
-    }
-
-    @Override
     public Vec3 getCenter() {
         return new Vec3(5, 0, 7);
     }
 
     @Override
-    public Vec3 getOffset() {
+    public Vec3i getOffset() {
         return switch (direction) {
-            case NORTH -> new Vec3(0, 0, 0);
-            case SOUTH -> new Vec3(0, 0, 0);
-            case WEST -> new Vec3(0, 0, 0);
-            case EAST -> new Vec3(0, 0, 0);
-            default -> Vec3.ZERO;
+            case NORTH -> new Vec3i(-8, 0, -13);
+            case SOUTH -> new Vec3i(-1, 0, 0);
+            case WEST -> new Vec3i(-11, 0, -3);
+            case EAST -> new Vec3i(2, 0, -10);
+            default -> Vec3i.ZERO;
         };
     }
 
@@ -64,7 +51,7 @@ public class TreeFarmStructureOrientation implements IndusStructureOrientation {
     }
 
     @Override
-    public double rotationDegrees() {
+    public int rotationDegrees() {
         return switch (direction) {
             case NORTH -> 180;
             case SOUTH -> 0;
