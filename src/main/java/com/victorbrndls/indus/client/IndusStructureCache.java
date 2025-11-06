@@ -22,7 +22,7 @@ public class IndusStructureCache {
         return STRUCTURE_CACHE.get(structure);
     }
 
-    public void requestMade(IndusStructure structure) {
+    public void onRequestMade(IndusStructure structure) {
         REQUESTS_IN_PROGRESS.add(structure);
     }
 

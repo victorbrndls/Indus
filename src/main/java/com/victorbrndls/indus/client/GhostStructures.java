@@ -6,6 +6,7 @@ import com.victorbrndls.indus.IndusClient;
 import com.victorbrndls.indus.blocks.structure.IndusStructure;
 import com.victorbrndls.indus.blocks.structure.IndusStructureHelper;
 import com.victorbrndls.indus.blocks.structure.IndusStructureOrientation;
+import com.victorbrndls.indus.items.IndusStructureItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.LightTexture;
@@ -19,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.EmptyBlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,8 +39,23 @@ public class GhostStructures {
 
     private static final RandomSource RANDOM = RandomSource.create();
 
-    public GhostStructures() {
-        ghosts.add(IndusStructure.TREE_FARM);
+    public void tick() {
+        Item mainHandItem = Minecraft.getInstance().player.getMainHandItem().getItem();
+        if (!(mainHandItem instanceof IndusStructureItem structureItem)) {
+            if (!ghosts.isEmpty()) {
+                ghosts.clear();
+            }
+            return;
+        }
+
+        IndusStructure structure = structureItem.getStructure();
+
+        if (ghosts.contains(structure)) return;
+
+        ghosts.clear();
+        ghosts.add(structure);
+
+        IndusStructureHelper.requestStructure(structure);
     }
 
     public void add(IndusStructure entry) {

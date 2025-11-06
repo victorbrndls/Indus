@@ -48,6 +48,7 @@ public class IndusStructureHelper {
     // client side only
     public static void requestStructure(IndusStructure structure) {
         if (!IndusClient.STRUCTURE_CACHE.shouldRequest(structure)) return;
+        IndusClient.STRUCTURE_CACHE.onRequestMade(structure);
         ClientPacketDistributor.sendToServer(new RequestStructureMessage(structure));
     }
 

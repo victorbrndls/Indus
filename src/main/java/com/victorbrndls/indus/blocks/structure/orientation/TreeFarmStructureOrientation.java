@@ -29,44 +29,34 @@ public class TreeFarmStructureOrientation implements IndusStructureOrientation {
 
     @Override
     public Vec3 getCenter() {
-        return new Vec3(0, 0, 0);
+        return new Vec3(5, 0, 7);
     }
 
     @Override
     public Vec3 getOffset() {
-        switch (direction) {
-            case NORTH -> {
-                return new Vec3(0, 0, 0);
-            }
-            case SOUTH -> {
-                return new Vec3(0, 0, 0);
-            }
-            case WEST -> {
-                return new Vec3(0, 0, 0);
-            }
-            case EAST -> {
-                return new Vec3(0, 0, 0);
-            }
-            default -> {
-                return Vec3.ZERO;
-            }
-        }
+        return switch (direction) {
+            case NORTH -> new Vec3(0, 0, 0);
+            case SOUTH -> new Vec3(0, 0, 0);
+            case WEST -> new Vec3(0, 0, 0);
+            case EAST -> new Vec3(0, 0, 0);
+            default -> Vec3.ZERO;
+        };
     }
 
     @Override
     public void translate(PoseStack ms) {
         switch (direction) {
             case NORTH -> {
-                ms.translate(0, 0, 0);
+                ms.translate(-3.5, 0, -6.5);
             }
             case SOUTH -> {
-                ms.translate(0, 0, 0);
+                ms.translate(3.5, 0, 6.5);
             }
             case WEST -> {
-                ms.translate(0, 0, 0);
+                ms.translate(-6.5, 0, 3.5);
             }
             case EAST -> {
-                ms.translate(0, 0, 0);
+                ms.translate(6.5, 0, -3.5);
             }
             default -> {
             }
@@ -75,22 +65,12 @@ public class TreeFarmStructureOrientation implements IndusStructureOrientation {
 
     @Override
     public double rotationDegrees() {
-        switch (direction) {
-            case NORTH -> {
-                return 0;
-            }
-            case SOUTH -> {
-                return 0;
-            }
-            case WEST -> {
-                return 0;
-            }
-            case EAST -> {
-                return 0;
-            }
-            default -> {
-                return 0;
-            }
-        }
+        return switch (direction) {
+            case NORTH -> 180;
+            case SOUTH -> 0;
+            case WEST -> 270;
+            case EAST -> 90;
+            default -> 0;
+        };
     }
 }
