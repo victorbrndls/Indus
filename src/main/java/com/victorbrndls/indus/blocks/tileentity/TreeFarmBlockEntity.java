@@ -1,6 +1,6 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
-import com.victorbrndls.indus.BlockHelper;
+import com.victorbrndls.indus.shared.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;

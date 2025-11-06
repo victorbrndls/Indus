@@ -1,4 +1,4 @@
-package com.victorbrndls.indus;
+package com.victorbrndls.indus.shared;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
