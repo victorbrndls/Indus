@@ -1,6 +1,7 @@
 package com.victorbrndls.indus.blocks.structure;
 
 import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.blocks.structure.orientation.IndusStructureOrientation;
 import com.victorbrndls.indus.blocks.structure.orientation.QuarryStructureOrientation;
 import com.victorbrndls.indus.blocks.structure.orientation.TreeFarmStructureOrientation;
 import com.victorbrndls.indus.network.RequestStructureMessage;
