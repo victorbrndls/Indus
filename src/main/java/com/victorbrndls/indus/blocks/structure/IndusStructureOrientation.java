@@ -6,9 +6,7 @@ import net.minecraft.world.phys.Vec3;
 
 public interface IndusStructureOrientation {
 
-    public Vec3i getOffset();
-
-    public Vec3 getCenter();
+    Vec3 getOffset();
 
     void translate(PoseStack ms);
 

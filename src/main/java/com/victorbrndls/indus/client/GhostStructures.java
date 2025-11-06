@@ -99,7 +99,6 @@ public class GhostStructures {
         HitResult hitResult = Minecraft.getInstance().hitResult;
         if (hitResult == null) return;
 
-        Vec3 structureCenter = orientation.getCenter();
         Vec3 blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 
         BlockStateModel model = dispatcher.getBlockModel(blockState);
@@ -108,9 +107,8 @@ public class GhostStructures {
 
         orientation.translate(ms);
 
-        var offsetFromCenter = blockPosVec.subtract(structureCenter);
         var angleRadians = (float) Math.toRadians(orientation.rotationDegrees());
-        var blockPosAfterRotation = offsetFromCenter.yRot(angleRadians);
+        var blockPosAfterRotation = blockPosVec.yRot(angleRadians);
 
         Vec3 blockPosInWorld = hitResult.getLocation().add(
                 blockPosAfterRotation.x, blockPosAfterRotation.y, blockPosAfterRotation.z

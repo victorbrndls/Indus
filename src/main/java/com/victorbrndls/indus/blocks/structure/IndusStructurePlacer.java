@@ -3,7 +3,6 @@ package com.victorbrndls.indus.blocks.structure;
 import com.victorbrndls.indus.IndusClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -11,7 +10,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -31,15 +29,14 @@ public class IndusStructurePlacer {
         List<BlockPos> positions = structure.pos();
         List<BlockState> states = structure.blockState();
 
-        Vec3 pivot = orientation.getCenter();
-        BlockPos offset = BlockPos.containing(fromVec3i(orientation.getOffset()));
+        BlockPos offset = BlockPos.containing(orientation.getOffset());
 
         for (int i = 0; i < positions.size(); i++) {
             BlockState state = states.get(i);
             if (state.isAir()) continue;
 
             BlockPos rel = positions.get(i);
-            BlockPos relRot = rotateAroundPivot(rel, pivot, toRotation(orientation.rotationDegrees()));
+            BlockPos relRot = rotateAroundPivot(rel, toRotation(orientation.rotationDegrees()));
 
             BlockPos worldPos = pos.offset(offset).offset(relRot);
 
@@ -61,38 +58,30 @@ public class IndusStructurePlacer {
         };
     }
 
-    private static BlockPos rotateAroundPivot(BlockPos p, Vec3 pivot, Rotation rot) {
+    private static BlockPos rotateAroundPivot(BlockPos p, Rotation rot) {
         double x = p.getX() + 0.5;
         double z = p.getZ() + 0.5;
-        double cx = pivot.x();
-        double cz = pivot.z();
 
-        double dx = x - cx;
-        double dz = z - cz;
-
-        double rx = dx, rz = dz;
+        double rx = x, rz = z;
         switch (rot) {
             case CLOCKWISE_90 -> {
-                rx = dz;
-                rz = -dx;
+                rx = z;
+                rz = -x;
             }
             case CLOCKWISE_180 -> {
-                rx = -dx;
-                rz = -dz;
+                rx = -x;
+                rz = -z;
             }
             case COUNTERCLOCKWISE_90 -> {
-                rx = -dz;
-                rz = dx;
+                rx = -z;
+                rz = x;
             }
             case NONE -> { /* no-op */ }
         }
 
-        double nx = cx + rx;
-        double nz = cz + rz;
-
         // back to block corner from center
-        int ix = Mth.floor(nx - 0.5);
-        int iz = Mth.floor(nz - 0.5);
+        int ix = Mth.floor(rx - 0.5);
+        int iz = Mth.floor(rz - 0.5);
         return new BlockPos(ix, p.getY(), iz);
     }
 
@@ -110,7 +99,4 @@ public class IndusStructurePlacer {
         }
     }
 
-    private static Vec3 fromVec3i(Vec3i vec) {
-        return new Vec3(vec.getX(), vec.getY(), vec.getZ());
-    }
 }
