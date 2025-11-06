@@ -16,24 +16,24 @@ public class ProspectorItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide()) {
-            var pos = player.blockPosition();
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-            var ore = OreLocator.prospect(level, pos);
+        var pos = player.blockPosition();
+        var ore = OreLocator.prospect(level, pos);
 
-            if (ore == null) {
-                player.displayClientMessage(
-                        Component.literal("Nothing found..."),
-                        false
-                );
-                return InteractionResult.SUCCESS;
-            }
-
+        if (ore == null) {
             player.displayClientMessage(
-                    Component.literal("You found a " + ore.getName().getString() + " vein!"),
+                    Component.literal("Nothing found..."),
                     false
             );
+            return InteractionResult.SUCCESS;
         }
+
+        player.displayClientMessage(
+                Component.literal("You found a " + ore.getName().getString() + " vein!"),
+                false
+        );
+
         return InteractionResult.SUCCESS;
     }
 }

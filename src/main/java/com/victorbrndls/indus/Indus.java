@@ -3,26 +3,24 @@ package com.victorbrndls.indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.items.IndusItems;
+import com.victorbrndls.indus.network.ReceiveStructureMessage;
+import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(Indus.MODID)
-@EventBusSubscriber(modid = Indus.MODID)
 public class Indus {
     public static final String MODID = "indus";
 
@@ -50,13 +48,15 @@ public class Indus {
         IndusTileEntities.init(eventBus);
         CREATIVE_MODE_TABS.register(eventBus);
 
+        eventBus.addListener(this::registerPayloads);
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    @SubscribeEvent
-    static void onRegisterPayloadHandler(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar(MODID).versioned("0");
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        var registrar = event.registrar(MODID).versioned("1");
 
+        RequestStructureMessage.register(registrar);
+        ReceiveStructureMessage.register(registrar);
     }
-
 }
