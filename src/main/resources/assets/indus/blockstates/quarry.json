@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "indus:block/quarry",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "indus:block/quarry",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "indus:block/quarry",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indus:block/quarry",
+      "y": 270
+    }
+  }
+}

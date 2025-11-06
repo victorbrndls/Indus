@@ -17,6 +17,10 @@ public class IndusItems {
             "tree_farm", IndusBlocks.TREE_FARM
     );
 
+    public static final DeferredItem<BlockItem> QUARRY = ITEMS.registerSimpleBlockItem(
+            "quarry", IndusBlocks.QUARRY
+    );
+
     public static final DeferredItem<Item> PROSPECTOR = ITEMS.registerItem(
             "prospector",
             properties -> new ProspectorItem(properties.stacksTo(1))

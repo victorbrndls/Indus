@@ -38,6 +38,7 @@ public class Indus {
                     .icon(() -> new ItemStack(IndusItems.TREE_FARM.get()))
                     .displayItems((parameters, output) -> {
                         output.accept(new ItemStack(IndusItems.TREE_FARM.get()));
+                        output.accept(new ItemStack(IndusItems.QUARRY.get()));
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
                     }).build());
 

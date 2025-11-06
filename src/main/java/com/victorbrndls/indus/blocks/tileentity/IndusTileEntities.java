@@ -18,6 +18,11 @@ public class IndusTileEntities {
                     new BlockEntityType<>(TreeFarmBlockEntity::new, IndusBlocks.TREE_FARM.get())
             );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBlockEntity>> QUARRY_BLOCK_ENTITY =
+            BLOCK_ENTITY_REGISTER.register("quarry", () ->
+                    new BlockEntityType<>(QuarryBlockEntity::new, IndusBlocks.QUARRY.get())
+            );
+
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITY_REGISTER.register(eventBus);
     }
