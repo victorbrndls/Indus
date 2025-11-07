@@ -90,7 +90,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
             }
         }
 
-        lastBuiltIndex = IndusStructureBuilder.build(
+        lastBuiltIndex = IndusStructureBuilder.destroyAndBuild(
                 structureInfo, level, pos, state.getValue(FACING).getOpposite(), lastBuiltIndex
         );
 
