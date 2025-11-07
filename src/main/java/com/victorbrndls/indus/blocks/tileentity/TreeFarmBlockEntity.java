@@ -3,7 +3,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.structure.*;
-import com.victorbrndls.indus.inventory.TreeFarmMenu;
+import com.victorbrndls.indus.gui.TreeFarmMenu;
 import com.victorbrndls.indus.shared.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

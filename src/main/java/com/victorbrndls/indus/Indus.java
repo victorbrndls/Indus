@@ -4,7 +4,7 @@ import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.client.IndusStructureCache;
 import com.victorbrndls.indus.client.screen.TreeFarmScreen;
-import com.victorbrndls.indus.inventory.IndusMenus;
+import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.network.ReceiveStructureMessage;
 import com.victorbrndls.indus.network.RequestStructureMessage;

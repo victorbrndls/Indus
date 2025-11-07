@@ -1,4 +1,4 @@
-package com.victorbrndls.indus.inventory;
+package com.victorbrndls.indus.gui;
 
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;

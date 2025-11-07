@@ -1,7 +1,8 @@
 package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.inventory.TreeFarmMenu;
+import com.victorbrndls.indus.blocks.structure.StructureState;
+import com.victorbrndls.indus.gui.TreeFarmMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -27,9 +28,13 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
     protected void init() {
         super.init();
 
-        buildBtn = Button.builder(
+        buildBtn = Button
+                .builder(
                         Component.literal("Build"),
-                        (b) -> getMinecraft().gameMode.handleInventoryButtonClick(menu.containerId, TreeFarmMenu.BUTTON_BUILD))
+                        (b) -> {
+                            getMinecraft().gameMode.handleInventoryButtonClick(menu.containerId, TreeFarmMenu.BUTTON_BUILD);
+                            removeWidget(buildBtn);
+                        })
                 .bounds(
                         (width - imageWidth) / 2 + imageWidth - 50 - 8,
                         (height - imageHeight) / 2 + imageHeight - 20 - 94,
@@ -37,7 +42,10 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
                         20
                 )
                 .build();
-        addRenderableWidget(buildBtn);
+
+        if (menu.getStructureState() == StructureState.NOT_READY) {
+            addRenderableWidget(buildBtn);
+        }
     }
 
     @Override
@@ -55,21 +63,40 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
         int left = (this.width - this.imageWidth) / 2;
         int top = (this.height - this.imageHeight) / 2;
 
-        var pose = g.pose();
-        pose.pushMatrix();
-        pose.translate(left + 8, top + 18);
-        pose.scale(0.75f, 0.75f);
-        g.drawString(font, "Put a container on top with items", 0, 0, 0xFF292929, false);
-        pose.popMatrix();
+        switch (menu.getStructureState()) {
+            case NOT_READY -> {
+                var pose = g.pose();
+                pose.pushMatrix();
+                pose.translate(left + 8, top + 18);
+                pose.scale(0.75f, 0.75f);
+                g.drawString(font, "Put a container on top with items", 0, 0, 0xFF292929, false);
+                pose.popMatrix();
 
-        renderRequirements(g, left + 8, top + 30);
+                renderRequirements(g, left + 8, top + 30);
+            }
+            case IN_CONSTRUCTION -> {
+                String text = "Construction in progress...";
+                var textWidth = font.width(text);
+                g.drawString(font,
+                        text,
+                        left + (imageWidth - textWidth) / 2,
+                        top + (imageHeight - 94) / 2,
+                        0xFF292929,
+                        false);
+            }
+            case BUILT -> {
+                String text = "Producing logs...";
+                var textWidth = font.width(text);
+                g.drawString(font,
+                        text,
+                        left + (imageWidth - textWidth) / 2,
+                        top + (imageHeight - 94) / 2,
+                        0xFF292929,
+                        false);
+            }
+        }
 
         renderTooltip(g, mouseX, mouseY);
-    }
-
-    @Override
-    protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
-        super.renderLabels(g, mouseX, mouseY);
     }
 
     @Override
