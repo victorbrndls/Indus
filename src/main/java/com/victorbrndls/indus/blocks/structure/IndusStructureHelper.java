@@ -14,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -56,7 +57,17 @@ public class IndusStructureHelper {
         var pos = palette.blocks().stream().map(StructureTemplate.StructureBlockInfo::pos).toList();
         var state = palette.blocks().stream().map(StructureTemplate.StructureBlockInfo::state).toList();
 
-        return Optional.of(new IndusStructureInfo(structure, pos, state));
+        var info = new IndusStructureInfo(structure, pos, state);
+        Indus.STRUCTURE_CACHE.add(info);
+
+        return Optional.of(info);
+    }
+
+    @Nullable
+    public static IndusStructureInfo getOrLoadStructureInfo(MinecraftServer server, IndusStructure structure) {
+        var cached = Indus.STRUCTURE_CACHE.get(structure);
+        if (cached != null) return cached;
+        return loadStructureInfo(server, structure).orElse(null);
     }
 
     // client side only

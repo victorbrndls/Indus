@@ -36,7 +36,6 @@ public record RequestStructureMessage(
             var level = sender.level();
 
             IndusStructureHelper.loadStructureInfo(level.getServer(), message.structure).ifPresent(info -> {
-                Indus.STRUCTURE_CACHE.add(info);
                 PacketDistributor.sendToPlayer(
                         sender, new ReceiveStructureMessage(message.structure, info.pos(), info.blockState())
                 );

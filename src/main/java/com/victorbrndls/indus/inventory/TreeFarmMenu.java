@@ -4,6 +4,7 @@ import com.victorbrndls.indus.blocks.structure.IndusStructure;
 import com.victorbrndls.indus.blocks.structure.StructureRequirements;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +21,8 @@ public class TreeFarmMenu extends AbstractContainerMenu {
     public final TreeFarmBlockEntity entity;
     private final List<ItemStack> requirements;
     private final SimpleContainerData data;
+
+    public static final int BUTTON_BUILD = 0;
 
     public TreeFarmMenu(int id, Inventory playerInventory, TreeFarmBlockEntity entity) {
         super(IndusMenus.TREE_FARM.get(), id);
@@ -86,8 +89,33 @@ public class TreeFarmMenu extends AbstractContainerMenu {
         }
     }
 
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id == BUTTON_BUILD) {
+            if (!(player instanceof ServerPlayer)) return true;
+
+            if (entity.canBuild()) {
+                entity.startBuilding();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public List<ItemStack> requirements() {
         return requirements;
+    }
+
+    public boolean canBuildClient() {
+        var requirements = requirements();
+
+        for (int i = 0; i < requirements.size(); i++) {
+            if (data.get(i) < requirements.get(i).getCount()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public int getHave(int index) {

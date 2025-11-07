@@ -1,6 +1,5 @@
 package com.victorbrndls.indus.blocks.structure;
 
-import com.victorbrndls.indus.Indus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -13,46 +12,46 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public class IndusStructurePlacer {
+public class IndusStructureBuilder {
 
-    public static void placeStructure(
-            IndusStructure struct,
+    public static int build(
+            IndusStructureInfo info,
             Level level,
             BlockPos pos,
-            Direction direction
+            Direction direction,
+            int index
     ) {
         var serverLevel = (ServerLevel) level;
 
-        var structure = Indus.STRUCTURE_CACHE.get(struct);
-        if (structure == null) {
-            structure = IndusStructureHelper.loadStructureInfo(level.getServer(), struct).orElse(null);
-            if (structure == null) {
-                Indus.LOGGER.error("Failed to load structure: {}", struct);
-                return;
-            }
+        var orientation = IndusStructureHelper.getOrientation(info.structure(), direction);
+
+        List<BlockPos> positions = info.pos();
+        List<BlockState> states = info.blockState();
+
+        if (index >= positions.size()) {
+            return Integer.MAX_VALUE;
         }
 
-        var orientation = IndusStructureHelper.getOrientation(struct, direction);
-
-        List<BlockPos> positions = structure.pos();
-        List<BlockState> states = structure.blockState();
+        if (states.get(index).isAir()) {
+            // Skip air blocks
+            return build(info, level, pos, direction, index + 1);
+        }
 
         BlockPos offset = BlockPos.containing(orientation.getOffset());
 
-        for (int i = 0; i < positions.size(); i++) {
-            BlockPos rel = positions.get(i);
-            BlockPos relRot = rotateAroundPivot(rel, toRotation(orientation.rotationDegrees()));
+        BlockPos rel = positions.get(index);
+        BlockPos relRot = rotateAroundPivot(rel, toRotation(orientation.rotationDegrees()));
 
-            BlockPos worldPos = pos.offset(offset).offset(relRot);
+        BlockPos worldPos = pos.offset(offset).offset(relRot);
 
-            BlockState state = states.get(i);
-            state = rotateState(level, relRot, state, toRotation(360 - orientation.rotationDegrees()));
+        BlockState state = states.get(index);
+        state = rotateState(level, relRot, state, toRotation(360 - orientation.rotationDegrees()));
 
-            if (!serverLevel.isLoaded(worldPos)) continue;
-            if (!serverLevel.isInsideBuildHeight(worldPos.getY())) continue;
+        if (!serverLevel.isLoaded(worldPos)) return index;
+        if (!serverLevel.isInsideBuildHeight(worldPos.getY())) return index + 1;
 
-            serverLevel.setBlock(worldPos, state, Block.UPDATE_ALL);
-        }
+        serverLevel.setBlock(worldPos, state, Block.UPDATE_ALL);
+        return index + 1;
     }
 
     private static Rotation toRotation(int deg) {

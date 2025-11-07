@@ -1,9 +1,9 @@
 package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import com.victorbrndls.indus.inventory.TreeFarmMenu;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -15,14 +15,29 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
 
     private static final ResourceLocation BACKGROUND = Indus.rl("textures/gui/tree_farm.png");
 
-    private final TreeFarmBlockEntity entity;
+    private Button buildBtn;
 
     public TreeFarmScreen(TreeFarmMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageHeight = 198;
         this.inventoryLabelY = this.imageHeight - 94;
+    }
 
-        this.entity = menu.entity;
+    @Override
+    protected void init() {
+        super.init();
+
+        buildBtn = Button.builder(
+                        Component.literal("Build"),
+                        (b) -> getMinecraft().gameMode.handleInventoryButtonClick(menu.containerId, TreeFarmMenu.BUTTON_BUILD))
+                .bounds(
+                        (width - imageWidth) / 2 + imageWidth - 50 - 8,
+                        (height - imageHeight) / 2 + imageHeight - 20 - 94,
+                        50,
+                        20
+                )
+                .build();
+        addRenderableWidget(buildBtn);
     }
 
     @Override
@@ -44,7 +59,7 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
         pose.pushMatrix();
         pose.translate(left + 8, top + 18);
         pose.scale(0.75f, 0.75f);
-        g.drawString(font, "Put items in input container", 0, 0, 0xFF292929, false);
+        g.drawString(font, "Put a container on top with items", 0, 0, 0xFF292929, false);
         pose.popMatrix();
 
         renderRequirements(g, left + 8, top + 30);
@@ -55,6 +70,12 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         super.renderLabels(g, mouseX, mouseY);
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        buildBtn.active = menu.canBuildClient();
     }
 
     private void renderRequirements(GuiGraphics g, int x, int y) {

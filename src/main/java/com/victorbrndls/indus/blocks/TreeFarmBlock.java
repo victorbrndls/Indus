@@ -1,8 +1,6 @@
 package com.victorbrndls.indus.blocks;
 
 import com.mojang.serialization.MapCodec;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructurePlacer;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -70,7 +68,7 @@ public class TreeFarmBlock extends BaseEntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
 
         if (level.isClientSide()) return;
-        IndusStructurePlacer.placeStructure(IndusStructure.TREE_FARM, level, pos, state.getValue(FACING).getOpposite());
+//        IndusStructurePlacer.placeStructure(IndusStructure.TREE_FARM, level, pos, state.getValue(FACING).getOpposite());
     }
 
     @Override

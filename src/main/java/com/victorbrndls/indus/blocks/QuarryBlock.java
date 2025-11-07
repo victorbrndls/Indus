@@ -1,8 +1,6 @@
 package com.victorbrndls.indus.blocks;
 
 import com.mojang.serialization.MapCodec;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructurePlacer;
 import com.victorbrndls.indus.blocks.tileentity.QuarryBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -65,7 +63,7 @@ public class QuarryBlock extends BaseEntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
 
         if (level.isClientSide()) return;
-        IndusStructurePlacer.placeStructure(IndusStructure.QUARRY, level, pos, state.getValue(FACING).getOpposite());
+//        IndusStructurePlacer.placeStructure(IndusStructure.QUARRY, level, pos, state.getValue(FACING).getOpposite());
     }
 
     @Nullable

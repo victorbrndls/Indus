@@ -1,7 +1,8 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
 import com.mojang.serialization.Codec;
-import com.victorbrndls.indus.blocks.structure.StructureState;
+import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.blocks.structure.*;
 import com.victorbrndls.indus.inventory.TreeFarmMenu;
 import com.victorbrndls.indus.shared.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -27,11 +28,17 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
+import static com.victorbrndls.indus.blocks.TreeFarmBlock.FACING;
+
 public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
 
     private int tickCounter = 0;
 
-    private StructureState state = StructureState.NOT_READY;
+    private StructureState state = StructureState.IN_CONSTRUCTION;
+
+    // Structure info used during construction
+    private IndusStructureInfo structureInfo;
+    private int lastBuiltIndex = 0;
 
     public TreeFarmBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.TREE_FARM_BLOCK_ENTITY.get(), pos, state);
@@ -42,6 +49,8 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void setState(StructureState state) {
+        Indus.LOGGER.debug("Changing state to {}", state);
+
         if (this.state == state) return;
         this.state = state;
         setChanged();
@@ -52,8 +61,42 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
 
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) return;
-        if (getState() != StructureState.BUILT) return;
 
+        switch (getState()) {
+            case NOT_READY -> tickNotReady(level, pos, state);
+            case IN_CONSTRUCTION -> tickInConstruction(level, pos, state);
+            case BUILT -> tickBuilt(level, pos, state);
+        }
+    }
+
+    private void tickNotReady(Level level, BlockPos pos, BlockState state) {
+        // nothing to do
+    }
+
+    private void tickInConstruction(Level level, BlockPos pos, BlockState state) {
+        tickCounter++;
+
+        if (tickCounter < 5) return;
+        tickCounter = 0;
+
+        if (structureInfo == null) {
+            structureInfo = IndusStructureHelper.getOrLoadStructureInfo(level.getServer(), IndusStructure.TREE_FARM);
+            if (structureInfo == null) {
+                Indus.LOGGER.error("Could not load structure info");
+                return;
+            }
+        }
+
+        lastBuiltIndex = IndusStructureBuilder.build(
+                structureInfo, level, pos, state.getValue(FACING).getOpposite(), lastBuiltIndex
+        );
+
+        if (lastBuiltIndex == Integer.MAX_VALUE) {
+            setState(StructureState.BUILT);
+        }
+    }
+
+    private void tickBuilt(Level level, BlockPos pos, BlockState state) {
         tickCounter++;
 
         if (tickCounter >= 100) {
@@ -77,10 +120,31 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
         }
     }
 
+    public boolean canBuild() {
+        if (getState() != StructureState.NOT_READY) return false;
+        // check input container for required items
+        return true;
+    }
+
+    public void startBuilding() {
+        Indus.LOGGER.debug("Starting construction at {}", getBlockPos());
+
+        setState(StructureState.IN_CONSTRUCTION);
+        // remove items from the input container
+    }
+
+    public BlockPos inputPos() {
+        return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 0, 0, 1);
+    }
+
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         output.store("state", Codec.INT, state.ordinal());
+
+        if (state == StructureState.IN_CONSTRUCTION) {
+            output.store("lastBuiltIndex", Codec.INT, lastBuiltIndex);
+        }
     }
 
     @Override
@@ -88,6 +152,10 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
         super.loadAdditional(input);
         input.read("state", Codec.INT)
                 .ifPresent(i -> this.state = StructureState.values()[i]);
+
+        if (state == StructureState.IN_CONSTRUCTION) {
+            input.read("lastBuiltIndex", Codec.INT).ifPresent(i -> this.lastBuiltIndex = i);
+        }
     }
 
     @Override
@@ -111,9 +179,5 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.indus.tree_farm");
-    }
-
-    public BlockPos inputPos() {
-        return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 2, 0, 1);
     }
 }
