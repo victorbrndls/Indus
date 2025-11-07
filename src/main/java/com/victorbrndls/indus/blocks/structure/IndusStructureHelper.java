@@ -5,6 +5,7 @@ import com.victorbrndls.indus.blocks.structure.orientation.IndusStructureOrienta
 import com.victorbrndls.indus.blocks.structure.orientation.QuarryStructureOrientation;
 import com.victorbrndls.indus.blocks.structure.orientation.TreeFarmStructureOrientation;
 import com.victorbrndls.indus.network.RequestStructureMessage;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtAccounter;
@@ -16,6 +17,8 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Optional;
 
 public class IndusStructureHelper {
@@ -54,8 +57,15 @@ public class IndusStructureHelper {
         var template = maybeTemplate.get();
         var palette = template.palettes.getFirst();
 
-        var pos = palette.blocks().stream().map(StructureTemplate.StructureBlockInfo::pos).toList();
-        var state = palette.blocks().stream().map(StructureTemplate.StructureBlockInfo::state).toList();
+        var sorted = new ArrayList<>(palette.blocks()).stream()
+                .sorted(Comparator.comparing(StructureTemplate.StructureBlockInfo::pos,
+                        Comparator.<BlockPos>comparingInt(BlockPos::getY)
+                                .thenComparingInt(BlockPos::getZ)
+                                .thenComparingInt(BlockPos::getX)))
+                .toList();
+
+        var pos = sorted.stream().map(StructureTemplate.StructureBlockInfo::pos).toList();
+        var state = sorted.stream().map(StructureTemplate.StructureBlockInfo::state).toList();
 
         var info = new IndusStructureInfo(structure, pos, state);
         Indus.STRUCTURE_CACHE.add(info);

@@ -93,10 +93,7 @@ public class TreeFarmMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player player, int id) {
         if (id == BUTTON_BUILD) {
             if (!(player instanceof ServerPlayer)) return true;
-
-            if (entity.canBuild()) {
-                entity.startBuilding();
-            }
+            entity.startBuilding();
             return true;
         }
         return false;

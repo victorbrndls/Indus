@@ -32,11 +32,6 @@ public class IndusStructureBuilder {
             return Integer.MAX_VALUE;
         }
 
-        if (states.get(index).isAir()) {
-            // Skip air blocks
-            return build(info, level, pos, direction, index + 1);
-        }
-
         BlockPos offset = BlockPos.containing(orientation.getOffset());
 
         BlockPos rel = positions.get(index);
@@ -51,6 +46,12 @@ public class IndusStructureBuilder {
         if (!serverLevel.isInsideBuildHeight(worldPos.getY())) return index + 1;
 
         serverLevel.setBlock(worldPos, state, Block.UPDATE_ALL);
+
+        if (states.get(index).isAir()) {
+            // If we placed air, continue immediately
+            return build(info, level, pos, direction, index + 1);
+        }
+
         return index + 1;
     }
 

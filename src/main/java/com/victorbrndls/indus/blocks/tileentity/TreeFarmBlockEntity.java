@@ -120,15 +120,8 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
         }
     }
 
-    public boolean canBuild() {
-        if (getState() != StructureState.NOT_READY) return false;
-        // check input container for required items
-        return true;
-    }
-
     public void startBuilding() {
         Indus.LOGGER.debug("Starting construction at {}", getBlockPos());
-
         setState(StructureState.IN_CONSTRUCTION);
         // remove items from the input container
     }
