@@ -64,14 +64,6 @@ public class TreeFarmBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-
-        if (level.isClientSide()) return;
-//        IndusStructurePlacer.placeStructure(IndusStructure.TREE_FARM, level, pos, state.getValue(FACING).getOpposite());
-    }
-
-    @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
             level.getBlockEntity(pos, IndusTileEntities.TREE_FARM_BLOCK_ENTITY.get())

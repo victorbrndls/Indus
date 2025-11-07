@@ -1,9 +1,9 @@
 package com.victorbrndls.indus.gui;
 
+import com.victorbrndls.indus.blocks.tileentity.BaseStructureBlockEntity;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.mod.structure.IndusStructureRequirements;
 import com.victorbrndls.indus.mod.structure.IndusStructureState;
-import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -17,18 +17,18 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.List;
 
-public class TreeFarmMenu extends AbstractContainerMenu {
+public class BaseStructureMenu extends AbstractContainerMenu {
 
-    public final TreeFarmBlockEntity entity;
+    public final BaseStructureBlockEntity entity;
     private final List<ItemStack> requirements;
     private final SimpleContainerData data;
 
     public static final int BUTTON_BUILD = 0;
 
-    public TreeFarmMenu(int id, Inventory playerInventory, TreeFarmBlockEntity entity) {
-        super(IndusMenus.TREE_FARM.get(), id);
+    public BaseStructureMenu(int id, Inventory playerInventory, BaseStructureBlockEntity entity) {
+        super(IndusMenus.BASE_STRUCTURE.get(), id);
         this.entity = entity;
-        this.requirements = IndusStructureRequirements.getRequirements(IndusStructure.TREE_FARM);
+        this.requirements = IndusStructureRequirements.getRequirements(entity.getStructureType());
         this.data = new SimpleContainerData(requirements.size());
         addDataSlots(data);
 

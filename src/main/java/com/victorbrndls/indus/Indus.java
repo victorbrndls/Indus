@@ -3,7 +3,7 @@ package com.victorbrndls.indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.client.IndusStructureCache;
-import com.victorbrndls.indus.client.screen.TreeFarmScreen;
+import com.victorbrndls.indus.client.screen.BaseStructureScreen;
 import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.network.ReceiveStructureMessage;
@@ -74,6 +74,6 @@ public class Indus {
     }
 
     private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(IndusMenus.TREE_FARM.get(), TreeFarmScreen::new);
+        event.register(IndusMenus.BASE_STRUCTURE.get(), BaseStructureScreen::new);
     }
 }

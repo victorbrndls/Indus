@@ -1,10 +1,14 @@
 package com.victorbrndls.indus.blocks;
 
 import com.mojang.serialization.MapCodec;
+import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.blocks.tileentity.QuarryBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -19,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class QuarryBlock extends BaseEntityBlock {
@@ -59,11 +64,12 @@ public class QuarryBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-
-        if (level.isClientSide()) return;
-//        IndusStructurePlacer.placeStructure(IndusStructure.QUARRY, level, pos, state.getValue(FACING).getOpposite());
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            level.getBlockEntity(pos, IndusTileEntities.QUARRY_BLOCK_ENTITY.get())
+                    .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
+        }
+        return InteractionResult.SUCCESS_SERVER;
     }
 
     @Nullable

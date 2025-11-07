@@ -2,7 +2,7 @@ package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.mod.structure.IndusStructureState;
-import com.victorbrndls.indus.gui.TreeFarmMenu;
+import com.victorbrndls.indus.gui.BaseStructureMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -12,13 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
-public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
+public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMenu> {
 
-    private static final ResourceLocation BACKGROUND = Indus.rl("textures/gui/tree_farm.png");
+    private static final ResourceLocation BACKGROUND = Indus.rl("textures/gui/base_structure.png");
 
     private Button buildBtn;
 
-    public TreeFarmScreen(TreeFarmMenu menu, Inventory inventory, Component title) {
+    public BaseStructureScreen(BaseStructureMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.imageHeight = 198;
         this.inventoryLabelY = this.imageHeight - 94;
@@ -32,7 +32,7 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
                 .builder(
                         Component.literal("Build"),
                         (b) -> {
-                            getMinecraft().gameMode.handleInventoryButtonClick(menu.containerId, TreeFarmMenu.BUTTON_BUILD);
+                            getMinecraft().gameMode.handleInventoryButtonClick(menu.containerId, BaseStructureMenu.BUTTON_BUILD);
                             removeWidget(buildBtn);
                         })
                 .bounds(
@@ -85,7 +85,7 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
                         false);
             }
             case BUILT -> {
-                String text = "Producing logs...";
+                String text = "Working...";
                 var textWidth = font.width(text);
                 g.drawString(font,
                         text,
