@@ -1,8 +1,6 @@
 package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.StructureRequirements;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import com.victorbrndls.indus.inventory.TreeFarmMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -60,11 +58,13 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
     }
 
     private void renderRequirements(GuiGraphics g, int x, int y) {
-        var reqs = StructureRequirements.getRequirements(IndusStructure.TREE_FARM);
+        var requirements = menu.requirements();
         var pose = g.pose();
         int row = 0;
 
-        for (ItemStack required : reqs) {
+        for (int i = 0; i < requirements.size(); i++) {
+            ItemStack required = requirements.get(i);
+
             int iconX = x;
             int iconY = y + row * 14;
 
@@ -76,7 +76,7 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
 
             g.renderItem(required, 0, 0);
 
-            int have = 0;
+            int have = menu.getHave(i);
             int need = required.getCount();
 
             int color = have >= need ? 0xFF008000 : 0xFFFF5555; // green if met, red otherwise

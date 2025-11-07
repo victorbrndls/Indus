@@ -18,11 +18,10 @@ public class IndusMenus {
             () -> new MenuType<>((IContainerFactory<TreeFarmMenu>) (id, inventory, buf) -> {
                 var pos = buf.readBlockPos();
                 var blockEntity = inventory.player.level().getBlockEntity(pos);
-                if (!(blockEntity instanceof TreeFarmBlockEntity entity)) {
-                    Indus.LOGGER.error("Wrong type of block entity (expected TreeFarmBlockEntity)");
-                    return null;
+                if (blockEntity instanceof TreeFarmBlockEntity entity) {
+                    return new TreeFarmMenu(id, inventory, entity);
                 }
-                return new TreeFarmMenu(id, inventory, entity);
+                return null;
             }, FeatureFlags.DEFAULT_FLAGS));
 
     public static void init(IEventBus eventBus) {

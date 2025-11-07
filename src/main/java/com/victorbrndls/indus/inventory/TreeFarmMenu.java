@@ -1,23 +1,33 @@
 package com.victorbrndls.indus.inventory;
 
+import com.victorbrndls.indus.blocks.structure.IndusStructure;
+import com.victorbrndls.indus.blocks.structure.StructureRequirements;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.List;
 
 public class TreeFarmMenu extends AbstractContainerMenu {
 
     public final TreeFarmBlockEntity entity;
-
-    public TreeFarmMenu(int id, Inventory playerInventory) {
-        this(id, playerInventory, null);
-    }
+    private final List<ItemStack> requirements;
+    private final SimpleContainerData data;
 
     public TreeFarmMenu(int id, Inventory playerInventory, TreeFarmBlockEntity entity) {
         super(IndusMenus.TREE_FARM.get(), id);
         this.entity = entity;
+        this.requirements = StructureRequirements.getRequirements(IndusStructure.TREE_FARM);
+        this.data = new SimpleContainerData(requirements.size());
+        addDataSlots(data);
+
         this.addStandardInventorySlots(playerInventory, 8, 116);
     }
 
@@ -33,5 +43,54 @@ public class TreeFarmMenu extends AbstractContainerMenu {
                 player,
                 entity.getBlockState().getBlock()
         );
+    }
+
+    @Override
+    public void broadcastChanges() {
+        updateHaveCounts();
+        super.broadcastChanges();
+    }
+
+    private void updateHaveCounts() {
+        for (int i = 0; i < data.getCount(); i++) {
+            data.set(i, 0);
+        }
+
+        BlockPos inputPos = entity.inputPos();
+        BlockEntity be = entity.getLevel().getBlockEntity(inputPos);
+
+        // Vanilla-compatible path
+        if (be instanceof Container c) {
+            for (int i = 0; i < c.getContainerSize(); i++) {
+                ItemStack s = c.getItem(i);
+                if (s.isEmpty()) continue;
+                for (int r = 0; r < requirements.size(); r++) {
+                    if (ItemStack.isSameItemSameComponents(s, requirements.get(r))) {
+                        data.set(r, data.get(r) + s.getCount());
+                    }
+                }
+            }
+        } else {
+            throw new UnsupportedOperationException();
+
+            // NeoForge transfer API path (optional)
+//            var handler = entity.getLevel().getCapability(Capabilities.Item.BLOCK, inputPos, null);
+//            if (handler != null) {
+//                try (var ignored = Transaction.open(null)) {
+//                    for (int r = 0; r < requirements.size(); r++) {
+//                        var res = ItemResource.of(requirements.get(r));
+//                        have[r] = 1; // handler.getAmountAsInt(r);
+//                    }
+//                }
+//            }
+        }
+    }
+
+    public List<ItemStack> requirements() {
+        return requirements;
+    }
+
+    public int getHave(int index) {
+        return data.get(index);
     }
 }

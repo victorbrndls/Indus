@@ -64,4 +64,8 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
     public Component getDisplayName() {
         return Component.translatable("block.indus.tree_farm");
     }
+
+    public BlockPos inputPos() {
+        return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 2, 0, 1);
+    }
 }
