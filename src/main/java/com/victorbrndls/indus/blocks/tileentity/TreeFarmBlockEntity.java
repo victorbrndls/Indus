@@ -57,7 +57,7 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new TreeFarmMenu(id, this);
+        return new TreeFarmMenu(id, inventory, this);
     }
 
     @Override

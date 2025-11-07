@@ -1,6 +1,7 @@
 package com.victorbrndls.indus.inventory;
 
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -10,9 +11,14 @@ public class TreeFarmMenu extends AbstractContainerMenu {
 
     public final TreeFarmBlockEntity entity;
 
-    public TreeFarmMenu(int containerID, TreeFarmBlockEntity entity) {
-        super(IndusMenus.TREE_FARM.get(), containerID);
+    public TreeFarmMenu(int id, Inventory playerInventory) {
+        this(id, playerInventory, null);
+    }
+
+    public TreeFarmMenu(int id, Inventory playerInventory, TreeFarmBlockEntity entity) {
+        super(IndusMenus.TREE_FARM.get(), id);
         this.entity = entity;
+        this.addStandardInventorySlots(playerInventory, 8, 116);
     }
 
     @Override

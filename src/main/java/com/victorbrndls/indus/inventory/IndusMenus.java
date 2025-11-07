@@ -22,7 +22,7 @@ public class IndusMenus {
                     Indus.LOGGER.error("Wrong type of block entity (expected TreeFarmBlockEntity)");
                     return null;
                 }
-                return new TreeFarmMenu(id, entity);
+                return new TreeFarmMenu(id, inventory, entity);
             }, FeatureFlags.DEFAULT_FLAGS));
 
     public static void init(IEventBus eventBus) {

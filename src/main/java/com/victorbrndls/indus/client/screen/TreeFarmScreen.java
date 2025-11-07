@@ -1,78 +1,91 @@
 package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.blocks.structure.IndusStructure;
+import com.victorbrndls.indus.blocks.structure.StructureRequirements;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import com.victorbrndls.indus.inventory.TreeFarmMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.List;
+import net.minecraft.world.item.ItemStack;
 
 public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
 
-    private static final ResourceLocation TEXTURE = Indus.rl("textures/gui/tree_farm.png");
+    private static final ResourceLocation BACKGROUND = Indus.rl("textures/gui/tree_farm.png");
 
     private final TreeFarmBlockEntity entity;
 
     public TreeFarmScreen(TreeFarmMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
+        this.imageHeight = 198;
+        this.inventoryLabelY = this.imageHeight - 94;
+
         this.entity = menu.entity;
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
-        if (mouseX > leftPos + 7 && mouseX < leftPos + 29 && mouseY > topPos + 10
-                && mouseY < topPos + 77) {
-            var component = Component.literal("Energy");
-            var clienttooltipcomponent = ClientTooltipComponent.create(component.getVisualOrderText());
-            guiGraphics.renderTooltip(
-                    font,
-                    List.of(clienttooltipcomponent),
-                    mouseX, mouseY,
-                    DefaultTooltipPositioner.INSTANCE,
-                    null
-            );
-        }
+    protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(font, "222", (imageWidth / 2 - font.width("2312") / 2) + 14, 20,
-                0xFF333333, false);
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
+        renderBackground(g, mouseX, mouseY, partial);
+        super.render(g, mouseX, mouseY, partial);
+
+        int left = (this.width - this.imageWidth) / 2;
+        int top = (this.height - this.imageHeight) / 2;
+
+        var pose = g.pose();
+        pose.pushMatrix();
+        pose.translate(left + 8, top + 18);
+        pose.scale(0.75f, 0.75f);
+        g.drawString(font, "Put items in input container", 0, 0, 0xFF292929, false);
+        pose.popMatrix();
+
+        renderRequirements(g, left + 8, top + 30);
+
+        renderTooltip(g, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0, 0,
-                this.imageWidth, this.imageHeight, 256, 256);
-
-        int y = this.getEnergyScaled(60);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos + 10, this.topPos + 12 + y,
-                this.imageWidth, 0, 16, 60 - y, 256, 256);
+    protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
+        super.renderLabels(g, mouseX, mouseY);
     }
 
-    private String getEnergyFormatted(int energy) {
-        if (energy >= 1000000) {
-            return (energy / 1000) + " kFE";
-        } else {
-            return energy + " FE";
+    private void renderRequirements(GuiGraphics g, int x, int y) {
+        var reqs = StructureRequirements.getRequirements(IndusStructure.TREE_FARM);
+        var pose = g.pose();
+        int row = 0;
+
+        for (ItemStack required : reqs) {
+            int iconX = x;
+            int iconY = y + row * 14;
+
+            pose.pushMatrix();
+            pose.translate(iconX, iconY);
+
+            float scale = 0.70f;
+            pose.scale(scale, scale);
+
+            g.renderItem(required, 0, 0);
+
+            int have = 0;
+            int need = required.getCount();
+
+            int color = have >= need ? 0xFF008000 : 0xFFFF5555; // green if met, red otherwise
+            Component line = Component.literal(have + "/" + need + " - ").append(required.getHoverName());
+            g.drawString(this.font, line, 15 + 4, 4, color, false);
+
+            pose.popMatrix();
+            row++;
         }
     }
 
-    private int getEnergyScaled(int pixels) {
-        return pixels - (pixels * getPercent() / 100);
-    }
-
-    private int getPercent() {
-        return 50;
-    }
 }
