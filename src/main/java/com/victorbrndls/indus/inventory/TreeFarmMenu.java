@@ -1,7 +1,7 @@
 package com.victorbrndls.indus.inventory;
 
 import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.StructureRequirements;
+import com.victorbrndls.indus.blocks.structure.IndusStructureRequirements;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +27,7 @@ public class TreeFarmMenu extends AbstractContainerMenu {
     public TreeFarmMenu(int id, Inventory playerInventory, TreeFarmBlockEntity entity) {
         super(IndusMenus.TREE_FARM.get(), id);
         this.entity = entity;
-        this.requirements = StructureRequirements.getRequirements(IndusStructure.TREE_FARM);
+        this.requirements = IndusStructureRequirements.getRequirements(IndusStructure.TREE_FARM);
         this.data = new SimpleContainerData(requirements.size());
         addDataSlots(data);
 
@@ -61,6 +61,7 @@ public class TreeFarmMenu extends AbstractContainerMenu {
 
         BlockPos inputPos = entity.inputPos();
         BlockEntity be = entity.getLevel().getBlockEntity(inputPos);
+        if (be == null) return;
 
         // Vanilla-compatible path
         if (be instanceof Container c) {

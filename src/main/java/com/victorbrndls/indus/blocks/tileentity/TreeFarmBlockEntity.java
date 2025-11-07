@@ -10,10 +10,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +36,7 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
 
     private int tickCounter = 0;
 
-    private StructureState state = StructureState.IN_CONSTRUCTION;
+    private StructureState state = StructureState.NOT_READY;
 
     // Structure info used during construction
     private IndusStructureInfo structureInfo;
@@ -122,8 +124,32 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
 
     public void startBuilding() {
         Indus.LOGGER.debug("Starting construction at {}", getBlockPos());
+
+        BlockPos inputPos = inputPos();
+        BlockEntity be = getLevel().getBlockEntity(inputPos);
+
+        var requirements = IndusStructureRequirements.getRequirements(IndusStructure.TREE_FARM);
+
+        // Vanilla-compatible path
+        if (be instanceof Container c) {
+            for (ItemStack req : requirements) {
+                int remaining = req.getCount();
+                for (int i = 0; i < c.getContainerSize() && remaining > 0; i++) {
+                    ItemStack s = c.getItem(i);
+                    if (s.isEmpty() || !ItemStack.isSameItemSameComponents(s, req)) continue;
+
+                    int take = Math.min(s.getCount(), remaining);
+                    s.shrink(take);
+                    remaining -= take;
+
+                    if (s.isEmpty()) c.setItem(i, ItemStack.EMPTY);
+                }
+            }
+        } else {
+            throw new UnsupportedOperationException();
+        }
+
         setState(StructureState.IN_CONSTRUCTION);
-        // remove items from the input container
     }
 
     public BlockPos inputPos() {
