@@ -1,9 +1,9 @@
-package com.victorbrndls.indus.blocks.structure;
+package com.victorbrndls.indus.mod.structure;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.blocks.structure.orientation.IndusStructureOrientation;
-import com.victorbrndls.indus.blocks.structure.orientation.QuarryStructureOrientation;
-import com.victorbrndls.indus.blocks.structure.orientation.TreeFarmStructureOrientation;
+import com.victorbrndls.indus.mod.structure.orientation.IndusStructureOrientation;
+import com.victorbrndls.indus.mod.structure.orientation.QuarryStructureOrientation;
+import com.victorbrndls.indus.mod.structure.orientation.TreeFarmStructureOrientation;
 import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

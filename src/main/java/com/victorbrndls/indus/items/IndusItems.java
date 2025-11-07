@@ -3,7 +3,7 @@ package com.victorbrndls.indus.items;
 
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;

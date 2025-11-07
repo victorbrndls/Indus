@@ -1,8 +1,8 @@
 package com.victorbrndls.indus.network;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructureHelper;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureHelper;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

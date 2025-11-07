@@ -1,9 +1,8 @@
 package com.victorbrndls.indus.items;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.IndusClient;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructureHelper;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

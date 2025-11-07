@@ -1,9 +1,8 @@
 package com.victorbrndls.indus.network;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.IndusClient;
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructureInfo;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

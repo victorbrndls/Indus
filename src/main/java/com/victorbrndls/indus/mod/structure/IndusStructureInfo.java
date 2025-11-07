@@ -1,4 +1,4 @@
-package com.victorbrndls.indus.blocks.structure;
+package com.victorbrndls.indus.mod.structure;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;

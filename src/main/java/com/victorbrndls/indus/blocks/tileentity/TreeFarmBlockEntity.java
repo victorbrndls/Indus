@@ -2,7 +2,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.blocks.structure.*;
+import com.victorbrndls.indus.mod.structure.*;
 import com.victorbrndls.indus.gui.TreeFarmMenu;
 import com.victorbrndls.indus.shared.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -39,7 +39,7 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
 
     private int tickCounter = 0;
 
-    private StructureState state = StructureState.NOT_READY;
+    private IndusStructureState state = IndusStructureState.NOT_READY;
 
     // Structure info used during construction
     private IndusStructureInfo structureInfo;
@@ -49,11 +49,11 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
         super(IndusTileEntities.TREE_FARM_BLOCK_ENTITY.get(), pos, state);
     }
 
-    public StructureState getState() {
+    public IndusStructureState getState() {
         return state;
     }
 
-    public void setState(StructureState state) {
+    public void setState(IndusStructureState state) {
         Indus.LOGGER.debug("Changing state to {}", state);
 
         if (this.state == state) return;
@@ -97,7 +97,7 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
         );
 
         if (lastBuiltIndex == Integer.MAX_VALUE) {
-            setState(StructureState.BUILT);
+            setState(IndusStructureState.BUILT);
         }
     }
 
@@ -152,7 +152,7 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
             throw new UnsupportedOperationException();
         }
 
-        setState(StructureState.IN_CONSTRUCTION);
+        setState(IndusStructureState.IN_CONSTRUCTION);
     }
 
     public BlockPos inputPos() {
@@ -164,7 +164,7 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
         super.saveAdditional(output);
         output.store("state", Codec.INT, state.ordinal());
 
-        if (state == StructureState.IN_CONSTRUCTION) {
+        if (state == IndusStructureState.IN_CONSTRUCTION) {
             output.store("lastBuiltIndex", Codec.INT, lastBuiltIndex);
         }
     }
@@ -173,9 +173,9 @@ public class TreeFarmBlockEntity extends BlockEntity implements MenuProvider {
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         input.read("state", Codec.INT)
-                .ifPresent(i -> this.state = StructureState.values()[i]);
+                .ifPresent(i -> this.state = IndusStructureState.values()[i]);
 
-        if (state == StructureState.IN_CONSTRUCTION) {
+        if (state == IndusStructureState.IN_CONSTRUCTION) {
             input.read("lastBuiltIndex", Codec.INT).ifPresent(i -> this.lastBuiltIndex = i);
         }
     }

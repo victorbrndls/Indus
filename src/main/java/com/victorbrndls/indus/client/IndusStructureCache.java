@@ -1,7 +1,7 @@
 package com.victorbrndls.indus.client;
 
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructureInfo;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

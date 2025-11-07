@@ -1,8 +1,8 @@
 package com.victorbrndls.indus.gui;
 
-import com.victorbrndls.indus.blocks.structure.IndusStructure;
-import com.victorbrndls.indus.blocks.structure.IndusStructureRequirements;
-import com.victorbrndls.indus.blocks.structure.StructureState;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureRequirements;
+import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -105,7 +105,7 @@ public class TreeFarmMenu extends AbstractContainerMenu {
         return requirements;
     }
 
-    public StructureState getStructureState() {
+    public IndusStructureState getStructureState() {
         return entity.getState();
     }
 

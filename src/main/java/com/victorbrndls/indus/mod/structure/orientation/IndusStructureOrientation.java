@@ -1,4 +1,4 @@
-package com.victorbrndls.indus.blocks.structure.orientation;
+package com.victorbrndls.indus.mod.structure.orientation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;

@@ -1,4 +1,4 @@
-package com.victorbrndls.indus.blocks.structure;
+package com.victorbrndls.indus.mod.structure;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,7 +16,13 @@ public class IndusStructureRequirements {
                     new ItemStack(Items.OAK_SAPLING, 8),
                     new ItemStack(Items.LANTERN, 2)
             );
-            case QUARRY -> List.of();
+            case QUARRY -> List.of(
+                    new ItemStack(Items.STONE, 128),
+                    new ItemStack(Items.GRAVEL, 64),
+                    new ItemStack(Items.FURNACE, 8),
+                    new ItemStack(Items.IRON_PICKAXE, 1),
+                    new ItemStack(Items.LANTERN, 4)
+            );
         };
     }
 

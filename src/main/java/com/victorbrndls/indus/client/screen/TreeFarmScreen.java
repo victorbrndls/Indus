@@ -1,7 +1,7 @@
 package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.blocks.structure.StructureState;
+import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import com.victorbrndls.indus.gui.TreeFarmMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -43,7 +43,7 @@ public class TreeFarmScreen extends AbstractContainerScreen<TreeFarmMenu> {
                 )
                 .build();
 
-        if (menu.getStructureState() == StructureState.NOT_READY) {
+        if (menu.getStructureState() == IndusStructureState.NOT_READY) {
             addRenderableWidget(buildBtn);
         }
     }
