@@ -6,7 +6,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+
+import java.util.function.Consumer;
 
 public class ProspectorItem extends Item {
 
@@ -35,5 +40,10 @@ public class ProspectorItem extends Item {
         );
 
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+        tooltipAdder.accept(Component.literal("Right click to prospect for ores"));
     }
 }
