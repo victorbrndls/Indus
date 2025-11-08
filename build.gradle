@@ -115,11 +115,10 @@ configurations {
 }
 
 dependencies {
-    // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-//    compileOnly "mezz.jei:jei-1.21.10-neoforge-api:19.21.2.313"
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:19.9.1.125"
     // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-//    localRuntime "mezz.jei:jei-1.21.10-neoforge:19.21.2.313"
+    localRuntime "mezz.jei:jei-1.21.10-neoforge:26.1.0.9"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar

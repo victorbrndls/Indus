@@ -35,6 +35,11 @@ public class IndusItems {
             properties -> new ProspectorItem(properties.stacksTo(1))
     );
 
+    public static final DeferredItem<Item> CONCRETE_SLAB = ITEMS.registerItem(
+            "concrete_slab",
+            ConcreteSlabItem::new
+    );
+
     public static void init(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

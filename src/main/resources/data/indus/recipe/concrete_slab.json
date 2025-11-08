@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SGS",
+    "GWG",
+    "SGS"
+  ],
+  "key": {
+    "S": "minecraft:sand",
+    "G": "minecraft:gravel",
+    "W": "minecraft:clay"
+  },
+  "result": {
+    "id": "indus:concrete_slab",
+    "count": 4
+  }
+}

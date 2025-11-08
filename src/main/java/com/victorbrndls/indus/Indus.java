@@ -45,6 +45,7 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.TREE_FARM.get()));
                         output.accept(new ItemStack(IndusItems.QUARRY.get()));
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
+                        output.accept(new ItemStack(IndusItems.CONCRETE_SLAB.get()));
                     }).build());
 
     public Indus(IEventBus eventBus, ModContainer modContainer) {
