@@ -1,6 +1,7 @@
 package com.victorbrndls.indus.mod.structure;
 
 import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.mod.structure.orientation.BlastFurnaceStructureOrientation;
 import com.victorbrndls.indus.mod.structure.orientation.IndusStructureOrientation;
 import com.victorbrndls.indus.mod.structure.orientation.QuarryStructureOrientation;
 import com.victorbrndls.indus.mod.structure.orientation.TreeFarmStructureOrientation;
@@ -27,6 +28,7 @@ public class IndusStructureHelper {
         return switch (structure) {
             case TREE_FARM -> "tree_farm";
             case QUARRY -> "quarry";
+            case BLAST_FURNACE -> "blast_furnace";
         };
     }
 
@@ -91,6 +93,7 @@ public class IndusStructureHelper {
         return switch (structure) {
             case TREE_FARM -> new TreeFarmStructureOrientation(direction);
             case QUARRY -> new QuarryStructureOrientation(direction);
+            case BLAST_FURNACE -> new BlastFurnaceStructureOrientation(direction);
         };
     }
 

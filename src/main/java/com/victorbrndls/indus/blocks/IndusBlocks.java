@@ -21,6 +21,11 @@ public class IndusBlocks {
             QuarryBlock::new
     );
 
+    public static final DeferredHolder<Block, BlastFurnaceBlock> BLAST_FURNACE = BLOCKS.registerBlock(
+            "blast_furnace",
+            BlastFurnaceBlock::new
+    );
+
     public static void init(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

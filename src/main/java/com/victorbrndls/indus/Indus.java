@@ -44,6 +44,7 @@ public class Indus {
                     .displayItems((parameters, output) -> {
                         output.accept(new ItemStack(IndusItems.TREE_FARM.get()));
                         output.accept(new ItemStack(IndusItems.QUARRY.get()));
+                        output.accept(new ItemStack(IndusItems.BLAST_FURNACE.get()));
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
                         output.accept(new ItemStack(IndusItems.CONCRETE_SLAB.get()));
                     }).build());

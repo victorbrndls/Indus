@@ -24,6 +24,13 @@ public class IndusStructureRequirements {
                     new ItemStack(Items.FURNACE, 8),
                     new ItemStack(Items.IRON_PICKAXE, 1)
             );
+            case BLAST_FURNACE -> List.of(
+                    new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
+                    new ItemStack(Items.BRICKS, 48),
+                    new ItemStack(Items.BLAST_FURNACE, 8),
+                    new ItemStack(Items.HOPPER, 8),
+                    new ItemStack(Items.COAL_BLOCK, 8)
+            );
         };
     }
 

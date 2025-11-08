@@ -5,7 +5,8 @@ import net.minecraft.network.codec.StreamCodec;
 
 public enum IndusStructure {
     TREE_FARM,
-    QUARRY;
+    QUARRY,
+    BLAST_FURNACE;
 
     public static final StreamCodec<FriendlyByteBuf, IndusStructure> CODEC =
             StreamCodec.of(

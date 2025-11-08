@@ -23,6 +23,11 @@ public class IndusTileEntities {
                     new BlockEntityType<>(QuarryBlockEntity::new, IndusBlocks.QUARRY.get())
             );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE_BLOCK_ENTITY =
+            BLOCK_ENTITY_REGISTER.register("blast_furnace", () ->
+                    new BlockEntityType<>(BlastFurnaceBlockEntity::new, IndusBlocks.BLAST_FURNACE.get())
+            );
+
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITY_REGISTER.register(eventBus);
     }
