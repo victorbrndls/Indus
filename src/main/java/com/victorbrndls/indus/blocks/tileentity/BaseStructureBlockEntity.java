@@ -13,7 +13,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,17 +22,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 import static com.victorbrndls.indus.blocks.TreeFarmBlock.FACING;
 
 public abstract class BaseStructureBlockEntity extends BlockEntity implements MenuProvider {
 
-    private int tickCounter = 0;
+    protected int tickCounter = 0;
 
     private IndusStructureState state = IndusStructureState.NOT_READY;
 
@@ -99,35 +94,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
         }
     }
 
-    @Nullable
-    protected abstract Item getResource();
-
-    private void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        tickCounter++;
-
-        if (tickCounter >= 100) {
-            tickCounter = 0;
-
-            BlockPos target = BlockHelper.offsetFrontFacing(pos, state, 7, 0, 1);
-            if (!level.isLoaded(target)) return;
-
-            BlockState ts = level.getBlockState(target);
-            BlockEntity te = level.getBlockEntity(target);
-            if (te == null) return;
-
-            ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, target, ts, te, null);
-
-            if (handler != null) {
-                try (Transaction tx = Transaction.open(null)) {
-                    var resource = getResource();
-                    if (resource != null) {
-                        long inserted = handler.insert(ItemResource.of(getResource()), 1, tx);
-                        if (inserted == 1) tx.commit();
-                    }
-                }
-            }
-        }
-    }
+    protected abstract void tickBuilt(Level level, BlockPos pos, BlockState state);
 
     public void startBuilding() {
         Indus.LOGGER.debug("Starting construction at {}", getBlockPos());

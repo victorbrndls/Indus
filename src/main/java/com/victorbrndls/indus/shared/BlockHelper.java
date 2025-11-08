@@ -2,8 +2,14 @@ package com.victorbrndls.indus.shared;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockHelper {
 
@@ -15,5 +21,19 @@ public class BlockHelper {
                 .above(up);
     }
 
+    public static BlockPos offsetFrontFacing(BlockPos origin, BlockState state, BlockPos relative) {
+        return offsetFrontFacing(origin, state, relative.getX(), relative.getZ(), relative.getY());
+    }
+
+    @Nullable
+    public static ResourceHandler<ItemResource> getItemHandlerAt(Level level, BlockPos pos) {
+        if (!level.isLoaded(pos)) return null;
+
+        BlockState ciBs = level.getBlockState(pos);
+        BlockEntity ciTe = level.getBlockEntity(pos);
+        if (ciTe == null) return null;
+
+        return level.getCapability(Capabilities.Item.BLOCK, pos, ciBs, ciTe, null);
+    }
 
 }
