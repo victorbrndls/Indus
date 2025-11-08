@@ -13,9 +13,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -44,7 +42,9 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
 
         if (prospectedOre == null) return null;
 
-        if (prospectedOre.equals(Items.IRON_ORE)) {
+        if (prospectedOre.equals(Items.STONE)) {
+            return Items.COBBLESTONE;
+        } else if (prospectedOre.equals(Items.IRON_ORE)) {
             return Items.RAW_IRON;
         } else if (prospectedOre.equals(Items.COPPER_ORE)) {
             return Items.RAW_COPPER;
@@ -66,21 +66,14 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
             tickCounter = 0;
 
             BlockPos target = BlockHelper.offsetFrontFacing(pos, state, 7, 0, 1);
-            if (!level.isLoaded(target)) return;
+            ResourceHandler<ItemResource> handler = BlockHelper.getItemHandlerAt(level, target);
+            if (handler == null) return;
 
-            BlockState ts = level.getBlockState(target);
-            BlockEntity te = level.getBlockEntity(target);
-            if (te == null) return;
-
-            ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, target, ts, te, null);
-
-            if (handler != null) {
-                try (Transaction tx = Transaction.open(null)) {
-                    var resource = getResource();
-                    if (resource != null) {
-                        long inserted = handler.insert(ItemResource.of(resource), 1, tx);
-                        if (inserted == 1) tx.commit();
-                    }
+            try (Transaction tx = Transaction.open(null)) {
+                var resource = getResource();
+                if (resource != null) {
+                    long inserted = handler.insert(ItemResource.of(resource), 1, tx);
+                    if (inserted == 1) tx.commit();
                 }
             }
         }

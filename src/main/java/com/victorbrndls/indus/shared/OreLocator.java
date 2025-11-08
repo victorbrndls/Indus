@@ -18,10 +18,11 @@ public class OreLocator {
         long seed = mixedSeed(sl, pos);
         float random = RandomSource.create(seed).nextFloat();
 
-        if (random < 0.10f) return Items.IRON_ORE;
-        if (random < 0.20f) return Items.COPPER_ORE;
-        if (random < 0.30f) return Items.COAL_ORE;
-        if (random < 0.35f) return Items.GOLD_ORE;
+        if (random < 0.15f) return Items.STONE;
+        if (random < 0.25f) return Items.IRON_ORE;
+        if (random < 0.35f) return Items.COPPER_ORE;
+        if (random < 0.45f) return Items.COAL_ORE;
+        if (random < 0.50f) return Items.GOLD_ORE;
 
         return null;
     }
