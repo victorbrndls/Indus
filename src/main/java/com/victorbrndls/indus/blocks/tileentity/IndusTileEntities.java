@@ -13,19 +13,24 @@ public class IndusTileEntities {
 
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REGISTER = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Indus.MODID);
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TreeFarmBlockEntity>> TREE_FARM_BLOCK_ENTITY =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TreeFarmBlockEntity>> TREE_FARM =
             BLOCK_ENTITY_REGISTER.register("tree_farm", () ->
                     new BlockEntityType<>(TreeFarmBlockEntity::new, IndusBlocks.TREE_FARM.get())
             );
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBlockEntity>> QUARRY_BLOCK_ENTITY =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBlockEntity>> QUARRY =
             BLOCK_ENTITY_REGISTER.register("quarry", () ->
                     new BlockEntityType<>(QuarryBlockEntity::new, IndusBlocks.QUARRY.get())
             );
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE_BLOCK_ENTITY =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
             BLOCK_ENTITY_REGISTER.register("blast_furnace", () ->
                     new BlockEntityType<>(BlastFurnaceBlockEntity::new, IndusBlocks.BLAST_FURNACE.get())
+            );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MixerBlockEntity>> MIXER =
+            BLOCK_ENTITY_REGISTER.register("mixer", () ->
+                    new BlockEntityType<>(MixerBlockEntity::new, IndusBlocks.MIXER.get())
             );
 
     public static void init(IEventBus eventBus) {

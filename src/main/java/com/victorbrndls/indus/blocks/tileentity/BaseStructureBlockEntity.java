@@ -2,6 +2,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.gui.BaseStructureMenu;
 import com.victorbrndls.indus.mod.structure.*;
 import com.victorbrndls.indus.shared.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,9 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -167,5 +171,10 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new BaseStructureMenu(id, inventory, this);
     }
 }

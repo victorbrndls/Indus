@@ -1,10 +1,7 @@
 package com.victorbrndls.indus.mod.structure;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.mod.structure.orientation.BlastFurnaceStructureOrientation;
-import com.victorbrndls.indus.mod.structure.orientation.IndusStructureOrientation;
-import com.victorbrndls.indus.mod.structure.orientation.QuarryStructureOrientation;
-import com.victorbrndls.indus.mod.structure.orientation.TreeFarmStructureOrientation;
+import com.victorbrndls.indus.mod.structure.orientation.*;
 import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,6 +26,7 @@ public class IndusStructureHelper {
             case TREE_FARM -> "tree_farm";
             case QUARRY -> "quarry";
             case BLAST_FURNACE -> "blast_furnace";
+            case MIXER -> "mixer";
         };
     }
 
@@ -94,6 +92,7 @@ public class IndusStructureHelper {
             case TREE_FARM -> new TreeFarmStructureOrientation(direction);
             case QUARRY -> new QuarryStructureOrientation(direction);
             case BLAST_FURNACE -> new BlastFurnaceStructureOrientation(direction);
+            case MIXER -> new MixerStructureOrientation(direction);
         };
     }
 

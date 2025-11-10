@@ -31,6 +31,13 @@ public class IndusStructureRequirements {
                     new ItemStack(Items.HOPPER, 8),
                     new ItemStack(Items.COAL_BLOCK, 8)
             );
+            case MIXER -> List.of(
+                    new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
+                    new ItemStack(Items.BRICK, 48),
+                    new ItemStack(Items.CAULDRON, 8),
+                    new ItemStack(Items.HOPPER, 4),
+                    new ItemStack(Items.OBSIDIAN, 4)
+            );
         };
     }
 

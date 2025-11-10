@@ -38,6 +38,14 @@ public class IndusItems {
             )
     );
 
+    public static final DeferredItem<BlockItem> MIXER = ITEMS.registerItem(
+            "mixer", properties -> new IndusStructureItem(
+                    IndusBlocks.MIXER.get(),
+                    IndusStructure.MIXER,
+                    properties
+            )
+    );
+
     public static final DeferredItem<Item> PROSPECTOR = ITEMS.registerItem(
             "prospector",
             properties -> new ProspectorItem(properties.stacksTo(1))

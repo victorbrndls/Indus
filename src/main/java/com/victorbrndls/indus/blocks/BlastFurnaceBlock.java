@@ -10,8 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +30,7 @@ public class BlastFurnaceBlock extends BaseStructureBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
-            level.getBlockEntity(pos, IndusTileEntities.BLAST_FURNACE_BLOCK_ENTITY.get())
+            level.getBlockEntity(pos, IndusTileEntities.BLAST_FURNACE.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
         return InteractionResult.SUCCESS_SERVER;
@@ -44,12 +42,4 @@ public class BlastFurnaceBlock extends BaseStructureBlock {
         return new BlastFurnaceBlockEntity(pos, state);
     }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if (level.isClientSide()) return null;
-        return (lvl, pos, st, te) -> {
-            if (te instanceof BlastFurnaceBlockEntity be) be.tick(lvl, pos, st);
-        };
-    }
 }

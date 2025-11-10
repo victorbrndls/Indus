@@ -1,15 +1,21 @@
 package com.victorbrndls.indus.blocks;
 
+import com.victorbrndls.indus.blocks.tileentity.BaseStructureBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseStructureBlock extends BaseEntityBlock {
 
@@ -41,4 +47,12 @@ public abstract class BaseStructureBlock extends BaseEntityBlock {
         return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide()) return null;
+        return (lvl, pos, st, te) -> {
+            if (te instanceof BaseStructureBlockEntity be) be.tick(lvl, pos, st);
+        };
+    }
 }

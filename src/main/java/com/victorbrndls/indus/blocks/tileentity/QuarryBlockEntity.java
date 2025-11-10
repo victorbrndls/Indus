@@ -1,15 +1,11 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.gui.BaseStructureMenu;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.shared.BlockHelper;
 import com.victorbrndls.indus.shared.OreLocator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -26,7 +22,7 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
     private boolean hasProspected = false;
 
     public QuarryBlockEntity(BlockPos pos, BlockState state) {
-        super(IndusTileEntities.QUARRY_BLOCK_ENTITY.get(), pos, state);
+        super(IndusTileEntities.QUARRY.get(), pos, state);
     }
 
     @Override
@@ -77,11 +73,6 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
                 }
             }
         }
-    }
-
-    @Override
-    public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new BaseStructureMenu(id, inventory, this);
     }
 
     @Override

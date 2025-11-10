@@ -2,7 +2,7 @@ package com.victorbrndls.indus.blocks;
 
 import com.mojang.serialization.MapCodec;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
-import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
+import com.victorbrndls.indus.blocks.tileentity.MixerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -14,11 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class TreeFarmBlock extends BaseStructureBlock {
+public class MixerBlock extends BaseStructureBlock {
 
-    public static final MapCodec<TreeFarmBlock> CODEC = simpleCodec(TreeFarmBlock::new);
+    public static final MapCodec<MixerBlock> CODEC = simpleCodec(MixerBlock::new);
 
-    public TreeFarmBlock(Properties properties) {
+    public MixerBlock(Properties properties) {
         super(properties);
     }
 
@@ -30,7 +30,7 @@ public class TreeFarmBlock extends BaseStructureBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
-            level.getBlockEntity(pos, IndusTileEntities.TREE_FARM.get())
+            level.getBlockEntity(pos, IndusTileEntities.MIXER.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
         return InteractionResult.SUCCESS_SERVER;
@@ -39,7 +39,7 @@ public class TreeFarmBlock extends BaseStructureBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TreeFarmBlockEntity(pos, state);
+        return new MixerBlockEntity(pos, state);
     }
 
 }

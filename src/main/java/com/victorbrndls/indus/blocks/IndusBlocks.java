@@ -26,6 +26,11 @@ public class IndusBlocks {
             BlastFurnaceBlock::new
     );
 
+    public static final DeferredHolder<Block, MixerBlock> MIXER = BLOCKS.registerBlock(
+            "mixer",
+            MixerBlock::new
+    );
+
     public static void init(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

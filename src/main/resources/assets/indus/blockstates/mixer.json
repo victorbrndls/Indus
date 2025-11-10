@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "indus:block/mixer",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "indus:block/mixer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "indus:block/mixer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indus:block/mixer",
+      "y": 270
+    }
+  }
+}

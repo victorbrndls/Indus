@@ -5,6 +5,8 @@
   "block.indus.quarry": "Quarry",
   "item.indus.blast_furnace": "Blast Furnace",
   "block.indus.blast_furnace": "Blast Furnace",
+  "item.indus.mixer": "Mixer",
+  "block.indus.mixer": "Mixer",
   "item.indus.prospector": "Ore Prospector",
   "item.indus.concrete_slab": "Concrete Slab"
 }
