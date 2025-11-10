@@ -14,8 +14,8 @@ public class IndusStructureRequirements {
                     new ItemStack(IndusItems.CONCRETE_SLAB.get(), 32),
                     new ItemStack(Items.OAK_LOG, 48),
                     new ItemStack(Items.CRAFTING_TABLE, 6),
-                    new ItemStack(Items.OAK_SAPLING, 8),
-                    new ItemStack(Items.LANTERN, 2)
+                    new ItemStack(Items.STONECUTTER, 2),
+                    new ItemStack(Items.IRON_AXE, 1)
             );
             case QUARRY -> List.of(
                     new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
