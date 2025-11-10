@@ -4,6 +4,7 @@ import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.client.IndusStructureCache;
 import com.victorbrndls.indus.client.screen.BaseStructureScreen;
+import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.network.ReceiveStructureMessage;
@@ -57,6 +58,7 @@ public class Indus {
         IndusItems.init(eventBus);
         IndusTileEntities.init(eventBus);
         IndusMenus.init(eventBus);
+        IndusRecipes.init(eventBus);
         CREATIVE_MODE_TABS.register(eventBus);
 
         eventBus.addListener(this::handleRegisterMenuScreens);

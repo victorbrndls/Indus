@@ -1,14 +1,20 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
+import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.shared.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
+
+import java.util.List;
 
 public class MixerBlockEntity extends BaseStructureBlockEntity {
 
@@ -45,6 +51,17 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
 
             if (input1Handler == null || input2Handler == null || input3Handler == null) return;
             if (outputHandler == null) return;
+
+            var recipes = ((ServerLevel) level).recipeAccess().getRecipes().stream()
+                    .filter(r -> r.value().getType() == IndusRecipes.RECIPE_TYPE_MIXER.get())
+                    .map(r -> (Recipe<CraftingInput>) r.value())
+                    .toList();
+
+            var matchingRecipe = recipes.stream()
+                    .filter(r -> r.matches(CraftingInput.of(1, 1, List.of()), level))
+                    .findFirst();
+
+
 
             try (var tx = Transaction.open(null)) {
 
