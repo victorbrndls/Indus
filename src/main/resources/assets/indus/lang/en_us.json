@@ -8,5 +8,9 @@
   "item.indus.mixer": "Mixer",
   "block.indus.mixer": "Mixer",
   "item.indus.prospector": "Ore Prospector",
-  "item.indus.concrete_slab": "Concrete Slab"
+  "item.indus.concrete_slab": "Concrete Slab",
+  "item.indus.construction_part_1": "Construction Part 1",
+  "item.indus.construction_part_2": "Construction Part 2",
+  "item.indus.construction_part_3": "Construction Part 3",
+  "item.indus.construction_part_4": "Construction Part 4"
 }

@@ -49,6 +49,10 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.MIXER.get()));
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
                         output.accept(new ItemStack(IndusItems.CONCRETE_SLAB.get()));
+                        output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_1.get()));
+                        output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_2.get()));
+                        output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_3.get()));
+                        output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_4.get()));
                     }).build());
 
     public Indus(IEventBus eventBus, ModContainer modContainer) {

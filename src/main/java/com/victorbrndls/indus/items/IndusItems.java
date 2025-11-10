@@ -56,6 +56,23 @@ public class IndusItems {
             ConcreteSlabItem::new
     );
 
+    public static final DeferredItem<Item> CONSTRUCTION_PART_1 = ITEMS.registerItem(
+            "construction_part_1",
+            properties -> new ConstructionPartItem(ConstructionPartTier.BASIC, properties)
+    );
+    public static final DeferredItem<Item> CONSTRUCTION_PART_2 = ITEMS.registerItem(
+            "construction_part_2",
+            properties -> new ConstructionPartItem(ConstructionPartTier.ADVANCED, properties)
+    );
+    public static final DeferredItem<Item> CONSTRUCTION_PART_3 = ITEMS.registerItem(
+            "construction_part_3",
+            properties -> new ConstructionPartItem(ConstructionPartTier.ELITE, properties)
+    );
+    public static final DeferredItem<Item> CONSTRUCTION_PART_4 = ITEMS.registerItem(
+            "construction_part_4",
+            properties -> new ConstructionPartItem(ConstructionPartTier.ULTIMATE, properties)
+    );
+
     public static void init(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
