@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import org.jetbrains.annotations.Nullable;
 
 import static com.victorbrndls.indus.blocks.TreeFarmBlock.FACING;
@@ -132,6 +134,11 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
     public BlockPos inputPos() {
         return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 0, 0, 1);
+    }
+
+    protected ResourceHandler<ItemResource> getRelativeItemHandler(Level level, BlockPos relativePos) {
+        BlockPos targetPos = getBlockPos().offset(relativePos);
+        return BlockHelper.getItemHandlerAt(level, targetPos);
     }
 
     @Override
