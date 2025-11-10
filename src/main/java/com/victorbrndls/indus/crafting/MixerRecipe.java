@@ -68,7 +68,7 @@ public final class MixerRecipe implements Recipe<CraftingInput> {
 
     @Override
     public RecipeType<? extends Recipe<CraftingInput>> getType() {
-        return IndusRecipes.RECIPE_TYPE_MIXER.get();
+        return IndusRecipes.MIXER_RECIPE_TYPE.get();
     }
 
     @Override

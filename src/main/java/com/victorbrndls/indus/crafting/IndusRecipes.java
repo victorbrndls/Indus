@@ -17,7 +17,9 @@ public class IndusRecipes {
             "mixer", MixerRecipe.CODEC, MixerRecipe.STREAM_CODEC
     );
 
-    public static final DeferredRecipeType<MixerRecipe> RECIPE_TYPE_MIXER = RECIPE_TYPES.registerRecipeType("mixer");
+    public static final DeferredRecipeType<MixerRecipe> MIXER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
+            "mixer"
+    );
 
     public static void init(IEventBus eventBus) {
         RECIPE_TYPES.register(eventBus);
