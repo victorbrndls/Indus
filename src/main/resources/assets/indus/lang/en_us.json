@@ -18,5 +18,7 @@
   "item.indus.construction_part_3": "Construction Part 3",
   "item.indus.construction_part_4": "Construction Part 4",
   "item.indus.iron_plate": "Iron Plate",
-  "item.indus.copper_plate": "Copper Plate"
+  "item.indus.copper_plate": "Copper Plate",
+  "item.indus.water_cell": "Water Cell",
+  "item.indus.crude_oil_cell": "Crude Oil Cell"
 }

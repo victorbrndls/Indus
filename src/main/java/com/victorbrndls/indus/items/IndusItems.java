@@ -14,6 +14,7 @@ public class IndusItems {
 
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Indus.MODID);
 
+    // Structures
     public static final DeferredItem<BlockItem> TREE_FARM = ITEMS.registerItem(
             "tree_farm", properties -> new IndusStructureItem(
                     IndusBlocks.TREE_FARM.get(),
@@ -46,6 +47,22 @@ public class IndusItems {
             )
     );
 
+    public static final DeferredItem<BlockItem> PUMP = ITEMS.registerItem(
+            "pump", properties -> new IndusStructureItem(
+                    IndusBlocks.PUMP.get(),
+                    IndusStructure.PUMP,
+                    properties
+            )
+    );
+
+    public static final DeferredItem<BlockItem> STEAM_GENERATOR = ITEMS.registerItem(
+            "steam_generator", properties -> new IndusStructureItem(
+                    IndusBlocks.STEAM_GENERATOR.get(),
+                    IndusStructure.STEAM_GENERATOR,
+                    properties
+            )
+    );
+
     public static final DeferredItem<Item> PROSPECTOR = ITEMS.registerItem(
             "prospector",
             properties -> new ProspectorItem(properties.stacksTo(1))
@@ -56,6 +73,7 @@ public class IndusItems {
             ConcreteSlabItem::new
     );
 
+    // Construction Parts
     public static final DeferredItem<Item> CONSTRUCTION_PART_1 = ITEMS.registerItem(
             "construction_part_1",
             properties -> new ConstructionPartItem(ConstructionPartTier.BASIC, properties)
@@ -73,6 +91,7 @@ public class IndusItems {
             properties -> new ConstructionPartItem(ConstructionPartTier.ULTIMATE, properties)
     );
 
+    // Plates
     public static final DeferredItem<Item> IRON_PLATE = ITEMS.registerItem(
             "iron_plate",
             IronPlateItem::new
@@ -80,6 +99,16 @@ public class IndusItems {
     public static final DeferredItem<Item> COPPER_PLATE = ITEMS.registerItem(
             "copper_plate",
             CopperPlateItem::new
+    );
+
+    // Cells
+    public static final DeferredItem<Item> WATER_CELL = ITEMS.registerItem(
+            "water_cell",
+            WaterCellItem::new
+    );
+    public static final DeferredItem<Item> CRUDE_OIL_CELL = ITEMS.registerItem(
+            "crude_oil_cell",
+            CrudeOilCellItem::new
     );
 
     public static void init(IEventBus eventBus) {

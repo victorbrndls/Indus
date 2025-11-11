@@ -47,6 +47,8 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.QUARRY.get()));
                         output.accept(new ItemStack(IndusItems.BLAST_FURNACE.get()));
                         output.accept(new ItemStack(IndusItems.MIXER.get()));
+                        output.accept(new ItemStack(IndusItems.PUMP.get()));
+                        output.accept(new ItemStack(IndusItems.STEAM_GENERATOR.get()));
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
                         output.accept(new ItemStack(IndusItems.CONCRETE_SLAB.get()));
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_1.get()));
@@ -55,6 +57,8 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_4.get()));
                         output.accept(new ItemStack(IndusItems.IRON_PLATE.get()));
                         output.accept(new ItemStack(IndusItems.COPPER_PLATE.get()));
+                        output.accept(new ItemStack(IndusItems.WATER_CELL.get()));
+                        output.accept(new ItemStack(IndusItems.CRUDE_OIL_CELL.get()));
                     }).build());
 
     public Indus(IEventBus eventBus, ModContainer modContainer) {

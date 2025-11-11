@@ -27,6 +27,8 @@ public class IndusStructureHelper {
             case QUARRY -> "quarry";
             case BLAST_FURNACE -> "blast_furnace";
             case MIXER -> "mixer";
+            case PUMP -> "pump";
+            case STEAM_GENERATOR -> "steam_generator";
         };
     }
 
@@ -93,6 +95,8 @@ public class IndusStructureHelper {
             case QUARRY -> new QuarryStructureOrientation(direction);
             case BLAST_FURNACE -> new BlastFurnaceStructureOrientation(direction);
             case MIXER -> new MixerStructureOrientation(direction);
+            case PUMP -> new PumpStructureOrientation(direction);
+            case STEAM_GENERATOR -> new SteamGeneratorStructureOrientation(direction);
         };
     }
 

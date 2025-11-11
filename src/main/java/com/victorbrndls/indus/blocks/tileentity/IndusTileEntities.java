@@ -33,6 +33,16 @@ public class IndusTileEntities {
                     new BlockEntityType<>(MixerBlockEntity::new, IndusBlocks.MIXER.get())
             );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PumpBlockEntity>> PUMP =
+            BLOCK_ENTITY_REGISTER.register("pump", () ->
+                    new BlockEntityType<>(PumpBlockEntity::new, IndusBlocks.PUMP.get())
+            );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamGeneratorBlockEntity>> STEAM_GENERATOR =
+            BLOCK_ENTITY_REGISTER.register("steam_generator", () ->
+                    new BlockEntityType<>(SteamGeneratorBlockEntity::new, IndusBlocks.STEAM_GENERATOR.get())
+            );
+
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITY_REGISTER.register(eventBus);
     }

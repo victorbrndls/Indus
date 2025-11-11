@@ -38,6 +38,20 @@ public class IndusStructureRequirements {
                     new ItemStack(Items.HOPPER, 4),
                     new ItemStack(Items.OBSIDIAN, 4)
             );
+            case PUMP -> List.of(
+                    new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 8),
+                    new ItemStack(Items.CAULDRON, 8),
+                    new ItemStack(Items.HOPPER, 4),
+                    new ItemStack(Items.PISTON, 4)
+            );
+            case STEAM_GENERATOR -> List.of(
+                    new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 8),
+                    new ItemStack(Items.COPPER_BLOCK, 16),
+                    new ItemStack(Items.HOPPER, 4),
+                    new ItemStack(Items.PISTON, 4)
+            );
         };
     }
 

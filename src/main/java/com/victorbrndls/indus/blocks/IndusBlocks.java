@@ -31,6 +31,16 @@ public class IndusBlocks {
             MixerBlock::new
     );
 
+    public static final DeferredHolder<Block, PumpBlock> PUMP = BLOCKS.registerBlock(
+            "pump",
+            PumpBlock::new
+    );
+
+    public static final DeferredHolder<Block, SteamGeneratorBlock> STEAM_GENERATOR = BLOCKS.registerBlock(
+            "steam_generator",
+            SteamGeneratorBlock::new
+    );
+
     public static void init(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

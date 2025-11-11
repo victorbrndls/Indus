@@ -7,7 +7,9 @@ public enum IndusStructure {
     TREE_FARM,
     QUARRY,
     BLAST_FURNACE,
-    MIXER;
+    MIXER,
+    PUMP,
+    STEAM_GENERATOR;
 
     public static final StreamCodec<FriendlyByteBuf, IndusStructure> CODEC =
             StreamCodec.of(
