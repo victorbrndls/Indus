@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "front": "indus:block/steam_generator_front",
+    "side": "indus:block/steam_generator_side",
+    "particle": "indus:block/steam_generator_side"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#side"
+        },
+        "down": {
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

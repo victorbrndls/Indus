@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "indus:block/pump",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "indus:block/pump",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "indus:block/pump",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "indus:block/pump",
+      "y": 270
+    }
+  }
+}
