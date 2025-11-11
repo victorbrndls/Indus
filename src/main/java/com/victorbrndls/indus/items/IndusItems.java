@@ -73,6 +73,15 @@ public class IndusItems {
             properties -> new ConstructionPartItem(ConstructionPartTier.ULTIMATE, properties)
     );
 
+    public static final DeferredItem<Item> IRON_PLATE = ITEMS.registerItem(
+            "iron_plate",
+            IronPlateItem::new
+    );
+    public static final DeferredItem<Item> COPPER_PLATE = ITEMS.registerItem(
+            "copper_plate",
+            CopperPlateItem::new
+    );
+
     public static void init(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
