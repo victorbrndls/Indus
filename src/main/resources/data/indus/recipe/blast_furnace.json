@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    " W ",
+    "   "
+  ],
+  "key": {
+    "G": "minecraft:iron_block",
+    "W": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "indus:blast_furnace",
+    "count": 1
+  }
+}

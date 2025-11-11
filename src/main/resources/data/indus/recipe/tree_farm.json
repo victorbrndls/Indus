@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    " W ",
+    "   "
+  ],
+  "key": {
+    "G": "minecraft:iron_block",
+    "W": "minecraft:iron_axe"
+  },
+  "result": {
+    "id": "indus:tree_farm",
+    "count": 1
+  }
+}

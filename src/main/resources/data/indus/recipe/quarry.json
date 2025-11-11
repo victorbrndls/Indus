@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    " W ",
+    "   "
+  ],
+  "key": {
+    "G": "minecraft:iron_block",
+    "W": "minecraft:iron_pickaxe"
+  },
+  "result": {
+    "id": "indus:quarry",
+    "count": 1
+  }
+}

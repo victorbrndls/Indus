@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    " W ",
+    "   "
+  ],
+  "key": {
+    "G": "minecraft:iron_block",
+    "W": "minecraft:cauldron"
+  },
+  "result": {
+    "id": "indus:mixer",
+    "count": 1
+  }
+}

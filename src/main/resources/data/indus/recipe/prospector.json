@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " W ",
+    "WWW",
+    " W "
+  ],
+  "key": {
+    "W": "minecraft:iron_pickaxe"
+  },
+  "result": {
+    "id": "indus:prospector",
+    "count": 1
+  }
+}

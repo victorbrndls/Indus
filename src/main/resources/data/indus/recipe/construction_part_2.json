@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "WWW",
+    "SSS"
+  ],
+  "key": {
+    "S": "indus:iron_plate",
+    "W": "indus:construction_part_1"
+  },
+  "result": {
+    "id": "indus:construction_part_2",
+    "count": 1
+  }
+}
