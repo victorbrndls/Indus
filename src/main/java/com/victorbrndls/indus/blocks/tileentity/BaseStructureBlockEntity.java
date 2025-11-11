@@ -137,7 +137,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     protected ResourceHandler<ItemResource> getRelativeItemHandler(Level level, BlockPos relativePos) {
-        BlockPos targetPos = getBlockPos().offset(relativePos);
+        var targetPos = BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), relativePos);
         return BlockHelper.getItemHandlerAt(level, targetPos);
     }
 
