@@ -43,6 +43,11 @@ public class IndusTileEntities {
                     new BlockEntityType<>(SteamGeneratorBlockEntity::new, IndusBlocks.STEAM_GENERATOR.get())
             );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Container1BlockEntity>> CONTAINER_1 =
+            BLOCK_ENTITY_REGISTER.register("container_1", () ->
+                    new BlockEntityType<>(Container1BlockEntity::new, IndusBlocks.CONTAINER_1.get())
+            );
+
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITY_REGISTER.register(eventBus);
     }
