@@ -67,6 +67,10 @@ public class IndusItems {
             "prospector",
             properties -> new ProspectorItem(properties.stacksTo(1))
     );
+    public static final DeferredItem<Item> WRENCH = ITEMS.registerItem(
+            "wrench",
+            properties -> new WrenchItem(properties.stacksTo(1))
+    );
 
     public static final DeferredItem<Item> CONCRETE_SLAB = ITEMS.registerItem(
             "concrete_slab",

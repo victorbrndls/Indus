@@ -156,6 +156,15 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
         return BlockHelper.getItemHandlerAt(level, targetPos);
     }
 
+    public long getNetworkId() {
+        return networkId;
+    }
+
+    public void setNetworkId(long networkId) {
+        this.networkId = networkId;
+
+    }
+
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);

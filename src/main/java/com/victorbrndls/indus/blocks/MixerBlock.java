@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks;
 import com.mojang.serialization.MapCodec;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.blocks.tileentity.MixerBlockEntity;
+import com.victorbrndls.indus.items.IndusItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -29,6 +30,8 @@ public class MixerBlock extends BaseStructureBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (player.getMainHandItem().is(IndusItems.WRENCH.get())) return InteractionResult.PASS;
+
         if (player instanceof ServerPlayer serverPlayer) {
             level.getBlockEntity(pos, IndusTileEntities.MIXER.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
