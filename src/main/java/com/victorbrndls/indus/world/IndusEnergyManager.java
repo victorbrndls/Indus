@@ -2,6 +2,7 @@ package com.victorbrndls.indus.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.victorbrndls.indus.Indus;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -72,5 +73,16 @@ public class IndusEnergyManager extends SavedData {
         return consumed;
     }
 
+    public void addCapacity(long id, int v) {
+        getNetwork(id).addCapacity(v);
+        Indus.LOGGER.debug("Added capacity to network {}: {}", id, v);
+        setDirty();
+    }
+
+    public void removeCapacity(long id, int v) {
+        getNetwork(id).removeCapacity(v);
+        Indus.LOGGER.debug("Removed capacity from network {}: {}", id, v);
+        setDirty();
+    }
 
 }

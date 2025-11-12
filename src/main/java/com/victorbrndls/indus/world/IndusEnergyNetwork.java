@@ -51,6 +51,10 @@ public final class IndusEnergyNetwork {
 
     public void removeCapacity(int v) {
         capacity -= v;
+        if (capacity < 0) {
+            capacity = 0;
+        }
+
         if (energy > capacity) {
             energy = capacity;
         }

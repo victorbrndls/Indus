@@ -1,9 +1,9 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
 import com.mojang.serialization.Codec;
-import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import com.victorbrndls.indus.world.IndusEnergyManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos FUEL_POS = new BlockPos(9, 0, -2);
     private final static BlockPos WATER_POS = new BlockPos(9, 0, -4);
 
-    private final static int ENERGY_PRODUCTION = 5;
+    private final static int ENERGY_RATE = 5;
 
     private long networkId = -1;
 
@@ -41,17 +41,14 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
         if (tickCounter < 20) return;
         tickCounter = 0;
 
+        if (networkId == -1) return;
+
         ResourceHandler<ItemResource> fuelHandler = getRelativeItemHandler(level, FUEL_POS);
         ResourceHandler<ItemResource> waterHandler = getRelativeItemHandler(level, WATER_POS);
 
         if (fuelHandler == null || waterHandler == null) return;
 
-        var energyManager = IndusEnergyManager.get(((ServerLevel) level));
-        if (networkId == -1) {
-            networkId = energyManager.getNetworkId();
-        }
-
-        Indus.LOGGER.debug(energyManager.getNetwork(networkId).getEnergy());
+        var energyManager = IndusEnergyManager.get((ServerLevel) level);
 
         try (var tx = Transaction.open(null)) {
             int fuelUsed = fuelHandler.extract(ItemResource.of(Items.COAL), 1, tx);
@@ -60,12 +57,34 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
             int waterUsed = waterHandler.extract(ItemResource.of(IndusItems.WATER_CELL.get()), 1, tx);
             if (waterUsed < 1) return;
 
-            var added = energyManager.addEnergy(networkId, ENERGY_PRODUCTION);
+            var added = energyManager.addEnergy(networkId, ENERGY_RATE);
 
             if (added) {
                 tx.commit();
             }
         }
+    }
+
+    @Override
+    protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
+        var energyManager = IndusEnergyManager.get((ServerLevel) level);
+
+        if (networkId == -1) {
+            networkId = energyManager.getNetworkId();
+        }
+
+        energyManager.addCapacity(networkId, ENERGY_RATE);
+    }
+
+    @Override
+    public void setRemoved() {
+        if (level instanceof ServerLevel sl && networkId != -1) {
+            if (state == IndusStructureState.BUILT) {
+                IndusEnergyManager.get(sl).removeCapacity(networkId, ENERGY_RATE);
+            }
+        }
+
+        super.setRemoved();
     }
 
     @Override

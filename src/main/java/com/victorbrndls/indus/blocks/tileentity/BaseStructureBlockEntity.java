@@ -36,7 +36,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
     protected int tickCounter = 0;
 
-    private IndusStructureState state = IndusStructureState.NOT_READY;
+    protected IndusStructureState state = IndusStructureState.NOT_READY;
 
     // Structure info used during construction
     private IndusStructureInfo structureInfo;
@@ -96,8 +96,12 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
         );
 
         if (lastBuiltIndex == Integer.MAX_VALUE) {
+            onAfterBuilt(level, pos, state);
             setState(IndusStructureState.BUILT);
         }
+    }
+
+    protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
     }
 
     protected abstract void tickBuilt(Level level, BlockPos pos, BlockState state);
