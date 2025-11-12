@@ -5,17 +5,24 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public final class IndusEnergyNetwork {
 
-    public static final Codec<IndusEnergyNetwork> NET_CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final Codec<IndusEnergyNetwork> CODEC = RecordCodecBuilder.create(i -> i.group(
+            Codec.LONG.fieldOf("id").forGetter(IndusEnergyNetwork::getId),
             Codec.INT.fieldOf("energy").forGetter(IndusEnergyNetwork::getEnergy),
             Codec.INT.fieldOf("capacity").forGetter(IndusEnergyNetwork::getCapacity)
     ).apply(i, IndusEnergyNetwork::new));
 
+    private long id;
     private int energy;
     private int capacity;
 
-    public IndusEnergyNetwork(int energy, int capacity) {
+    public IndusEnergyNetwork(long id, int energy, int capacity) {
+        this.id = id;
         this.energy = energy;
         this.capacity = capacity;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public int getEnergy() {
@@ -26,13 +33,10 @@ public final class IndusEnergyNetwork {
         return capacity;
     }
 
-    /**
-     * @return the amount of energy actually added
-     */
-    public int addEnergy(int v) {
-        int accepted = Math.min(v, capacity - energy);
-        energy += accepted;
-        return accepted;
+    public boolean addEnergy(int v) {
+        if (energy + v > capacity) return false;
+        energy += v;
+        return true;
     }
 
     public boolean consumeEnergy(int v) {

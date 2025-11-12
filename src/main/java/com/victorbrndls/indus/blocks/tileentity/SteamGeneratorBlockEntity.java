@@ -1,12 +1,18 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
+import com.mojang.serialization.Codec;
+import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.world.IndusEnergyManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -15,6 +21,10 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
     private final static BlockPos FUEL_POS = new BlockPos(9, 0, -2);
     private final static BlockPos WATER_POS = new BlockPos(9, 0, -4);
+
+    private final static int ENERGY_PRODUCTION = 5;
+
+    private long networkId = -1;
 
     public SteamGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.STEAM_GENERATOR.get(), pos, state);
@@ -36,6 +46,13 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
         if (fuelHandler == null || waterHandler == null) return;
 
+        var energyManager = IndusEnergyManager.get(((ServerLevel) level));
+        if (networkId == -1) {
+            networkId = energyManager.getNetworkId();
+        }
+
+        Indus.LOGGER.debug(energyManager.getNetwork(networkId).getEnergy());
+
         try (var tx = Transaction.open(null)) {
             int fuelUsed = fuelHandler.extract(ItemResource.of(Items.COAL), 1, tx);
             if (fuelUsed < 1) return;
@@ -43,8 +60,24 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
             int waterUsed = waterHandler.extract(ItemResource.of(IndusItems.WATER_CELL.get()), 1, tx);
             if (waterUsed < 1) return;
 
-            tx.commit();
+            var added = energyManager.addEnergy(networkId, ENERGY_PRODUCTION);
+
+            if (added) {
+                tx.commit();
+            }
         }
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.store("networkId", Codec.LONG, networkId);
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        networkId = input.getLongOr("networkId", -1L);
     }
 
     @Override

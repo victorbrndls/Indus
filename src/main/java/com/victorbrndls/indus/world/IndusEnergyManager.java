@@ -3,21 +3,24 @@ package com.victorbrndls.indus.world;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
+
+import java.util.ArrayList;
 
 public class IndusEnergyManager extends SavedData {
 
     public static final Codec<IndusEnergyManager> CODEC = RecordCodecBuilder.create(
             i -> i.group(
-                            Codec.LONG.fieldOf("nextId").forGetter(d -> d.nextId),
-                            Codec.unboundedMap(Codec.LONG, IndusEnergyNetwork.NET_CODEC)
-                                    .xmap(Long2ObjectOpenHashMap::new, Object2ObjectOpenHashMap::new)
-                                    .fieldOf("networks").forGetter(d -> d.networks)
-                    )
-                    .apply(i, IndusEnergyManager::new)
+                    Codec.LONG.fieldOf("nextId").forGetter(d -> d.nextId),
+                    Codec.list(IndusEnergyNetwork.CODEC).fieldOf("networks")
+                            .forGetter(m -> new ArrayList<>(m.networks.values()))
+            ).apply(i, (nextId, list) -> {
+                var map = new Long2ObjectOpenHashMap<IndusEnergyNetwork>(list.size());
+                for (var network : list) map.put(network.getId(), network);
+                return new IndusEnergyManager(nextId, map);
+            })
     );
 
     public static final SavedDataType<IndusEnergyManager> ID = new SavedDataType<>(
@@ -46,16 +49,18 @@ public class IndusEnergyManager extends SavedData {
     public IndusEnergyNetwork getNetwork(long id) {
         var network = networks.get(id);
         if (network == null) {
-            network = new IndusEnergyNetwork(0, 0);
+            network = new IndusEnergyNetwork(id, 0, 0);
             networks.put(id, network);
         }
 
         return network;
     }
 
-    public int addEnergy(long id, int v) {
+    public boolean addEnergy(long id, int v) {
         var added = getNetwork(id).addEnergy(v);
-        setDirty();
+        if (added) {
+            setDirty();
+        }
         return added;
     }
 
