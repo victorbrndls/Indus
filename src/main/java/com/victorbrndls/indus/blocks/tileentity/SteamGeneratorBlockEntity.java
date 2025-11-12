@@ -22,9 +22,10 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos FUEL_POS = new BlockPos(9, 0, -2);
     private final static BlockPos WATER_POS = new BlockPos(9, 0, -4);
 
-    private final static int ENERGY_RATE = 5;
+    private final static int ENERGY_RATE = 20;
 
     private long networkId = -1;
+    private int remainingEnergy = 0;
 
     public SteamGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.STEAM_GENERATOR.get(), pos, state);
@@ -37,18 +38,19 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        tickCounter++;
-        if (tickCounter < 20) return;
-        tickCounter = 0;
+        if (networkId < 0) return;
+        var energyManager = IndusEnergyManager.get((ServerLevel) level);
 
-        if (networkId == -1) return;
+        if (remainingEnergy > 0) {
+            remainingEnergy -= energyManager.addEnergy(networkId, remainingEnergy);
+            if (remainingEnergy > 0) return;
+        }
+
+        if ((level.getGameTime() % 20) != 0) return;
 
         ResourceHandler<ItemResource> fuelHandler = getRelativeItemHandler(level, FUEL_POS);
         ResourceHandler<ItemResource> waterHandler = getRelativeItemHandler(level, WATER_POS);
-
         if (fuelHandler == null || waterHandler == null) return;
-
-        var energyManager = IndusEnergyManager.get((ServerLevel) level);
 
         try (var tx = Transaction.open(null)) {
             int fuelUsed = fuelHandler.extract(ItemResource.of(Items.COAL), 1, tx);
@@ -57,11 +59,11 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
             int waterUsed = waterHandler.extract(ItemResource.of(IndusItems.WATER_CELL.get()), 1, tx);
             if (waterUsed < 1) return;
 
-            var added = energyManager.addEnergy(networkId, ENERGY_RATE);
+            int addedEnergy = energyManager.addEnergy(networkId, ENERGY_RATE);
+            if (addedEnergy <= 0) return;
 
-            if (added) {
-                tx.commit();
-            }
+            remainingEnergy = ENERGY_RATE - addedEnergy;
+            tx.commit();
         }
     }
 

@@ -33,10 +33,10 @@ public final class IndusEnergyNetwork {
         return capacity;
     }
 
-    public boolean addEnergy(int v) {
-        if (energy + v > capacity) return false;
-        energy += v;
-        return true;
+    public int addEnergy(int v) {
+        int accepted = Math.min(v, capacity - energy);
+        energy += accepted;
+        return accepted;
     }
 
     public boolean consumeEnergy(int v) {

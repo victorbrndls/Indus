@@ -57,9 +57,9 @@ public class IndusEnergyManager extends SavedData {
         return network;
     }
 
-    public boolean addEnergy(long id, int v) {
+    public int addEnergy(long id, int v) {
         var added = getNetwork(id).addEnergy(v);
-        if (added) {
+        if (added > 0) {
             setDirty();
         }
         return added;
