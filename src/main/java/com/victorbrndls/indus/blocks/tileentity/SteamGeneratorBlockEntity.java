@@ -31,6 +31,17 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     }
 
     @Override
+    public void onLoad() {
+        super.onLoad();
+
+        if (level instanceof ServerLevel sl && networkId > 0) {
+            if (state == IndusStructureState.BUILT) {
+                IndusEnergyManager.get(sl).addCapacity(networkId, ENERGY_RATE);
+            }
+        }
+    }
+
+    @Override
     public IndusStructure getStructureType() {
         return IndusStructure.STEAM_GENERATOR;
     }

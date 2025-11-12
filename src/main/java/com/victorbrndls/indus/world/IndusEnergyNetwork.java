@@ -7,18 +7,17 @@ public final class IndusEnergyNetwork {
 
     public static final Codec<IndusEnergyNetwork> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.LONG.fieldOf("id").forGetter(IndusEnergyNetwork::getId),
-            Codec.INT.fieldOf("energy").forGetter(IndusEnergyNetwork::getEnergy),
-            Codec.INT.fieldOf("capacity").forGetter(IndusEnergyNetwork::getCapacity)
+            Codec.INT.fieldOf("energy").forGetter(IndusEnergyNetwork::getEnergy)
     ).apply(i, IndusEnergyNetwork::new));
 
     private long id;
     private int energy;
     private int capacity;
 
-    public IndusEnergyNetwork(long id, int energy, int capacity) {
+    public IndusEnergyNetwork(long id, int energy) {
         this.id = id;
         this.energy = energy;
-        this.capacity = capacity;
+        this.capacity = 0;
     }
 
     public long getId() {

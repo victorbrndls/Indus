@@ -1,8 +1,8 @@
 package com.victorbrndls.indus.client.screen;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import com.victorbrndls.indus.gui.BaseStructureMenu;
+import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -85,12 +85,21 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
                         false);
             }
             case BUILT -> {
-                String text = "Working...";
-                var textWidth = font.width(text);
+                String state = "Working...";
+                var stateWidth = font.width(state);
                 g.drawString(font,
-                        text,
-                        left + (imageWidth - textWidth) / 2,
+                        state,
+                        left + (imageWidth - stateWidth) / 2,
                         top + (imageHeight - 94) / 2,
+                        0xFF292929,
+                        false);
+
+                var idText = Component.literal("ID: " + menu.entity.getNetworkId());
+                var idTextWidth = font.width(idText);
+                g.drawString(font,
+                        idText,
+                        left + (imageWidth - idTextWidth) - 6,
+                        top + 6,
                         0xFF292929,
                         false);
             }

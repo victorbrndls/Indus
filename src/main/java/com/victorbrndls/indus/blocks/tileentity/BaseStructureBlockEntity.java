@@ -54,21 +54,6 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
     public abstract IndusStructure getStructureType();
 
-    public IndusStructureState getState() {
-        return state;
-    }
-
-    public void setState(IndusStructureState state) {
-        Indus.LOGGER.debug("Changing state to {}", state);
-
-        if (this.state == state) return;
-        this.state = state;
-        setChanged();
-        if (level != null && !level.isClientSide()) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-        }
-    }
-
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) return;
 
@@ -156,13 +141,35 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
         return BlockHelper.getItemHandlerAt(level, targetPos);
     }
 
+    public IndusStructureState getState() {
+        return state;
+    }
+
+    public void setState(IndusStructureState state) {
+        Indus.LOGGER.debug("Changing state to {}", state);
+
+        if (this.state == state) return;
+        this.state = state;
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        }
+    }
+
     public long getNetworkId() {
         return networkId;
     }
 
     public void setNetworkId(long networkId) {
+        Indus.LOGGER.debug("Changing network ID to {}", networkId);
+
+        if (this.networkId == networkId) return;
         this.networkId = networkId;
 
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        }
     }
 
     @Override

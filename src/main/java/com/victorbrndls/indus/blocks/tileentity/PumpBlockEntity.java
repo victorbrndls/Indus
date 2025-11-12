@@ -40,7 +40,7 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
 
         try (Transaction tx = Transaction.open(null)) {
             long inserted = handler.insert(ItemResource.of(IndusItems.WATER_CELL.get()), RATE, tx);
-            if (inserted == 1) {
+            if (inserted == RATE) {
                 var consumed = energyManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
                 if (consumed) {
                     tx.commit();

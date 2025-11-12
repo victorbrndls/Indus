@@ -50,7 +50,7 @@ public class IndusEnergyManager extends SavedData {
     public IndusEnergyNetwork getNetwork(long id) {
         var network = networks.get(id);
         if (network == null) {
-            network = new IndusEnergyNetwork(id, 0, 0);
+            network = new IndusEnergyNetwork(id, 0);
             networks.put(id, network);
         }
 
