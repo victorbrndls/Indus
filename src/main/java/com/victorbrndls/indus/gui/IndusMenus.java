@@ -2,6 +2,7 @@ package com.victorbrndls.indus.gui;
 
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.tileentity.BaseStructureBlockEntity;
+import com.victorbrndls.indus.blocks.tileentity.Container1BlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -20,6 +21,16 @@ public class IndusMenus {
                 var blockEntity = inventory.player.level().getBlockEntity(pos);
                 if (blockEntity instanceof BaseStructureBlockEntity entity) {
                     return new BaseStructureMenu(id, inventory, entity);
+                }
+                return null;
+            }, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<Container1Menu>> CONTAINER_1 = MENUS.register("container_1",
+            () -> new MenuType<>((IContainerFactory<Container1Menu>) (id, inventory, buf) -> {
+                var pos = buf.readBlockPos();
+                var blockEntity = inventory.player.level().getBlockEntity(pos);
+                if (blockEntity instanceof Container1BlockEntity entity) {
+                    return new Container1Menu(id, inventory, entity);
                 }
                 return null;
             }, FeatureFlags.DEFAULT_FLAGS));

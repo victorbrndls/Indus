@@ -4,6 +4,7 @@ import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.client.IndusStructureCache;
 import com.victorbrndls.indus.client.screen.BaseStructureScreen;
+import com.victorbrndls.indus.client.screen.Container1Screen;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
@@ -93,5 +94,6 @@ public class Indus {
 
     private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(IndusMenus.BASE_STRUCTURE.get(), BaseStructureScreen::new);
+        event.register(IndusMenus.CONTAINER_1.get(), Container1Screen::new);
     }
 }
