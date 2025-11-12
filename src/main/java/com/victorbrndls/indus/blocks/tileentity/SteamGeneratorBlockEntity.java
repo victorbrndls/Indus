@@ -24,7 +24,6 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
     private final static int ENERGY_RATE = 20;
 
-    private long networkId = -1;
     private int remainingEnergy = 0;
 
     public SteamGeneratorBlockEntity(BlockPos pos, BlockState state) {
@@ -69,18 +68,15 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
+        super.onAfterBuilt(level, pos, state);
+
         var energyManager = IndusEnergyManager.get((ServerLevel) level);
-
-        if (networkId == -1) {
-            networkId = energyManager.getNetworkId();
-        }
-
         energyManager.addCapacity(networkId, ENERGY_RATE);
     }
 
     @Override
     public void setRemoved() {
-        if (level instanceof ServerLevel sl && networkId != -1) {
+        if (level instanceof ServerLevel sl && networkId > 0) {
             if (state == IndusStructureState.BUILT) {
                 IndusEnergyManager.get(sl).removeCapacity(networkId, ENERGY_RATE);
             }
@@ -92,13 +88,13 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        output.store("networkId", Codec.LONG, networkId);
+        output.store("remainingEnergy", Codec.INT, remainingEnergy);
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        networkId = input.getLongOr("networkId", -1L);
+        input.getInt("remainingEnergy").ifPresent(i -> remainingEnergy = i);
     }
 
     @Override

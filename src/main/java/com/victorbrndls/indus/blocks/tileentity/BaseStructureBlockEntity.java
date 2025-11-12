@@ -5,12 +5,14 @@ import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.gui.BaseStructureMenu;
 import com.victorbrndls.indus.mod.structure.*;
 import com.victorbrndls.indus.shared.BlockHelper;
+import com.victorbrndls.indus.world.IndusEnergyManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -42,6 +44,9 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     // Structure info used during construction
     private IndusStructureInfo structureInfo;
     private int lastBuiltIndex = 0;
+
+    // Only after built state
+    protected long networkId = -1;
 
     public BaseStructureBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -103,6 +108,11 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
+        var energyManager = IndusEnergyManager.get((ServerLevel) level);
+
+        if (networkId <= 0) {
+            networkId = energyManager.getNetworkId();
+        }
     }
 
     protected abstract void tickBuilt(Level level, BlockPos pos, BlockState state);
@@ -153,6 +163,8 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
         if (state == IndusStructureState.IN_CONSTRUCTION) {
             output.store("lastBuiltIndex", Codec.INT, lastBuiltIndex);
+        } else if (state == IndusStructureState.BUILT) {
+            output.store("networkId", Codec.LONG, networkId);
         }
     }
 
@@ -160,10 +172,12 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         input.read("state", Codec.INT)
-                .ifPresent(i -> this.state = IndusStructureState.values()[i]);
+                .ifPresent(i -> state = IndusStructureState.values()[i]);
 
         if (state == IndusStructureState.IN_CONSTRUCTION) {
-            input.read("lastBuiltIndex", Codec.INT).ifPresent(i -> this.lastBuiltIndex = i);
+            input.read("lastBuiltIndex", Codec.INT).ifPresent(i -> lastBuiltIndex = i);
+        } else if (state == IndusStructureState.BUILT) {
+            input.read("networkId", Codec.LONG).ifPresent(l -> networkId = l);
         }
     }
 
