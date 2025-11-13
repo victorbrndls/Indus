@@ -2,7 +2,6 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
-import com.victorbrndls.indus.shared.BlockHelper;
 import com.victorbrndls.indus.shared.OreLocator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -16,6 +15,8 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 public class QuarryBlockEntity extends BaseStructureBlockEntity {
+
+    private static final BlockPos OUTPUT_POS = new BlockPos(7, 1, 0);
 
     @Nullable
     private Item prospectedOre = null;
@@ -56,21 +57,16 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        tickCounter++;
+        if ((level.getGameTime() % 80) != 0) return;
 
-        if (tickCounter >= 100) {
-            tickCounter = 0;
+        ResourceHandler<ItemResource> handler = getRelativeItemHandler(level, OUTPUT_POS);
+        if (handler == null) return;
 
-            BlockPos target = BlockHelper.offsetFrontFacing(pos, state, 7, 0, 1);
-            ResourceHandler<ItemResource> handler = BlockHelper.getItemHandlerAt(level, target);
-            if (handler == null) return;
-
-            try (Transaction tx = Transaction.open(null)) {
-                var resource = getResource();
-                if (resource != null) {
-                    long inserted = handler.insert(ItemResource.of(resource), 1, tx);
-                    if (inserted == 1) tx.commit();
-                }
+        try (Transaction tx = Transaction.open(null)) {
+            var resource = getResource();
+            if (resource != null) {
+                long inserted = handler.insert(ItemResource.of(resource), 1, tx);
+                if (inserted == 1) tx.commit();
             }
         }
     }
