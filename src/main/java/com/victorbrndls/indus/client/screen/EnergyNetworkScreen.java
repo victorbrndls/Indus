@@ -23,7 +23,6 @@ public class EnergyNetworkScreen extends Screen {
         this.networkId = networkId;
 
         addSample(0, 0);
-        addSample(0, 0);
     }
 
     public void addSample(int energy, int capacity) {
@@ -59,9 +58,9 @@ public class EnergyNetworkScreen extends Screen {
         super.render(gfx, mouseX, mouseY, partialTick);
 
         int graphX = 10;
-        int graphY = 30;
+        int graphY = 35;
         int graphW = this.width - 20;
-        int graphH = this.height - 40;
+        int graphH = this.height - 45;
 
         renderGraph(gfx, graphX, graphY, graphW, graphH);
 
@@ -74,10 +73,6 @@ public class EnergyNetworkScreen extends Screen {
     private void renderGraph(GuiGraphics gfx, int x, int y, int w, int h) {
         if (energyHistory.size() < 2) return;
 
-        // Background + border
-        gfx.fill(x, y, x + w, y + h, 0xAA000000);          // semi-transparent black
-        gfx.submitOutline(x, y, w, h, 0xFFFFFFFF);                     // white border
-
         int n = energyHistory.size();
 
         int maxEnergy = 0;
@@ -87,14 +82,38 @@ public class EnergyNetworkScreen extends Screen {
 
         maxEnergy += 5; // padding
 
-        int graphInnerW = w - 2; // leave 1px padding from border
-        int graphInnerH = h - 2;
+        int labelWidth = 40;
+        int graphX = x + labelWidth;
+        int graphY = y;
+        int graphW = w - labelWidth;
+        int graphH = h;
 
-        int xBase = x + 1;
-        int yBase = y + 1;
+        int graphInnerW = graphW - 2; // leave 1px padding inside border
+        int graphInnerH = graphH - 2;
+        int xBase = graphX + 1;
+        int yBase = graphY + 1;
 
         int energyColor = 0xFF00FF00;    // ARGB: opaque green
         int capacityColor = 0xFFFFAA00;  // ARGB: opaque orange
+
+        // Background + border
+        gfx.fill(graphX, graphY, graphX + graphW, graphY + graphH, 0xAA000000);
+        gfx.submitOutline(graphX, graphY, graphW, graphH, 0xFFFFFFFF);
+
+        int tickCount = 4; // 0%, 33%, 66%, 100%
+        for (int i = 0; i < tickCount; i++) {
+            float t = i / (float) (tickCount - 1);       // 0 = top, 1 = bottom
+            int yTick = yBase + (int) (t * (graphInnerH - 1));
+
+            int value = Math.round(maxEnergy * (1.0f - t));
+            String text = Integer.toString(value);
+
+            // Small tick mark
+            gfx.fill(graphX - 3, yTick, graphX, yTick + 1, 0xFFFFFFFF);
+
+            // Label text
+            gfx.drawString(this.font, text, x + 2, yTick - 4, 0xFFFFFFFF, false);
+        }
 
         for (int i = 1; i < n; i++) {
             float t0 = (i - 1) / (float) (n - 1);
