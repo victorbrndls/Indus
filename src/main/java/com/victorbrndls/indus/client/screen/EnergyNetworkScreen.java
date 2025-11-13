@@ -1,19 +1,19 @@
 package com.victorbrndls.indus.client.screen;
 
+import com.victorbrndls.indus.network.RequestEnergyNetworkSampleMessage;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-
-import java.util.Random;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class EnergyNetworkScreen extends Screen {
 
     private static final int SAMPLE_INTERVAL_TICKS = 20;
 
     private final long networkId;
-    private int tickCounter = 0;
+    private int tickCounter = 20; // so it requests a sample immediately on open
 
     private final IntList energyHistory = new IntArrayList();
     private final IntList capacityHistory = new IntArrayList();
@@ -21,13 +21,14 @@ public class EnergyNetworkScreen extends Screen {
     public EnergyNetworkScreen(long networkId) {
         super(Component.literal("Energy Network " + networkId));
         this.networkId = networkId;
-
-        addSample(0, 0);
     }
 
     public void addSample(int energy, int capacity) {
         energyHistory.add(energy);
         capacityHistory.add(capacity);
+
+        if (energyHistory.size() == 1) energyHistory.add(energy);
+        if (capacityHistory.size() == 1) capacityHistory.add(capacity);
 
         int maxSamples = 40;
         if (energyHistory.size() > maxSamples) {
@@ -43,8 +44,7 @@ public class EnergyNetworkScreen extends Screen {
         tickCounter++;
         if (tickCounter >= SAMPLE_INTERVAL_TICKS) {
             tickCounter = 0;
-//            ClientPacketDistributor.sendToServer(new RequestEnergySamplePayload(networkId));
-            addSample((new Random()).nextInt(0, 20), 20);
+            ClientPacketDistributor.sendToServer(new RequestEnergyNetworkSampleMessage(networkId));
         }
     }
 
