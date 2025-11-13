@@ -59,7 +59,7 @@ public abstract class BaseStructureBlock extends BaseEntityBlock {
         if (player.getMainHandItem().is(Items.BEDROCK)) {
             if (!level.isClientSide()) {
                 if (level.getBlockEntity(pos) instanceof BaseStructureBlockEntity be) {
-                    be.startBuilding();
+                    be.startBuilding(true);
                     return InteractionResult.SUCCESS;
                 }
             }

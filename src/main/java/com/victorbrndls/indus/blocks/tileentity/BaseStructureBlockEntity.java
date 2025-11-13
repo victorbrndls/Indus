@@ -44,6 +44,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     // Structure info used during construction
     private IndusStructureInfo structureInfo;
     private int lastBuiltIndex = 0;
+    private boolean instaBuild = false; // only used in debug
 
     // Only after built state
     protected long networkId = -1;
@@ -69,10 +70,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     private void tickInConstruction(Level level, BlockPos pos, BlockState state) {
-        tickCounter++;
-
-        if (tickCounter < 5) return;
-        tickCounter = 0;
+        if ((level.getGameTime() % 5) != 0 && !instaBuild) return;
 
         if (structureInfo == null) {
             structureInfo = IndusStructureHelper.getOrLoadStructureInfo(level.getServer(), getStructureType());
@@ -102,31 +100,34 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
     protected abstract void tickBuilt(Level level, BlockPos pos, BlockState state);
 
-    public void startBuilding() {
+    public void startBuilding(boolean instaBuild) {
         Indus.LOGGER.debug("Starting construction at {}", getBlockPos());
+        this.instaBuild = instaBuild;
 
         BlockPos inputPos = inputPos();
         BlockEntity be = getLevel().getBlockEntity(inputPos);
 
-        var requirements = IndusStructureRequirements.getRequirements(getStructureType());
+        if (!instaBuild) {
+            var requirements = IndusStructureRequirements.getRequirements(getStructureType());
 
-        // Vanilla-compatible path
-        if (be instanceof Container c) {
-            for (ItemStack req : requirements) {
-                int remaining = req.getCount();
-                for (int i = 0; i < c.getContainerSize() && remaining > 0; i++) {
-                    ItemStack s = c.getItem(i);
-                    if (s.isEmpty() || !ItemStack.isSameItemSameComponents(s, req)) continue;
+            // Vanilla-compatible path
+            if (be instanceof Container c) {
+                for (ItemStack req : requirements) {
+                    int remaining = req.getCount();
+                    for (int i = 0; i < c.getContainerSize() && remaining > 0; i++) {
+                        ItemStack s = c.getItem(i);
+                        if (s.isEmpty() || !ItemStack.isSameItemSameComponents(s, req)) continue;
 
-                    int take = Math.min(s.getCount(), remaining);
-                    s.shrink(take);
-                    remaining -= take;
+                        int take = Math.min(s.getCount(), remaining);
+                        s.shrink(take);
+                        remaining -= take;
 
-                    if (s.isEmpty()) c.setItem(i, ItemStack.EMPTY);
+                        if (s.isEmpty()) c.setItem(i, ItemStack.EMPTY);
+                    }
                 }
+            } else {
+                throw new UnsupportedOperationException();
             }
-        } else {
-            throw new UnsupportedOperationException();
         }
 
         setState(IndusStructureState.IN_CONSTRUCTION);
@@ -161,15 +162,27 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     public void setNetworkId(long networkId) {
+        if (this.networkId == networkId) return;
         Indus.LOGGER.debug("Changing network ID to {}", networkId);
 
-        if (this.networkId == networkId) return;
+        onDisconnectFromNetwork();
         this.networkId = networkId;
+        onConnectedToNetwork();
 
         setChanged();
         if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
+    }
+
+    protected void onDisconnectFromNetwork() {
+    }
+
+    protected void onConnectedToNetwork() {
+    }
+
+    protected boolean canInteractWithNetwork() {
+        return level instanceof ServerLevel && networkId > 0 && state == IndusStructureState.BUILT;
     }
 
     @Override

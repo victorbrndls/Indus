@@ -95,7 +95,7 @@ public class BaseStructureMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player player, int id) {
         if (id == BUTTON_BUILD) {
             if (!(player instanceof ServerPlayer)) return true;
-            entity.startBuilding();
+            entity.startBuilding(false);
             return true;
         }
         return false;

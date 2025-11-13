@@ -3,7 +3,6 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
-import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import com.victorbrndls.indus.world.IndusEnergyManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -33,12 +32,7 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
-
-        if (level instanceof ServerLevel sl && networkId > 0) {
-            if (state == IndusStructureState.BUILT) {
-                IndusEnergyManager.get(sl).addCapacity(networkId, ENERGY_RATE);
-            }
-        }
+        onConnectedToNetwork();
     }
 
     @Override
@@ -80,19 +74,26 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
         super.onAfterBuilt(level, pos, state);
+        onConnectedToNetwork();
+    }
 
-        var energyManager = IndusEnergyManager.get((ServerLevel) level);
-        energyManager.addCapacity(networkId, ENERGY_RATE);
+    @Override
+    protected void onDisconnectFromNetwork() {
+        if (canInteractWithNetwork()) {
+            IndusEnergyManager.get((ServerLevel) level).removeCapacity(networkId, ENERGY_RATE);
+        }
+    }
+
+    @Override
+    protected void onConnectedToNetwork() {
+        if (canInteractWithNetwork()) {
+            IndusEnergyManager.get((ServerLevel) level).addCapacity(networkId, ENERGY_RATE);
+        }
     }
 
     @Override
     public void setRemoved() {
-        if (level instanceof ServerLevel sl && networkId > 0) {
-            if (state == IndusStructureState.BUILT) {
-                IndusEnergyManager.get(sl).removeCapacity(networkId, ENERGY_RATE);
-            }
-        }
-
+        onDisconnectFromNetwork();
         super.setRemoved();
     }
 
