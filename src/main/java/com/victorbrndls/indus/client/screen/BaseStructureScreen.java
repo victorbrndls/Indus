@@ -17,6 +17,7 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
     private static final ResourceLocation BACKGROUND = Indus.rl("textures/gui/base_structure.png");
 
     private Button buildBtn;
+    private Button energyBtn;
 
     public BaseStructureScreen(BaseStructureMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -42,9 +43,24 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
                         20
                 )
                 .build();
+        energyBtn = Button
+                .builder(
+                        Component.literal("Energy"),
+                        (b) -> {
+                            getMinecraft().setScreen(new EnergyNetworkScreen(menu.entity.getNetworkId()));
+                        })
+                .bounds(
+                        (width - imageWidth) / 2 + imageWidth - 50 - 8,
+                        (height - imageHeight) / 2 + imageHeight - 20 - 94,
+                        50,
+                        20
+                )
+                .build();
 
         if (menu.getStructureState() == IndusStructureState.NOT_READY) {
             addRenderableWidget(buildBtn);
+        } else if (menu.getStructureState() == IndusStructureState.BUILT) {
+            addRenderableWidget(energyBtn);
         }
     }
 
@@ -112,6 +128,7 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
     protected void containerTick() {
         super.containerTick();
         buildBtn.active = menu.canBuildClient();
+        energyBtn.active = menu.getStructureState() == IndusStructureState.BUILT && menu.entity.getNetworkId() > 0;
     }
 
     private void renderRequirements(GuiGraphics g, int x, int y) {
