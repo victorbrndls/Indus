@@ -63,6 +63,14 @@ public class IndusItems {
             )
     );
 
+    public static final DeferredItem<BlockItem> CRUSHER = ITEMS.registerItem(
+            "crusher", properties -> new IndusStructureItem(
+                    IndusBlocks.CRUSHER.get(),
+                    IndusStructure.CRUSHER,
+                    properties
+            )
+    );
+
     public static final DeferredItem<BlockItem> CONTAINER_1 = ITEMS.registerItem(
             "container_1", properties -> new BlockItem(
                     IndusBlocks.CONTAINER_1.get(),

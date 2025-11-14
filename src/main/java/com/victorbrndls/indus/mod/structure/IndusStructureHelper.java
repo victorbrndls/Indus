@@ -29,6 +29,8 @@ public class IndusStructureHelper {
             case MIXER -> "mixer";
             case PUMP -> "pump";
             case STEAM_GENERATOR -> "steam_generator";
+            case CRUSHER -> "crusher";
+            case ASSEMBLER_1 -> "assembler_1";
         };
     }
 
@@ -97,6 +99,8 @@ public class IndusStructureHelper {
             case MIXER -> new MixerStructureOrientation(direction);
             case PUMP -> new PumpStructureOrientation(direction);
             case STEAM_GENERATOR -> new SteamGeneratorStructureOrientation(direction);
+            case CRUSHER -> new CrusherStructureOrientation(direction);
+            case ASSEMBLER_1 -> new Assembler1StructureOrientation(direction);
         };
     }
 

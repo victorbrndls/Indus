@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    " W ",
+    "   "
+  ],
+  "key": {
+    "G": "minecraft:iron_block",
+    "W": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "indus:steam_generator",
+    "count": 1
+  }
+}

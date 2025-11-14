@@ -3,11 +3,17 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+
+import java.util.function.Supplier;
 
 public class IndusTileEntities {
 
@@ -38,22 +44,37 @@ public class IndusTileEntities {
                     new BlockEntityType<>(PumpBlockEntity::new, IndusBlocks.PUMP.get())
             );
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamGeneratorBlockEntity>> STEAM_GENERATOR =
-            BLOCK_ENTITY_REGISTER.register("steam_generator", () ->
-                    new BlockEntityType<>(SteamGeneratorBlockEntity::new, IndusBlocks.STEAM_GENERATOR.get())
-            );
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamGeneratorBlockEntity>> STEAM_GENERATOR = register(
+            "steam_generator", SteamGeneratorBlockEntity::new, IndusBlocks.STEAM_GENERATOR::get
+    );
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Container1BlockEntity>> CONTAINER_1 =
-            BLOCK_ENTITY_REGISTER.register("container_1", () ->
-                    new BlockEntityType<>(Container1BlockEntity::new, IndusBlocks.CONTAINER_1.get())
-            );
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrusherBlockEntity>> CRUSHER = register(
+            "crusher", CrusherBlockEntity::new, IndusBlocks.CRUSHER::get
+    );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Container1BlockEntity>> CONTAINER_1 = register(
+            "container_1", Container1BlockEntity::new, IndusBlocks.CONTAINER_1::get
+    );
 
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITY_REGISTER.register(eventBus);
     }
 
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlock(
+                Capabilities.Item.BLOCK,
+                (level, pos, state, be, side) ->
+                        be instanceof Container1BlockEntity crate ? VanillaContainerWrapper.of(crate.getContainer()) : null,
+                IndusBlocks.CONTAINER_1.get()
+        );
+    }
 
+    private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(
+            String name,
+            BlockEntityType.BlockEntitySupplier<T> supplier,
+            Supplier<Block> validBlock
+    ) {
+        return BLOCK_ENTITY_REGISTER.register(name, () -> new BlockEntityType<>(supplier, validBlock.get()));
     }
 
 }

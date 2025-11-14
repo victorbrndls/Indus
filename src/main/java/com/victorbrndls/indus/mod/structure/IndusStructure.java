@@ -9,11 +9,12 @@ public enum IndusStructure {
     BLAST_FURNACE,
     MIXER,
     PUMP,
-    STEAM_GENERATOR;
+    STEAM_GENERATOR,
+    CRUSHER,
+    ASSEMBLER_1;
 
-    public static final StreamCodec<FriendlyByteBuf, IndusStructure> CODEC =
-            StreamCodec.of(
-                    FriendlyByteBuf::writeEnum,
-                    buf -> buf.readEnum(IndusStructure.class)
-            );
+    public static final StreamCodec<FriendlyByteBuf, IndusStructure> CODEC = StreamCodec.of(
+            FriendlyByteBuf::writeEnum,
+            buf -> buf.readEnum(IndusStructure.class)
+    );
 }

@@ -41,6 +41,11 @@ public class IndusBlocks {
             SteamGeneratorBlock::new
     );
 
+    public static final DeferredHolder<Block, CrusherBlock> CRUSHER = BLOCKS.registerBlock(
+            "crusher",
+            CrusherBlock::new
+    );
+
     public static final DeferredHolder<Block, Container1Block> CONTAINER_1 = BLOCKS.registerBlock(
             "container_1",
             Container1Block::new
