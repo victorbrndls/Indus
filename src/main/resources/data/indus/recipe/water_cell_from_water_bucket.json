@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:water_bucket"
+  ],
+  "result": {
+    "id": "indus:water_cell",
+    "count": 2
+  },
+  "returns": [
+    {
+      "item": "minecraft:bucket",
+      "count": 1
+    }
+  ]
+}
