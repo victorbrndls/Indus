@@ -33,13 +33,13 @@ public class IndusRecipeHelper {
     public static <T extends Recipe<?>> T getRecipe(
             ServerLevel level, RecipeType<T> type, ResourceHandler<ItemResource>... hs) {
         return getRecipes(level, type).stream()
-                .filter(r -> canCraftOnce((MixerRecipe) r, hs))
+                .filter(r -> canCraftOnce((BaseCustomRecipe) r, hs))
                 .findFirst().orElse(null);
     }
 
     @SafeVarargs
     public static boolean craftRecipe(
-            MixerRecipe recipe,
+            BaseCustomRecipe recipe,
             ResourceHandler<ItemResource> output,
             ResourceHandler<ItemResource>... inputs
     ) {
@@ -81,7 +81,7 @@ public class IndusRecipeHelper {
     }
 
     @SafeVarargs
-    private static boolean canCraftOnce(MixerRecipe r, ResourceHandler<ItemResource>... hs) {
+    private static boolean canCraftOnce(BaseCustomRecipe r, ResourceHandler<ItemResource>... hs) {
         for (var need : r.inputs()) {
             int have = 0;
             for (var h : hs) {

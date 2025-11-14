@@ -1,0 +1,13 @@
+{
+  "type": "indus:crusher",
+  "inputs": [
+    {
+      "ingredient": "minecraft:cobblestone",
+      "count": 12
+    }
+  ],
+  "result": {
+    "id": "minecraft:gravel",
+    "count": 12
+  }
+}

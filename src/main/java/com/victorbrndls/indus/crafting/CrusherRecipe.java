@@ -14,33 +14,33 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.List;
 
-public final class MixerRecipe extends BaseCustomRecipe {
+public final class CrusherRecipe extends BaseCustomRecipe {
 
-    public static final MapCodec<MixerRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            ExtraCodecs.nonEmptyList(CountedIngredient.CODEC.listOf()).fieldOf("inputs").forGetter(MixerRecipe::inputs),
-            ItemStack.CODEC.fieldOf("result").forGetter(MixerRecipe::result)
-    ).apply(inst, MixerRecipe::new));
+    public static final MapCodec<CrusherRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            ExtraCodecs.nonEmptyList(CountedIngredient.CODEC.listOf()).fieldOf("inputs").forGetter(CrusherRecipe::inputs),
+            ItemStack.CODEC.fieldOf("result").forGetter(CrusherRecipe::result)
+    ).apply(inst, CrusherRecipe::new));
 
     private static final StreamCodec<RegistryFriendlyByteBuf, List<CountedIngredient>> INPUTS_STREAM =
             CountedIngredient.STREAM_CODEC.apply(ByteBufCodecs.list());
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MixerRecipe> STREAM_CODEC = StreamCodec.composite(
-            INPUTS_STREAM, MixerRecipe::inputs,
-            ItemStack.STREAM_CODEC, MixerRecipe::result,
-            MixerRecipe::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, CrusherRecipe> STREAM_CODEC = StreamCodec.composite(
+            INPUTS_STREAM, CrusherRecipe::inputs,
+            ItemStack.STREAM_CODEC, CrusherRecipe::result,
+            CrusherRecipe::new
     );
 
-    public MixerRecipe(List<CountedIngredient> inputs, ItemStack result) {
+    public CrusherRecipe(List<CountedIngredient> inputs, ItemStack result) {
         super(inputs, result);
     }
 
     @Override
     public RecipeType<? extends Recipe<CraftingInput>> getType() {
-        return IndusRecipes.MIXER_RECIPE_TYPE.get();
+        return IndusRecipes.CRUSHER_RECIPE_TYPE.get();
     }
 
     @Override
-    public RecipeSerializer<MixerRecipe> getSerializer() {
-        return IndusRecipes.MIXER_RECIPE_SERIALIZER.value();
+    public RecipeSerializer<CrusherRecipe> getSerializer() {
+        return IndusRecipes.CRUSHER_RECIPE_SERIALIZER.value();
     }
 }

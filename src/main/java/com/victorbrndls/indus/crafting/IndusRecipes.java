@@ -16,9 +16,15 @@ public class IndusRecipes {
     public static final DeferredRecipeSerializer<MixerRecipe> MIXER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
             "mixer", MixerRecipe.CODEC, MixerRecipe.STREAM_CODEC
     );
+    public static final DeferredRecipeSerializer<CrusherRecipe> CRUSHER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
+            "crusher", CrusherRecipe.CODEC, CrusherRecipe.STREAM_CODEC
+    );
 
     public static final DeferredRecipeType<MixerRecipe> MIXER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
             "mixer"
+    );
+    public static final DeferredRecipeType<CrusherRecipe> CRUSHER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
+            "crusher"
     );
 
     public static void init(IEventBus eventBus) {
