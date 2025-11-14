@@ -29,39 +29,34 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        tickCounter++;
+        if ((level.getGameTime() % 80) != 0) return;
 
-        if (tickCounter >= 80) {
-            tickCounter = 0;
+        ResourceHandler<ItemResource> input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
+        ResourceHandler<ItemResource> input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
+        ResourceHandler<ItemResource> input3Handler = getRelativeItemHandler(level, INPUT_3_POS);
+        ResourceHandler<ItemResource> outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
-            ResourceHandler<ItemResource> input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
-            ResourceHandler<ItemResource> input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
-            ResourceHandler<ItemResource> input3Handler = getRelativeItemHandler(level, INPUT_3_POS);
-            ResourceHandler<ItemResource> outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
+        if (
+                input1Handler == null || input2Handler == null || input3Handler == null || outputHandler == null
+        ) return;
 
-            if (
-                    input1Handler == null || input2Handler == null || input3Handler == null || outputHandler == null
-            ) return;
+        var recipe = IndusRecipeHelper.getRecipe(
+                (ServerLevel) level,
+                IndusRecipes.MIXER_RECIPE_TYPE.get(),
+                input1Handler,
+                input2Handler,
+                input3Handler
+        );
+        if (recipe == null) return;
 
-            var recipe = IndusRecipeHelper.getRecipe(
-                    (ServerLevel) level,
-                    IndusRecipes.MIXER_RECIPE_TYPE.get(),
-                    input1Handler,
-                    input2Handler,
-                    input3Handler
-            );
-            if (recipe == null) return;
-
-            var crafted = IndusRecipeHelper.craftRecipe(
-                    recipe,
-                    outputHandler,
-                    input1Handler,
-                    input2Handler,
-                    input3Handler
-            );
-        }
+        var crafted = IndusRecipeHelper.craftRecipe(
+                recipe,
+                outputHandler,
+                input1Handler,
+                input2Handler,
+                input3Handler
+        );
     }
-
 
     @Override
     public Component getDisplayName() {

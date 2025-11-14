@@ -39,9 +39,7 @@ public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        tickCounter++;
-        if (tickCounter < 20) return;
-        tickCounter = 0;
+        if ((level.getGameTime() % 20) != 0) return;
 
         ResourceHandler<ItemResource> fuelHandler = getRelativeItemHandler(level, FUEL_POS);
         ResourceHandler<ItemResource> oreHandler = getRelativeItemHandler(level, ORE_POS);
