@@ -36,9 +36,6 @@ import static com.victorbrndls.indus.blocks.TreeFarmBlock.FACING;
 
 public abstract class BaseStructureBlockEntity extends BlockEntity implements MenuProvider {
 
-    @Deprecated(since = "use getGameTime() instead")
-    protected int tickCounter = 0;
-
     protected IndusStructureState state = IndusStructureState.NOT_READY;
 
     // Structure info used during construction
