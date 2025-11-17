@@ -2,14 +2,13 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
+import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class Assembler1BlockEntity extends BaseStructureBlockEntity {
 
@@ -18,6 +17,8 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos INPUT_3_POS = new BlockPos(4, 0, -5);
     private final static BlockPos INPUT_4_POS = new BlockPos(5, 0, -5);
     private final static BlockPos OUTPUT_POS = new BlockPos(5, 0, 0);
+
+    private final static int MAINTENANCE_RATE = 2;
 
     public Assembler1BlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.ASSEMBLER_1.get(), pos, state);
@@ -53,7 +54,10 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        var crafted = IndusRecipeHelper.craftRecipe(
+        var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_RATE);
+        if (!canRun) return;
+
+        IndusRecipeHelper.craftRecipe(
                 recipe,
                 outputHandler,
                 input1Handler,

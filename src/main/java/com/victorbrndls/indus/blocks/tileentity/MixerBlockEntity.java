@@ -49,7 +49,7 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        var crafted = IndusRecipeHelper.craftRecipe(
+        IndusRecipeHelper.craftRecipe(
                 recipe,
                 outputHandler,
                 input1Handler,

@@ -1,8 +1,11 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
+import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
+import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +18,8 @@ public class CrusherBlockEntity extends BaseStructureBlockEntity {
 
     private final static BlockPos INPUT_POS = new BlockPos(3, 1, -6);
     private final static BlockPos OUTPUT_POS = new BlockPos(3, 1, 0);
+
+    private final static int MAINTENANCE_RATE = 1;
 
     public CrusherBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.CRUSHER.get(), pos, state);
@@ -41,7 +46,10 @@ public class CrusherBlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        var crafted = IndusRecipeHelper.craftRecipe(
+        var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_RATE);
+        if (!canRun) return;
+
+        IndusRecipeHelper.craftRecipe(
                 recipe,
                 outputHandler,
                 inputHandler

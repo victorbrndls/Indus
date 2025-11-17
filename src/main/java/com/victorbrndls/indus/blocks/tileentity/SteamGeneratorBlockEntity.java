@@ -43,10 +43,10 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if (networkId < 0) return;
-        var energyManager = IndusNetworkManager.get((ServerLevel) level);
+        var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         if (remainingEnergy > 0) {
-            remainingEnergy -= energyManager.addEnergy(networkId, remainingEnergy);
+            remainingEnergy -= networkManager.addEnergy(networkId, remainingEnergy);
             if (remainingEnergy > 0) return;
         }
 
@@ -63,7 +63,7 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
             int waterUsed = waterHandler.extract(ItemResource.of(IndusItems.WATER_CELL.get()), 1, tx);
             if (waterUsed < 1) return;
 
-            int addedEnergy = energyManager.addEnergy(networkId, ENERGY_RATE);
+            int addedEnergy = networkManager.addEnergy(networkId, ENERGY_RATE);
             if (addedEnergy <= 0) return;
 
             remainingEnergy = ENERGY_RATE - addedEnergy;

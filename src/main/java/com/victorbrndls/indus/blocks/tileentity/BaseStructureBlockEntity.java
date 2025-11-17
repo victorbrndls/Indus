@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.gui.BaseStructureMenu;
+import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.*;
 import com.victorbrndls.indus.shared.BlockHelper;
 import com.victorbrndls.indus.world.IndusNetworkManager;
@@ -180,6 +181,27 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
     protected boolean canInteractWithNetwork() {
         return level instanceof ServerLevel && networkId > 0 && state == IndusStructureState.BUILT;
+    }
+
+    /**
+     * @return true if the machine should run
+     */
+    protected boolean consumeMaintenanceAndCheck(MaintenanceTier basic, int maintenanceRate) {
+        if (networkId < 0) return false;
+        var networkManager = IndusNetworkManager.get((ServerLevel) level);
+
+        networkManager.consumeMaintenance(networkId, basic, maintenanceRate);
+        var remainingMaintenance = networkManager.getRemainingMaintenancePercentage(networkId, basic);
+
+        if (remainingMaintenance > 0.85) {
+            return true;
+        } else if (remainingMaintenance > 0.60) {
+            return Indus.RANDOM.nextFloat() >= 0.10f;
+        } else if (remainingMaintenance > 0.35) {
+            return Indus.RANDOM.nextFloat() >= 0.35f;
+        } else {
+            return Indus.RANDOM.nextFloat() >= 0.75f;
+        }
     }
 
     @Override

@@ -59,7 +59,7 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        var crafted = IndusRecipeHelper.craftRecipe(
+        IndusRecipeHelper.craftRecipe(
                 recipe,
                 voidingOutput,
                 input1Handler,
@@ -67,9 +67,7 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
                 input3Handler
         );
 
-        if (crafted) {
-            networkManager.addMaintenance(networkId, MaintenanceTier.BASIC, MAINTENANCE_RATE);
-        }
+        networkManager.addMaintenance(networkId, MaintenanceTier.BASIC, MAINTENANCE_RATE);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +37,8 @@ public class Indus {
     public static final String MODID = "indus";
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
+
+    public static final RandomSource RANDOM = RandomSource.create();
 
     public static IndusStructureCache STRUCTURE_CACHE = new IndusStructureCache();
 
