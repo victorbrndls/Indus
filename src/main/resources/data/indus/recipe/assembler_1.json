@@ -11,7 +11,7 @@
     "W": "minecraft:blast_furnace"
   },
   "result": {
-    "id": "indus:crusher",
+    "id": "indus:assembler_1",
     "count": 1
   }
 }
