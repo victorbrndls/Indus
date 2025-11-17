@@ -3,7 +3,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
-import com.victorbrndls.indus.world.IndusEnergyManager;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +43,7 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if (networkId < 0) return;
-        var energyManager = IndusEnergyManager.get((ServerLevel) level);
+        var energyManager = IndusNetworkManager.get((ServerLevel) level);
 
         if (remainingEnergy > 0) {
             remainingEnergy -= energyManager.addEnergy(networkId, remainingEnergy);
@@ -80,14 +80,14 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void onDisconnectFromNetwork() {
         if (canInteractWithNetwork()) {
-            IndusEnergyManager.get((ServerLevel) level).removeCapacity(networkId, ENERGY_RATE);
+            IndusNetworkManager.get((ServerLevel) level).removeEnergyCapacity(networkId, ENERGY_RATE);
         }
     }
 
     @Override
     protected void onConnectedToNetwork() {
         if (canInteractWithNetwork()) {
-            IndusEnergyManager.get((ServerLevel) level).addCapacity(networkId, ENERGY_RATE);
+            IndusNetworkManager.get((ServerLevel) level).addEnergyCapacity(networkId, ENERGY_RATE);
         }
     }
 

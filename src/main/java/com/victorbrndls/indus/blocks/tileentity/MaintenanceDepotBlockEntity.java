@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
-import com.victorbrndls.indus.world.IndusEnergyManager;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -46,7 +46,7 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if (networkId < 0) return;
-        var energyManager = IndusEnergyManager.get((ServerLevel) level);
+        var energyManager = IndusNetworkManager.get((ServerLevel) level);
 
         if (remainingMaintenance > 0) {
             remainingMaintenance -= energyManager.addEnergy(networkId, remainingMaintenance);
@@ -94,14 +94,14 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void onDisconnectFromNetwork() {
         if (canInteractWithNetwork()) {
-            IndusEnergyManager.get((ServerLevel) level).removeCapacity(networkId, MAINTENANCE_RATE);
+            IndusNetworkManager.get((ServerLevel) level).removeEnergyCapacity(networkId, MAINTENANCE_RATE);
         }
     }
 
     @Override
     protected void onConnectedToNetwork() {
         if (canInteractWithNetwork()) {
-            IndusEnergyManager.get((ServerLevel) level).addCapacity(networkId, MAINTENANCE_RATE);
+            IndusNetworkManager.get((ServerLevel) level).addEnergyCapacity(networkId, MAINTENANCE_RATE);
         }
     }
 

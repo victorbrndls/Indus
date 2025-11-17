@@ -5,7 +5,7 @@ import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.gui.BaseStructureMenu;
 import com.victorbrndls.indus.mod.structure.*;
 import com.victorbrndls.indus.shared.BlockHelper;
-import com.victorbrndls.indus.world.IndusEnergyManager;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -88,7 +88,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
-        var energyManager = IndusEnergyManager.get((ServerLevel) level);
+        var energyManager = IndusNetworkManager.get((ServerLevel) level);
 
         if (networkId <= 0) {
             networkId = energyManager.getNetworkId();

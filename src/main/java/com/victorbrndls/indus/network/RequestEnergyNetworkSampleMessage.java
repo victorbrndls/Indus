@@ -1,7 +1,7 @@
 package com.victorbrndls.indus.network;
 
 import com.victorbrndls.indus.Indus;
-import com.victorbrndls.indus.world.IndusEnergyManager;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,10 +35,10 @@ public record RequestEnergyNetworkSampleMessage(
             var sender = (ServerPlayer) ctx.player();
             var level = sender.level();
 
-            var network = IndusEnergyManager.get(level).getNetwork(message.networkId);
+            var network = IndusNetworkManager.get(level).getNetwork(message.networkId);
 
             PacketDistributor.sendToPlayer(
-                    sender, new ReceiveEnergyNetworkSampleMessage(network.getEnergy(), network.getCapacity())
+                    sender, new ReceiveEnergyNetworkSampleMessage(network.getEnergy(), network.getEnergyCapacity())
             );
         });
     }

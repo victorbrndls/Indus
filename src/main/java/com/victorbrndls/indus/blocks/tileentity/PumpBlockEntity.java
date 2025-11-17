@@ -2,7 +2,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
-import com.victorbrndls.indus.world.IndusEnergyManager;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -33,7 +33,7 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         if ((level.getGameTime() % 80) != 0) return;
 
         if (networkId < 0) return;
-        var energyManager = IndusEnergyManager.get((ServerLevel) level);
+        var energyManager = IndusNetworkManager.get((ServerLevel) level);
 
         ResourceHandler<ItemResource> handler = getRelativeItemHandler(level, OUTPUT_POS);
         if (handler == null) return;
