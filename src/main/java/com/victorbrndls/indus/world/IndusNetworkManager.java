@@ -86,6 +86,7 @@ public class IndusNetworkManager extends SavedData {
         setDirty();
     }
 
+
     public int addMaintenance(long id, MaintenanceTier tier, int v) {
         var network = getNetwork(id);
         int added = 0;
@@ -123,6 +124,16 @@ public class IndusNetworkManager extends SavedData {
         }
 
         return percentage;
+    }
+
+    public int getAvailableMaintenanceSpace(long id, MaintenanceTier tier) {
+        var network = getNetwork(id);
+
+        if (tier == MaintenanceTier.BASIC) {
+            return network.getMaintenanceCapacity() - network.getMaintenance1();
+        }
+
+        return 0;
     }
 
 }
