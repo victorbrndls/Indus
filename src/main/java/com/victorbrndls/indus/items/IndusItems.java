@@ -110,6 +110,20 @@ public class IndusItems {
             properties -> new ConstructionPartItem(ConstructionPartTier.ULTIMATE, properties)
     );
 
+    // Maintenance
+    public static final DeferredItem<Item> MAINTENANCE_1 = ITEMS.registerItem(
+            "maintenance_1",
+            properties -> new MaintenanceItem(MaintenanceTier.BASIC, properties)
+    );
+    public static final DeferredItem<Item> MAINTENANCE_2 = ITEMS.registerItem(
+            "maintenance_2",
+            properties -> new MaintenanceItem(MaintenanceTier.ADVANCED, properties)
+    );
+    public static final DeferredItem<Item> MAINTENANCE_3 = ITEMS.registerItem(
+            "maintenance_3",
+            properties -> new MaintenanceItem(MaintenanceTier.ELITE, properties)
+    );
+
     // Plates
     public static final DeferredItem<Item> IRON_PLATE = ITEMS.registerItem(
             "iron_plate",

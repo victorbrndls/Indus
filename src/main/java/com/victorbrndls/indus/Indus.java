@@ -59,6 +59,9 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_2.get()));
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_3.get()));
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_4.get()));
+                        output.accept(new ItemStack(IndusItems.MAINTENANCE_1.get()));
+                        output.accept(new ItemStack(IndusItems.MAINTENANCE_2.get()));
+                        output.accept(new ItemStack(IndusItems.MAINTENANCE_3.get()));
                         output.accept(new ItemStack(IndusItems.IRON_PLATE.get()));
                         output.accept(new ItemStack(IndusItems.COPPER_PLATE.get()));
                         output.accept(new ItemStack(IndusItems.WATER_CELL.get()));
