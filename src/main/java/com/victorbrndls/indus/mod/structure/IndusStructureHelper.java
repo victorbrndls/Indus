@@ -30,6 +30,7 @@ public class IndusStructureHelper {
             case PUMP -> "pump";
             case STEAM_GENERATOR -> "steam_generator";
             case CRUSHER -> "crusher";
+            case MAINTENANCE_DEPOT ->  "maintenance_depot";
             case ASSEMBLER_1 -> "assembler_1";
         };
     }
@@ -100,6 +101,7 @@ public class IndusStructureHelper {
             case PUMP -> new PumpStructureOrientation(direction);
             case STEAM_GENERATOR -> new SteamGeneratorStructureOrientation(direction);
             case CRUSHER -> new CrusherStructureOrientation(direction);
+            case MAINTENANCE_DEPOT -> new MaintenanceDepotStructureOrientation(direction);
             case ASSEMBLER_1 -> new Assembler1StructureOrientation(direction);
         };
     }

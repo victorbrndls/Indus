@@ -11,6 +11,7 @@ public enum IndusStructure {
     PUMP,
     STEAM_GENERATOR,
     CRUSHER,
+    MAINTENANCE_DEPOT,
     ASSEMBLER_1;
 
     public static final StreamCodec<FriendlyByteBuf, IndusStructure> CODEC = StreamCodec.of(

@@ -52,6 +52,14 @@ public class IndusTileEntities {
             "crusher", CrusherBlockEntity::new, IndusBlocks.CRUSHER::get
     );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MaintenanceDepotBlockEntity>> MAINTENANCE_DEPOT = register(
+            "maintenance_depot", MaintenanceDepotBlockEntity::new, IndusBlocks.MAINTENANCE_DEPOT::get
+    );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Assembler1BlockEntity>> ASSEMBLER_1 = register(
+            "assembler_1", Assembler1BlockEntity::new, IndusBlocks.ASSEMBLER_1::get
+    );
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Container1BlockEntity>> CONTAINER_1 = register(
             "container_1", Container1BlockEntity::new, IndusBlocks.CONTAINER_1::get
     );

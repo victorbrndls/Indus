@@ -71,6 +71,22 @@ public class IndusItems {
             )
     );
 
+    public static final DeferredItem<BlockItem> MAINTENANCE_DEPOT = ITEMS.registerItem(
+            "maintenance_depot", properties -> new IndusStructureItem(
+                    IndusBlocks.MAINTENANCE_DEPOT.get(),
+                    IndusStructure.MAINTENANCE_DEPOT,
+                    properties
+            )
+    );
+
+    public static final DeferredItem<BlockItem> ASSEMBLER_1 = ITEMS.registerItem(
+            "assembler_1", properties -> new IndusStructureItem(
+                    IndusBlocks.ASSEMBLER_1.get(),
+                    IndusStructure.ASSEMBLER_1,
+                    properties
+            )
+    );
+
     public static final DeferredItem<BlockItem> CONTAINER_1 = ITEMS.registerItem(
             "container_1", properties -> new BlockItem(
                     IndusBlocks.CONTAINER_1.get(),

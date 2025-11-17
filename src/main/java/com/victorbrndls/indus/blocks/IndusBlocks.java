@@ -46,6 +46,16 @@ public class IndusBlocks {
             CrusherBlock::new
     );
 
+    public static final DeferredHolder<Block, MaintenanceDepotBlock> MAINTENANCE_DEPOT = BLOCKS.registerBlock(
+            "maintenance_depot",
+            MaintenanceDepotBlock::new
+    );
+
+    public static final DeferredHolder<Block, Assembler1Block> ASSEMBLER_1 = BLOCKS.registerBlock(
+            "assembler_1",
+            Assembler1Block::new
+    );
+
     public static final DeferredHolder<Block, Container1Block> CONTAINER_1 = BLOCKS.registerBlock(
             "container_1",
             Container1Block::new
