@@ -19,12 +19,24 @@ public class IndusRecipes {
     public static final DeferredRecipeSerializer<CrusherRecipe> CRUSHER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
             "crusher", CrusherRecipe.CODEC, CrusherRecipe.STREAM_CODEC
     );
+    public static final DeferredRecipeSerializer<AssemblerRecipe> ASSEMBLER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
+            "assembler", AssemblerRecipe.CODEC, AssemblerRecipe.STREAM_CODEC
+    );
+    public static final DeferredRecipeSerializer<MaintenanceDepotRecipe> MAINTENANCE_DEPOT_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
+            "maintenance_depot", MaintenanceDepotRecipe.CODEC, MaintenanceDepotRecipe.STREAM_CODEC
+    );
 
     public static final DeferredRecipeType<MixerRecipe> MIXER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
             "mixer"
     );
     public static final DeferredRecipeType<CrusherRecipe> CRUSHER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
             "crusher"
+    );
+    public static final DeferredRecipeType<AssemblerRecipe> ASSEMBLER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
+            "assembler"
+    );
+    public static final DeferredRecipeType<MaintenanceDepotRecipe> MAINTENANCE_DEPOT_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
+            "maintenance_depot"
     );
 
     public static void init(IEventBus eventBus) {

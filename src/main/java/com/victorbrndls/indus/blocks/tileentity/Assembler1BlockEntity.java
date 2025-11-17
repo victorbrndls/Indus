@@ -13,11 +13,11 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class Assembler1BlockEntity extends BaseStructureBlockEntity {
 
-    private final static BlockPos INPUT_1_POS = new BlockPos(2, 1, -5);
-    private final static BlockPos INPUT_2_POS = new BlockPos(3, 2, -5);
-    private final static BlockPos INPUT_3_POS = new BlockPos(4, 3, -5);
-    private final static BlockPos INPUT_4_POS = new BlockPos(4, 3, -5);
-    private final static BlockPos OUTPUT_POS = new BlockPos(4, 1, 0);
+    private final static BlockPos INPUT_1_POS = new BlockPos(2, 0, -5);
+    private final static BlockPos INPUT_2_POS = new BlockPos(3, 0, -5);
+    private final static BlockPos INPUT_3_POS = new BlockPos(4, 0, -5);
+    private final static BlockPos INPUT_4_POS = new BlockPos(5, 0, -5);
+    private final static BlockPos OUTPUT_POS = new BlockPos(5, 0, 0);
 
     public Assembler1BlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.ASSEMBLER_1.get(), pos, state);
@@ -39,15 +39,17 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
         var outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
         if (
-                input1Handler == null || input2Handler == null || input3Handler == null || outputHandler == null
+                input1Handler == null || input2Handler == null || input3Handler == null || input4Handler == null ||
+                        outputHandler == null
         ) return;
 
         var recipe = IndusRecipeHelper.getRecipe(
                 (ServerLevel) level,
-                IndusRecipes.MIXER_RECIPE_TYPE.get(),
+                IndusRecipes.ASSEMBLER_RECIPE_TYPE.get(),
                 input1Handler,
                 input2Handler,
-                input3Handler
+                input3Handler,
+                input4Handler
         );
         if (recipe == null) return;
 
@@ -56,7 +58,8 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
                 outputHandler,
                 input1Handler,
                 input2Handler,
-                input3Handler
+                input3Handler,
+                input4Handler
         );
     }
 
