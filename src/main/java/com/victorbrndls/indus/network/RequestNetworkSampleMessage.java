@@ -1,6 +1,7 @@
 package com.victorbrndls.indus.network;
 
 import com.victorbrndls.indus.Indus;
+import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -35,14 +36,16 @@ public record RequestNetworkSampleMessage(
             var sender = (ServerPlayer) ctx.player();
             var level = sender.level();
 
-            var network = IndusNetworkManager.get(level).getNetwork(message.networkId);
+            IndusNetworkManager networkManager = IndusNetworkManager.get(level);
+            var network = networkManager.getNetwork(message.networkId);
+            var maintenance1Ratio = networkManager.getRemainingMaintenancePercentage(message.networkId, MaintenanceTier.BASIC);
 
             PacketDistributor.sendToPlayer(
                     sender,
                     new ReceiveNetworkSampleMessage(
                             network.getEnergy(),
                             network.getEnergyCapacity(),
-                            network.getMaintenance1()
+                            (int) (maintenance1Ratio * 100)
                     )
             );
         });
