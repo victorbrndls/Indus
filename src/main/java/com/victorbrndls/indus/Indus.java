@@ -23,6 +23,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -86,6 +88,8 @@ public class Indus {
         eventBus.addListener(this::handleRegisterMenuScreens);
         eventBus.addListener(this::registerPayloads);
 
+        NeoForge.EVENT_BUS.addListener(this::handleDataPackSync);
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -106,5 +110,12 @@ public class Indus {
     private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(IndusMenus.BASE_STRUCTURE.get(), BaseStructureScreen::new);
         event.register(IndusMenus.CONTAINER_1.get(), Container1Screen::new);
+    }
+
+    private void handleDataPackSync(OnDatapackSyncEvent event) {
+        event.sendRecipes(IndusRecipes.MIXER_RECIPE_TYPE.value());
+        event.sendRecipes(IndusRecipes.CRUSHER_RECIPE_TYPE.value());
+        event.sendRecipes(IndusRecipes.ASSEMBLER_RECIPE_TYPE.value());
+        event.sendRecipes(IndusRecipes.MAINTENANCE_DEPOT_RECIPE_TYPE.value());
     }
 }

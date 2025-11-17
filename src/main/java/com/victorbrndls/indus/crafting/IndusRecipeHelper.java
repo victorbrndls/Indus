@@ -111,8 +111,4 @@ public class IndusRecipeHelper {
         return out.insert(ItemResource.of(stack), stack.getCount(), tx) == stack.getCount();
     }
 
-    public static void clearCache() {
-        CACHE.clear();
-    }
-
 }
