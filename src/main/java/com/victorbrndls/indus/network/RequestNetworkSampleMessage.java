@@ -12,25 +12,25 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-public record RequestEnergyNetworkSampleMessage(
+public record RequestNetworkSampleMessage(
         long networkId
 ) implements CustomPacketPayload {
 
-    public static final Type<RequestEnergyNetworkSampleMessage> TYPE = new Type<>(
-            ResourceLocation.fromNamespaceAndPath(Indus.MODID, "request_energy_network_sample")
+    public static final Type<RequestNetworkSampleMessage> TYPE = new Type<>(
+            ResourceLocation.fromNamespaceAndPath(Indus.MODID, "request_network_sample")
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, RequestEnergyNetworkSampleMessage> STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.LONG, RequestEnergyNetworkSampleMessage::networkId,
-                    RequestEnergyNetworkSampleMessage::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, RequestNetworkSampleMessage> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.LONG, RequestNetworkSampleMessage::networkId,
+            RequestNetworkSampleMessage::new
+    );
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
-    public static void handle(RequestEnergyNetworkSampleMessage message, IPayloadContext ctx) {
+    public static void handle(RequestNetworkSampleMessage message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             var sender = (ServerPlayer) ctx.player();
             var level = sender.level();
@@ -38,7 +38,12 @@ public record RequestEnergyNetworkSampleMessage(
             var network = IndusNetworkManager.get(level).getNetwork(message.networkId);
 
             PacketDistributor.sendToPlayer(
-                    sender, new ReceiveEnergyNetworkSampleMessage(network.getEnergy(), network.getEnergyCapacity())
+                    sender,
+                    new ReceiveNetworkSampleMessage(
+                            network.getEnergy(),
+                            network.getEnergyCapacity(),
+                            network.getMaintenance1()
+                    )
             );
         });
     }
@@ -46,8 +51,8 @@ public record RequestEnergyNetworkSampleMessage(
     public static void register(PayloadRegistrar registrar) {
         registrar.playToServer(
                 TYPE,
-                RequestEnergyNetworkSampleMessage.STREAM_CODEC,
-                RequestEnergyNetworkSampleMessage::handle
+                RequestNetworkSampleMessage.STREAM_CODEC,
+                RequestNetworkSampleMessage::handle
         );
     }
 }

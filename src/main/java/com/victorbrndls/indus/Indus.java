@@ -8,9 +8,9 @@ import com.victorbrndls.indus.client.screen.Container1Screen;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
-import com.victorbrndls.indus.network.ReceiveEnergyNetworkSampleMessage;
+import com.victorbrndls.indus.network.ReceiveNetworkSampleMessage;
 import com.victorbrndls.indus.network.ReceiveStructureMessage;
-import com.victorbrndls.indus.network.RequestEnergyNetworkSampleMessage;
+import com.victorbrndls.indus.network.RequestNetworkSampleMessage;
 import com.victorbrndls.indus.network.RequestStructureMessage;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -103,8 +103,8 @@ public class Indus {
         RequestStructureMessage.register(registrar);
         ReceiveStructureMessage.register(registrar);
 
-        RequestEnergyNetworkSampleMessage.register(registrar);
-        ReceiveEnergyNetworkSampleMessage.register(registrar);
+        RequestNetworkSampleMessage.register(registrar);
+        ReceiveNetworkSampleMessage.register(registrar);
     }
 
     private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {

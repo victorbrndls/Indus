@@ -45,9 +45,9 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
                 .build();
         energyBtn = Button
                 .builder(
-                        Component.literal("Energy"),
+                        Component.literal("Stats"),
                         (b) -> {
-                            getMinecraft().setScreen(new EnergyNetworkScreen(menu.entity.getNetworkId()));
+                            getMinecraft().setScreen(new IndusNetworkScreen(menu.entity.getNetworkId()));
                         })
                 .bounds(
                         (width - imageWidth) / 2 + imageWidth - 50 - 8,

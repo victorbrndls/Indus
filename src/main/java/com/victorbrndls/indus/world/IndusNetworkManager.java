@@ -76,13 +76,13 @@ public class IndusNetworkManager extends SavedData {
 
     public void addEnergyCapacity(long id, int v) {
         getNetwork(id).addEnergyCapacity(v);
-        Indus.LOGGER.debug("Added capacity to network {}: {}", id, v);
+        Indus.LOGGER.debug("Added energyCapacity to network {}: {}", id, v);
         setDirty();
     }
 
     public void removeEnergyCapacity(long id, int v) {
         getNetwork(id).removeEnergyCapacity(v);
-        Indus.LOGGER.debug("Removed capacity from network {}: {}", id, v);
+        Indus.LOGGER.debug("Removed energyCapacity from network {}: {}", id, v);
         setDirty();
     }
 

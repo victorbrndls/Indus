@@ -1,6 +1,6 @@
 package com.victorbrndls.indus.client.screen;
 
-import com.victorbrndls.indus.network.RequestEnergyNetworkSampleMessage;
+import com.victorbrndls.indus.network.RequestNetworkSampleMessage;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class EnergyNetworkScreen extends Screen {
+public class IndusNetworkScreen extends Screen {
 
     private static final int SAMPLE_INTERVAL_TICKS = 20;
 
@@ -16,24 +16,28 @@ public class EnergyNetworkScreen extends Screen {
     private int tickCounter = 20; // so it requests a sample immediately on open
 
     private final IntList energyHistory = new IntArrayList();
-    private final IntList capacityHistory = new IntArrayList();
+    private final IntList energyCapacityHistory = new IntArrayList();
+    private final IntList maintenanceHistory = new IntArrayList();
 
-    public EnergyNetworkScreen(long networkId) {
-        super(Component.literal("Energy Network " + networkId));
+    public IndusNetworkScreen(long networkId) {
+        super(Component.literal("Network " + networkId));
         this.networkId = networkId;
     }
 
-    public void addSample(int energy, int capacity) {
+    public void addSample(int energy, int capacity, int maintenance1) {
         energyHistory.add(energy);
-        capacityHistory.add(capacity);
+        energyCapacityHistory.add(capacity);
+        maintenanceHistory.add(maintenance1);
 
         if (energyHistory.size() == 1) energyHistory.add(energy);
-        if (capacityHistory.size() == 1) capacityHistory.add(capacity);
+        if (energyCapacityHistory.size() == 1) energyCapacityHistory.add(capacity);
+        if (maintenanceHistory.size() == 1) maintenanceHistory.add(maintenance1);
 
         int maxSamples = 40;
         if (energyHistory.size() > maxSamples) {
             energyHistory.removeInt(0);
-            capacityHistory.removeInt(0);
+            energyCapacityHistory.removeInt(0);
+            maintenanceHistory.removeInt(0);
         }
     }
 
@@ -44,7 +48,7 @@ public class EnergyNetworkScreen extends Screen {
         tickCounter++;
         if (tickCounter >= SAMPLE_INTERVAL_TICKS) {
             tickCounter = 0;
-            ClientPacketDistributor.sendToServer(new RequestEnergyNetworkSampleMessage(networkId));
+            ClientPacketDistributor.sendToServer(new RequestNetworkSampleMessage(networkId));
         }
     }
 
@@ -77,7 +81,7 @@ public class EnergyNetworkScreen extends Screen {
 
         int maxEnergy = 0;
         for (int e : energyHistory) maxEnergy = Math.max(maxEnergy, e);
-        for (int c : capacityHistory) maxEnergy = Math.max(maxEnergy, c);
+        for (int c : energyCapacityHistory) maxEnergy = Math.max(maxEnergy, c);
         if (maxEnergy <= 0) return;
 
         maxEnergy += 5; // padding
@@ -124,8 +128,8 @@ public class EnergyNetworkScreen extends Screen {
 
             int e0 = energyHistory.getInt(i - 1);
             int e1 = energyHistory.getInt(i);
-            int c0 = capacityHistory.getInt(i - 1);
-            int c1 = capacityHistory.getInt(i);
+            int c0 = energyCapacityHistory.getInt(i - 1);
+            int c1 = energyCapacityHistory.getInt(i);
 
             int yE0 = yBase + graphInnerH - 1 - (int) ((e0 / (float) maxEnergy) * (graphInnerH - 1));
             int yE1 = yBase + graphInnerH - 1 - (int) ((e1 / (float) maxEnergy) * (graphInnerH - 1));
