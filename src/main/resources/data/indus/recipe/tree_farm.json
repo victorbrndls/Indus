@@ -7,8 +7,12 @@
     "   "
   ],
   "key": {
-    "G": "minecraft:iron_block",
-    "W": "minecraft:iron_axe"
+    "G": {
+      "item": "minecraft:iron_block"
+    },
+    "W": {
+      "item": "minecraft:iron_axe"
+    }
   },
   "result": {
     "id": "indus:tree_farm",

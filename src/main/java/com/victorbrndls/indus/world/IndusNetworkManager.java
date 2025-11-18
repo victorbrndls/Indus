@@ -30,7 +30,7 @@ public class IndusNetworkManager extends SavedData {
 
     private final Long2ObjectOpenHashMap<IndusNetwork> networks = new Long2ObjectOpenHashMap<>();
 
-    private long nextId = 0;
+    private long nextId = 1;
 
     private static final String DATA_TAG = "indus.network";
 

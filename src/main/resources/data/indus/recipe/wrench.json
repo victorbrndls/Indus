@@ -2,20 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    " G ",
     " W ",
-    "   "
+    "WWW",
+    " W "
   ],
   "key": {
-    "G": {
-      "item": "minecraft:iron_block"
-    },
     "W": {
-      "item": "minecraft:iron_block"
+      "item": "minecraft:iron_pickaxe"
     }
   },
   "result": {
-    "id": "indus:quarry",
+    "id": "indus:wrench",
     "count": 1
   }
 }

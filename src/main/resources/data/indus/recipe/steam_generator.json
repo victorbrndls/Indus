@@ -7,8 +7,12 @@
     "   "
   ],
   "key": {
-    "G": "minecraft:iron_block",
-    "W": "minecraft:blast_furnace"
+    "G": {
+      "item": "minecraft:iron_block"
+    },
+    "W": {
+      "item": "minecraft:iron_block"
+    }
   },
   "result": {
     "id": "indus:steam_generator",

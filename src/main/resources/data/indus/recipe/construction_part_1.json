@@ -7,8 +7,12 @@
     "SSS"
   ],
   "key": {
-    "S": "indus:iron_plate",
-    "W": "indus:concrete_slab"
+    "S": {
+      "item": "indus:iron_plate"
+    },
+    "W": {
+      "item": "indus:concrete_slab"
+    }
   },
   "result": {
     "id": "indus:construction_part_1",

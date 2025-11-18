@@ -1,6 +1,5 @@
 package com.victorbrndls.indus.items;
 
-import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.mod.structure.IndusStructureHelper;
 import net.minecraft.world.entity.Entity;
@@ -28,14 +27,7 @@ public class IndusStructureItem extends BlockItem {
 
         if (!level.isClientSide()) return;
 
-        var structureCache = Indus.STRUCTURE_CACHE;
-
-        if (structureCache.shouldRequest(structure)) {
-            structureCache.onRequestMade(structure);
-
-            Indus.LOGGER.info("Requesting structure: {}", structure.name());
-            IndusStructureHelper.requestStructure(structure);
-        }
+        IndusStructureHelper.requestStructure(structure);
     }
 
     public IndusStructure getStructure() {

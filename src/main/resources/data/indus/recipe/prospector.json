@@ -7,7 +7,9 @@
     " W "
   ],
   "key": {
-    "W": "minecraft:iron_pickaxe"
+    "W": {
+      "item": "minecraft:iron_pickaxe"
+    }
   },
   "result": {
     "id": "indus:prospector",

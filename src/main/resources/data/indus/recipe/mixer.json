@@ -7,8 +7,12 @@
     "   "
   ],
   "key": {
-    "G": "minecraft:iron_block",
-    "W": "minecraft:cauldron"
+    "G": {
+      "item": "minecraft:iron_block"
+    },
+    "W": {
+      "item": "minecraft:iron_block"
+    }
   },
   "result": {
     "id": "indus:mixer",

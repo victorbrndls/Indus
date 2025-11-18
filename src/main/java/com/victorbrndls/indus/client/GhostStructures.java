@@ -34,8 +34,6 @@ public class GhostStructures {
 
     private final List<IndusStructure> ghosts = new ArrayList<>();
 
-    private static final RandomSource RANDOM = RandomSource.create();
-
     public void tick() {
         Item mainHandItem = Minecraft.getInstance().player.getMainHandItem().getItem();
         if (!(mainHandItem instanceof IndusStructureItem structureItem)) {

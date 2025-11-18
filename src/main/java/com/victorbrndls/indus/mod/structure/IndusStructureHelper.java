@@ -89,6 +89,8 @@ public class IndusStructureHelper {
     public static void requestStructure(IndusStructure structure) {
         if (!Indus.STRUCTURE_CACHE.shouldRequest(structure)) return;
         Indus.STRUCTURE_CACHE.onRequestMade(structure);
+
+        Indus.LOGGER.info("Requesting structure: {}", structure.name());
         PacketDistributor.sendToServer(new RequestStructureMessage(structure));
     }
 

@@ -32,7 +32,7 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         if ((level.getGameTime() % 80) != 0) return;
 
         if (networkId < 0) return;
-        var energyManager = IndusNetworkManager.get((ServerLevel) level);
+        var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         var handler = getRelativeItemHandler(level, OUTPUT_POS);
         if (handler == null) return;
@@ -42,11 +42,11 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         var remainder = ItemHandlerHelper.insertItem(handler, output, true);
         if (!remainder.isEmpty()) return;
 
-        var energy = energyManager.getEnergy(networkId);
+        var energy = networkManager.getEnergy(networkId);
         if (energy < ENERGY_CONSUMPTION) return;
 
         ItemHandlerHelper.insertItem(handler, output, false);
-        energyManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
+        networkManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
     }
 
     @Override

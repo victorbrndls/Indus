@@ -83,10 +83,10 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     protected void onAfterBuilt(Level level, BlockPos pos, BlockState state) {
-        var energyManager = IndusNetworkManager.get((ServerLevel) level);
+        var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         if (networkId <= 0) {
-            networkId = energyManager.getNetworkId();
+            networkId = networkManager.getNetworkId();
         }
     }
 
