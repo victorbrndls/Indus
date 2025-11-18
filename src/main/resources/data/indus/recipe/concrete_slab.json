@@ -7,9 +7,15 @@
     "SGS"
   ],
   "key": {
-    "S": "minecraft:sand",
-    "G": "minecraft:gravel",
-    "W": "minecraft:clay"
+    "S": {
+      "item": "minecraft:sand"
+    },
+    "G": {
+      "item": "minecraft:gravel"
+    },
+    "W": {
+      "item": "minecraft:clay"
+    }
   },
   "result": {
     "id": "indus:concrete_slab",

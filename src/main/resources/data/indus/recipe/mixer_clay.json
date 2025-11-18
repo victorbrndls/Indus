@@ -2,11 +2,15 @@
   "type": "indus:mixer",
   "inputs": [
     {
-      "ingredient": "minecraft:sand",
+      "ingredient": {
+        "item": "minecraft:sand"
+      },
       "count": 4
     },
     {
-      "ingredient": "indus:water_cell",
+      "ingredient": {
+        "item": "indus:water_cell"
+      },
       "count": 1
     }
   ],

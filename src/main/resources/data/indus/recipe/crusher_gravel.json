@@ -2,7 +2,9 @@
   "type": "indus:crusher",
   "inputs": [
     {
-      "ingredient": "minecraft:cobblestone",
+      "ingredient": {
+        "item": "minecraft:cobblestone"
+      },
       "count": 12
     }
   ],

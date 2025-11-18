@@ -2,15 +2,21 @@
   "type": "indus:mixer",
   "inputs": [
     {
-      "ingredient": "minecraft:sand",
+      "ingredient": {
+        "item": "minecraft:sand"
+      },
       "count": 4
     },
     {
-      "ingredient": "minecraft:gravel",
+      "ingredient": {
+        "item": "minecraft:gravel"
+      },
       "count": 4
     },
     {
-      "ingredient": "minecraft:clay",
+      "ingredient": {
+        "item": "minecraft:clay"
+      },
       "count": 1
     }
   ],

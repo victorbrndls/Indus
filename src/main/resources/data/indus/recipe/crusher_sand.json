@@ -2,7 +2,9 @@
   "type": "indus:crusher",
   "inputs": [
     {
-      "ingredient": "minecraft:gravel",
+      "ingredient": {
+        "item": "minecraft:gravel"
+      },
       "count": 12
     }
   ],
