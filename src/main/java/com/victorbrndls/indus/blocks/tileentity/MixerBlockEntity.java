@@ -8,8 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class MixerBlockEntity extends BaseStructureBlockEntity {
 
@@ -31,10 +29,10 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
 
-        ResourceHandler<ItemResource> input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
-        ResourceHandler<ItemResource> input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
-        ResourceHandler<ItemResource> input3Handler = getRelativeItemHandler(level, INPUT_3_POS);
-        ResourceHandler<ItemResource> outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
+        var input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
+        var input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
+        var input3Handler = getRelativeItemHandler(level, INPUT_3_POS);
+        var outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
         if (
                 input1Handler == null || input2Handler == null || input3Handler == null || outputHandler == null

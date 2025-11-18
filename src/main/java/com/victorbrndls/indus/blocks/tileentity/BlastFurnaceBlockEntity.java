@@ -5,13 +5,12 @@ import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 import java.util.Map;
 
@@ -41,48 +40,50 @@ public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 20) != 0) return;
 
-        ResourceHandler<ItemResource> fuelHandler = getRelativeItemHandler(level, FUEL_POS);
-        ResourceHandler<ItemResource> oreHandler = getRelativeItemHandler(level, ORE_POS);
-        ResourceHandler<ItemResource> outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
+        var fuelHandler = getRelativeItemHandler(level, FUEL_POS);
+        var oreHandler = getRelativeItemHandler(level, ORE_POS);
+        var outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
         if (fuelHandler == null || oreHandler == null || outputHandler == null) return;
 
         int chosenIndex = -1;
-        ItemResource chosenRes = null;
-        DeferredItem<Item> outDeferred = null;
+        Item outItem = null;
 
-        int size = oreHandler.size();
+        int size = oreHandler.getSlots();
         for (int i = 0; i < size; i++) {
-            long amt = oreHandler.getAmountAsLong(i);
-            if (amt < RATE) continue;
+            ItemStack stack = oreHandler.getStackInSlot(i);
+            if (stack.isEmpty() || stack.getCount() < RATE) continue;
 
-            ItemResource res = oreHandler.getResource(i);
-            DeferredItem<Item> mapped = RECIPES.get(res.getItem());
+            DeferredItem<Item> mapped = RECIPES.get(stack.getItem());
             if (mapped == null) continue;
 
             chosenIndex = i;
-            chosenRes = res;
-            outDeferred = mapped;
+            outItem = mapped.get();
             break;
         }
-        if (chosenIndex == -1) return;
+        if (chosenIndex == -1 || outItem == null) return;
 
-        Item outItem = outDeferred.get();
-
-        try (var tx = Transaction.open(null)) {
-            int fuelUsed = fuelHandler.extract(ItemResource.of(Items.COAL), 1, tx);
-            if (fuelUsed < 1) return;
-
-            int oreUsed = oreHandler.extract(chosenIndex, chosenRes, RATE, tx);
-            if (oreUsed < RATE) return;
-
-            int outInserted = outputHandler.insert(ItemResource.of(outItem), RATE, tx);
-            if (outInserted == RATE) {
-                tx.commit();
-            } else {
-                tx.close();
+        int coalSlot = -1;
+        int fuelSlots = fuelHandler.getSlots();
+        for (int i = 0; i < fuelSlots; i++) {
+            ItemStack stack = fuelHandler.getStackInSlot(i);
+            if (stack.is(Items.COAL) && stack.getCount() >= 1) {
+                coalSlot = i;
+                break;
             }
         }
+        if (coalSlot == -1) return;
+
+        ItemStack toInsert = new ItemStack(outItem, RATE);
+        ItemStack remainder = ItemHandlerHelper.insertItem(outputHandler, toInsert, true);
+        if (!remainder.isEmpty()) {
+            // not enough space for full RATE, abort
+            return;
+        }
+
+        fuelHandler.extractItem(coalSlot, 1, false);
+        oreHandler.extractItem(chosenIndex, RATE, false);
+        ItemHandlerHelper.insertItem(outputHandler, new ItemStack(outItem, RATE), false);
     }
 
     @Override

@@ -11,12 +11,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class WrenchItem extends Item {
 
@@ -42,10 +41,11 @@ public class WrenchItem extends Item {
                     context.getPlayer().displayClientMessage(Component.literal("Network ID: " + networkId), false);
                 }
             } else {
-                tag.getLong("network_id").ifPresent(networkId -> {
+                var networkId = tag.getLong("network_id");
+                if (networkId > 0) {
                     be.setNetworkId(networkId);
                     context.getPlayer().displayClientMessage(Component.literal("Assigned Network ID: " + networkId), false);
-                });
+                }
             }
 
             return InteractionResult.CONSUME;
@@ -55,16 +55,19 @@ public class WrenchItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+
         var networkId = getCompoundTag(stack).getLong("network_id");
 
-        networkId.ifPresent(id -> {
-            tooltipAdder.accept(Component.literal("Stored Network ID: " + id)
-                    .withStyle(ChatFormatting.GREEN));
-        });
+        if (networkId > 0) {
+            tooltipComponents.add(Component.literal("Network ID: " + networkId)
+                    .withStyle(ChatFormatting.GREEN)
+            );
+        }
 
-        tooltipAdder.accept(Component.literal("Shift-Right click to get network id from a machine."));
-        tooltipAdder.accept(Component.literal("Right click to assign a network id to a machine."));
+        tooltipComponents.add(Component.literal("Shift-Right click to get network id from a machine."));
+        tooltipComponents.add(Component.literal("Right click to assign a network id to a machine."));
     }
 
     private static @NotNull CompoundTag getCompoundTag(ItemStack stack) {

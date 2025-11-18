@@ -3,13 +3,11 @@ package com.victorbrndls.indus.items;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.mod.structure.IndusStructureHelper;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Nullable;
 
 public class IndusStructureItem extends BlockItem {
 
@@ -25,8 +23,9 @@ public class IndusStructureItem extends BlockItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
-        super.inventoryTick(stack, level, entity, slot);
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+
         if (!level.isClientSide()) return;
 
         var structureCache = Indus.STRUCTURE_CACHE;
@@ -38,7 +37,6 @@ public class IndusStructureItem extends BlockItem {
             IndusStructureHelper.requestStructure(structure);
         }
     }
-
 
     public IndusStructure getStructure() {
         return structure;

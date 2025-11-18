@@ -20,7 +20,8 @@ public class IndusClientEvents {
     }
 
     @SubscribeEvent
-    public static void onRenderWorld(RenderLevelStageEvent.AfterParticles event) {
+    public static void onRenderWorld(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
         if (!IndusClient.GHOST_STRUCTURES.shouldRender()) return;
 
         PoseStack ms = event.getPoseStack();

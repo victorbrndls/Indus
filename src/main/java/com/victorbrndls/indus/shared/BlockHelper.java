@@ -7,8 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockHelper {
@@ -26,14 +25,15 @@ public class BlockHelper {
     }
 
     @Nullable
-    public static ResourceHandler<ItemResource> getItemHandlerAt(Level level, BlockPos pos) {
+    public static IItemHandler getItemHandlerAt(Level level, BlockPos pos) {
         if (!level.isLoaded(pos)) return null;
 
         BlockState ciBs = level.getBlockState(pos);
         BlockEntity ciTe = level.getBlockEntity(pos);
         if (ciTe == null) return null;
 
-        return level.getCapability(Capabilities.Item.BLOCK, pos, ciBs, ciTe, null);
+
+        return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, ciBs, ciTe, null);
     }
 
 }

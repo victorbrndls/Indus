@@ -6,11 +6,10 @@ import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class PumpBlockEntity extends BaseStructureBlockEntity {
 
@@ -35,18 +34,19 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         if (networkId < 0) return;
         var energyManager = IndusNetworkManager.get((ServerLevel) level);
 
-        ResourceHandler<ItemResource> handler = getRelativeItemHandler(level, OUTPUT_POS);
+        var handler = getRelativeItemHandler(level, OUTPUT_POS);
         if (handler == null) return;
 
-        try (Transaction tx = Transaction.open(null)) {
-            long inserted = handler.insert(ItemResource.of(IndusItems.WATER_CELL.get()), RATE, tx);
-            if (inserted == RATE) {
-                var consumed = energyManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
-                if (consumed) {
-                    tx.commit();
-                }
-            }
-        }
+        ItemStack output = new ItemStack(IndusItems.WATER_CELL.get(), RATE);
+
+        var remainder = ItemHandlerHelper.insertItem(handler, output, true);
+        if (!remainder.isEmpty()) return;
+
+        var energy = energyManager.getEnergy(networkId);
+        if (energy < ENERGY_CONSUMPTION) return;
+
+        ItemHandlerHelper.insertItem(handler, output, false);
+        energyManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
     }
 
     @Override

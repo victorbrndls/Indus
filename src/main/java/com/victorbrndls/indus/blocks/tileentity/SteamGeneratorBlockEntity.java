@@ -1,20 +1,16 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
-import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
@@ -52,23 +48,38 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
         if ((level.getGameTime() % 20) != 0) return;
 
-        ResourceHandler<ItemResource> fuelHandler = getRelativeItemHandler(level, FUEL_POS);
-        ResourceHandler<ItemResource> waterHandler = getRelativeItemHandler(level, WATER_POS);
+        var fuelHandler = getRelativeItemHandler(level, FUEL_POS);
+        var waterHandler = getRelativeItemHandler(level, WATER_POS);
         if (fuelHandler == null || waterHandler == null) return;
 
-        try (var tx = Transaction.open(null)) {
-            int fuelUsed = fuelHandler.extract(ItemResource.of(Items.COAL), 1, tx);
-            if (fuelUsed < 1) return;
-
-            int waterUsed = waterHandler.extract(ItemResource.of(IndusItems.WATER_CELL.get()), 1, tx);
-            if (waterUsed < 1) return;
-
-            int addedEnergy = networkManager.addEnergy(networkId, ENERGY_RATE);
-            if (addedEnergy <= 0) return;
-
-            remainingEnergy = ENERGY_RATE - addedEnergy;
-            tx.commit();
+        // Find a coal stack
+        int fuelSlot = -1;
+        for (int i = 0; i < fuelHandler.getSlots(); i++) {
+            if (fuelHandler.getStackInSlot(i).is(Items.COAL)) {
+                fuelSlot = i;
+                break;
+            }
         }
+        if (fuelSlot < 0) return;
+
+        // Find a water cell stack
+        int waterSlot = -1;
+        for (int i = 0; i < waterHandler.getSlots(); i++) {
+            if (waterHandler.getStackInSlot(i).is(IndusItems.WATER_CELL.get())) {
+                waterSlot = i;
+                break;
+            }
+        }
+        if (waterSlot < 0) return;
+
+        // Try to add energy to the network. If the network is full, do nothing.
+        int addedEnergy = networkManager.addEnergy(networkId, ENERGY_RATE);
+        if (addedEnergy <= 0) return;
+
+        remainingEnergy = ENERGY_RATE - addedEnergy;
+
+        fuelHandler.extractItem(fuelSlot, 1, false);
+        waterHandler.extractItem(waterSlot, 1, false);
     }
 
     @Override
@@ -98,15 +109,15 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        output.store("remainingEnergy", Codec.INT, remainingEnergy);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putInt("remainingEnergy", remainingEnergy);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        input.getInt("remainingEnergy").ifPresent(i -> remainingEnergy = i);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        remainingEnergy = tag.getInt("remainingEnergy");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
-import com.mojang.serialization.Codec;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.gui.BaseStructureMenu;
 import com.victorbrndls.indus.items.MaintenanceTier;
@@ -14,7 +13,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,11 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.TagValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import static com.victorbrndls.indus.blocks.TreeFarmBlock.FACING;
@@ -135,7 +129,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
         return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 0, 0, 1);
     }
 
-    protected ResourceHandler<ItemResource> getRelativeItemHandler(Level level, BlockPos relativePos) {
+    protected IItemHandler getRelativeItemHandler(Level level, BlockPos relativePos) {
         var targetPos = BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), relativePos);
         return BlockHelper.getItemHandlerAt(level, targetPos);
     }
@@ -205,41 +199,40 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
-        output.store("state", Codec.INT, state.ordinal());
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putInt("state", state.ordinal());
 
         if (state == IndusStructureState.IN_CONSTRUCTION) {
-            output.store("lastBuiltIndex", Codec.INT, lastBuiltIndex);
+            tag.putInt("lastBuiltIndex", lastBuiltIndex);
         } else if (state == IndusStructureState.BUILT) {
-            output.store("networkId", Codec.LONG, networkId);
+            tag.putLong("networkId", networkId);
         }
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
-        super.loadAdditional(input);
-        input.read("state", Codec.INT)
-                .ifPresent(i -> state = IndusStructureState.values()[i]);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        state = IndusStructureState.values()[tag.getInt("state")];
 
         if (state == IndusStructureState.IN_CONSTRUCTION) {
-            input.read("lastBuiltIndex", Codec.INT).ifPresent(i -> lastBuiltIndex = i);
+            lastBuiltIndex = tag.getInt("lastBuiltIndex");
         } else if (state == IndusStructureState.BUILT) {
-            input.read("networkId", Codec.LONG).ifPresent(l -> networkId = l);
+            networkId = tag.getLong("networkId");
         }
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        super.handleUpdateTag(tag, lookupProvider);
+        loadAdditional(tag, lookupProvider);
     }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        TagValueOutput valueOutput = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, provider);
-        saveAdditional(valueOutput);
-        return valueOutput.buildResult();
-    }
-
-    @Override
-    public void handleUpdateTag(ValueInput input) {
-        super.handleUpdateTag(input);
-        loadAdditional(input);
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag, provider);
+        return tag;
     }
 
     @Override

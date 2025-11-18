@@ -2,16 +2,13 @@ package com.victorbrndls.indus.items;
 
 import com.victorbrndls.indus.shared.OreLocator;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.context.UseOnContext;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class ProspectorItem extends Item {
 
@@ -20,7 +17,10 @@ public class ProspectorItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult useOn(UseOnContext context) {
+        var level = context.getLevel();
+        var player = context.getPlayer();
+
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         var pos = player.blockPosition();
@@ -35,7 +35,7 @@ public class ProspectorItem extends Item {
         }
 
         player.displayClientMessage(
-                Component.literal("You found a " + ore.getName().getString() + " vein!"),
+                Component.literal("You found a " + ore.getDescription() + " vein!"),
                 false
         );
 
@@ -43,7 +43,8 @@ public class ProspectorItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-        tooltipAdder.accept(Component.literal("Right click to prospect for ores"));
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.literal("Right click to prospect for ores"));
     }
+
 }

@@ -5,9 +5,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.items.MaintenanceTier;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.SavedDataType;
 
 import java.util.ArrayList;
 
@@ -25,15 +27,15 @@ public class IndusNetworkManager extends SavedData {
             })
     );
 
-    public static final SavedDataType<IndusNetworkManager> ID = new SavedDataType<>(
-            "indus/energy",
-            () -> new IndusNetworkManager(1, new Long2ObjectOpenHashMap<>()),
-            CODEC
-    );
 
     private final Long2ObjectOpenHashMap<IndusNetwork> networks = new Long2ObjectOpenHashMap<>();
 
-    private long nextId;
+    private long nextId = 0;
+
+    private static final String DATA_TAG = "indus.network";
+
+    private IndusNetworkManager() {
+    }
 
     private IndusNetworkManager(long nextId, Long2ObjectOpenHashMap<IndusNetwork> networks) {
         this.nextId = nextId;
@@ -41,7 +43,11 @@ public class IndusNetworkManager extends SavedData {
     }
 
     public static IndusNetworkManager get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(ID);
+        return level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(IndusNetworkManager::new, (tag, registries) -> {
+            var manager = new IndusNetworkManager();
+            manager.load(tag);
+            return manager;
+        }), DATA_TAG);
     }
 
     public long getNetworkId() {
@@ -56,6 +62,10 @@ public class IndusNetworkManager extends SavedData {
         }
 
         return network;
+    }
+
+    public int getEnergy(long id) {
+        return getNetwork(id).getEnergy();
     }
 
     public int addEnergy(long id, int v) {
@@ -136,4 +146,27 @@ public class IndusNetworkManager extends SavedData {
         return 0;
     }
 
+    @Override
+    public CompoundTag save(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        return CODEC.encodeStart(NbtOps.INSTANCE, this)
+                .resultOrPartial(err -> Indus.LOGGER.error("Failed to save IndusNetworkManager: {}", err))
+                .filter(CompoundTag.class::isInstance)
+                .map(CompoundTag.class::cast)
+                .map(encoded -> {
+                    encoded.merge(encoded);
+                    return encoded;
+                })
+                .orElse(compoundTag);
+    }
+
+    private void load(CompoundTag tag) {
+        CODEC.decode(NbtOps.INSTANCE, tag)
+                .resultOrPartial(err -> Indus.LOGGER.error("Failed to load IndusNetworkManager: {}", err))
+                .ifPresent(pair -> {
+                    IndusNetworkManager loaded = pair.getFirst();
+                    this.nextId = loaded.nextId;
+                    this.networks.clear();
+                    this.networks.putAll(loaded.networks);
+                });
+    }
 }

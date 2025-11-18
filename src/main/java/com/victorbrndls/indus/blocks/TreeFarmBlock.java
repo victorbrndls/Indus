@@ -36,7 +36,7 @@ public class TreeFarmBlock extends BaseStructureBlock {
             level.getBlockEntity(pos, IndusTileEntities.TREE_FARM.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

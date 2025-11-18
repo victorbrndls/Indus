@@ -6,7 +6,6 @@ import com.victorbrndls.indus.mod.structure.IndusStructureState;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -68,7 +67,7 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+        graphics.blit(BACKGROUND, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
 
     @Override
@@ -82,11 +81,11 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
         switch (menu.getStructureState()) {
             case NOT_READY -> {
                 var pose = g.pose();
-                pose.pushMatrix();
-                pose.translate(left + 8, top + 18);
-                pose.scale(0.75f, 0.75f);
+                pose.pushPose();
+                pose.translate(left + 8, top + 18, 0);
+                pose.scale(0.75f, 0.75f, 1f);
                 g.drawString(font, "Put a container on top with items", 0, 0, 0xFF292929, false);
-                pose.popMatrix();
+                pose.popPose();
 
                 renderRequirements(g, left + 8, top + 30);
             }
@@ -142,11 +141,11 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
             int iconX = x;
             int iconY = y + row * 14;
 
-            pose.pushMatrix();
-            pose.translate(iconX, iconY);
+            pose.pushPose();
+            pose.translate(iconX, iconY, 0);
 
             float scale = 0.70f;
-            pose.scale(scale, scale);
+            pose.scale(scale, scale, 1);
 
             g.renderItem(required, 0, 0);
 
@@ -157,7 +156,7 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
             Component line = Component.literal(have + "/" + need + " - ").append(required.getHoverName());
             g.drawString(this.font, line, 15 + 4, 4, color, false);
 
-            pose.popMatrix();
+            pose.popPose();
             row++;
         }
     }

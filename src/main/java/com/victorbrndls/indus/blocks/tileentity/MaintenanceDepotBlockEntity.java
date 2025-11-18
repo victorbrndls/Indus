@@ -10,9 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.VoidingResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 
 public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
 
@@ -20,7 +19,7 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos INPUT_2_POS = new BlockPos(7, 1, -3);
     private final static BlockPos INPUT_3_POS = new BlockPos(7, 1, -2);
 
-    private final static ResourceHandler<ItemResource> voidingOutput = new VoidingResourceHandler<>(ItemResource.EMPTY);
+    private final static IItemHandler voidingOutput = EmptyItemHandler.INSTANCE;
 
     private final static int MAINTENANCE_RATE = 10;
 

@@ -36,7 +36,7 @@ public class CrusherBlock extends BaseStructureBlock {
             level.getBlockEntity(pos, IndusTileEntities.CRUSHER.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

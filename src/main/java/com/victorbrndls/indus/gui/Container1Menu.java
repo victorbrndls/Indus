@@ -18,7 +18,17 @@ public class Container1Menu extends AbstractContainerMenu {
 
         addSlot(new Slot(entity.getContainer(), 0, 80, 38));
 
-        addStandardInventorySlots(playerInventory, 8, 88);
+        if (playerInventory != null) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 9; j++) {
+                    addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 88));
+                }
+            }
+
+            for (int k = 0; k < 9; k++) {
+                addSlot(new Slot(playerInventory, k, 8 + k * 18, 142 + 88));
+            }
+        }
     }
 
     @Override

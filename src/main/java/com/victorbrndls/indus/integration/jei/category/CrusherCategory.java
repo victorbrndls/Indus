@@ -5,7 +5,7 @@ import com.victorbrndls.indus.crafting.CrusherRecipe;
 import com.victorbrndls.indus.integration.jei.Base4Category;
 import com.victorbrndls.indus.integration.jei.JEIPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,7 +26,7 @@ public class CrusherCategory extends Base4Category<CrusherRecipe> {
     }
 
     @Override
-    public IRecipeType<CrusherRecipe> getRecipeType() {
+    public RecipeType<CrusherRecipe> getRecipeType() {
         return JEIPlugin.CRUSHER_CATEGORY;
     }
 }

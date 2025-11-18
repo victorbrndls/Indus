@@ -61,7 +61,7 @@ public class IndusStructureBuilder {
         state = rotateState(level, relRot, state, toRotation(360 - orientation.rotationDegrees()));
 
         if (!serverLevel.isLoaded(worldPos)) return index;
-        if (!serverLevel.isInsideBuildHeight(worldPos.getY())) return index + 1;
+        if (worldPos.getY() > serverLevel.getMaxBuildHeight()) return index + 1;
 
         serverLevel.setBlock(worldPos, state, Block.UPDATE_ALL);
 
@@ -95,7 +95,7 @@ public class IndusStructureBuilder {
         BlockPos worldPos = pos.offset(offset).offset(relRot);
 
         if (!serverLevel.isLoaded(worldPos)) return index;
-        if (!serverLevel.isInsideBuildHeight(worldPos.getY())) return index + 1;
+        if (worldPos.getY() > serverLevel.getMaxBuildHeight()) return index + 1;
 
         var existingBlock = level.getBlockState(worldPos);
 

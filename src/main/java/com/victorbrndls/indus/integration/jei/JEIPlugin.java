@@ -9,7 +9,7 @@ import com.victorbrndls.indus.integration.jei.category.MaintenanceDepotCategory;
 import com.victorbrndls.indus.integration.jei.category.MixerCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
-    public static final IRecipeType<MixerRecipe> MIXER_CATEGORY = IRecipeType.create(Indus.MODID, "mixer", MixerRecipe.class);
-    public static final IRecipeType<CrusherRecipe> CRUSHER_CATEGORY = IRecipeType.create(Indus.MODID, "crusher", CrusherRecipe.class);
-    public static final IRecipeType<AssemblerRecipe> ASSEMBLER_CATEGORY = IRecipeType.create(Indus.MODID, "assembler", AssemblerRecipe.class);
-    public static final IRecipeType<MaintenanceDepotRecipe> MAINTENANCE_DEPOT_CATEGORY = IRecipeType.create(Indus.MODID, "maintenance_depot", MaintenanceDepotRecipe.class);
+    public static final RecipeType<MixerRecipe> MIXER_CATEGORY = RecipeType.create(Indus.MODID, "mixer", MixerRecipe.class);
+    public static final RecipeType<CrusherRecipe> CRUSHER_CATEGORY = RecipeType.create(Indus.MODID, "crusher", CrusherRecipe.class);
+    public static final RecipeType<AssemblerRecipe> ASSEMBLER_CATEGORY = RecipeType.create(Indus.MODID, "assembler", AssemblerRecipe.class);
+    public static final RecipeType<MaintenanceDepotRecipe> MAINTENANCE_DEPOT_CATEGORY = RecipeType.create(Indus.MODID, "maintenance_depot", MaintenanceDepotRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -31,10 +31,10 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addCraftingStation(MIXER_CATEGORY, new ItemStack(IndusBlocks.MIXER.get()));
-        registration.addCraftingStation(CRUSHER_CATEGORY, new ItemStack(IndusBlocks.CRUSHER.get()));
-        registration.addCraftingStation(ASSEMBLER_CATEGORY, new ItemStack(IndusBlocks.ASSEMBLER_1.get()));
-        registration.addCraftingStation(MAINTENANCE_DEPOT_CATEGORY, new ItemStack(IndusBlocks.MAINTENANCE_DEPOT.get()));
+        registration.addRecipeCatalysts(MIXER_CATEGORY, new ItemStack(IndusBlocks.MIXER.get()));
+        registration.addRecipeCatalysts(CRUSHER_CATEGORY, new ItemStack(IndusBlocks.CRUSHER.get()));
+        registration.addRecipeCatalysts(ASSEMBLER_CATEGORY, new ItemStack(IndusBlocks.ASSEMBLER_1.get()));
+        registration.addRecipeCatalysts(MAINTENANCE_DEPOT_CATEGORY, new ItemStack(IndusBlocks.MAINTENANCE_DEPOT.get()));
     }
 
     @Override

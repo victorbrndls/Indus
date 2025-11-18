@@ -10,8 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class CrusherBlockEntity extends BaseStructureBlockEntity {
 
@@ -37,8 +35,8 @@ public class CrusherBlockEntity extends BaseStructureBlockEntity {
         if (networkId < 0) return;
         var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
-        ResourceHandler<ItemResource> inputHandler = getRelativeItemHandler(level, INPUT_POS);
-        ResourceHandler<ItemResource> outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
+        var inputHandler = getRelativeItemHandler(level, INPUT_POS);
+        var outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
         if (inputHandler == null || outputHandler == null) return;
 

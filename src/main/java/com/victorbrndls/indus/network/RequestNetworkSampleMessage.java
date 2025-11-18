@@ -8,6 +8,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -22,7 +23,7 @@ public record RequestNetworkSampleMessage(
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, RequestNetworkSampleMessage> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.LONG, RequestNetworkSampleMessage::networkId,
+            ByteBufCodecs.VAR_LONG, RequestNetworkSampleMessage::networkId,
             RequestNetworkSampleMessage::new
     );
 
@@ -34,7 +35,7 @@ public record RequestNetworkSampleMessage(
     public static void handle(RequestNetworkSampleMessage message, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             var sender = (ServerPlayer) ctx.player();
-            var level = sender.level();
+            var level = (ServerLevel) sender.level();
 
             IndusNetworkManager networkManager = IndusNetworkManager.get(level);
             var network = networkManager.getNetwork(message.networkId);

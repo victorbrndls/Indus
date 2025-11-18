@@ -6,12 +6,11 @@ import com.victorbrndls.indus.shared.OreLocator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class QuarryBlockEntity extends BaseStructureBlockEntity {
@@ -59,16 +58,13 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
 
-        ResourceHandler<ItemResource> handler = getRelativeItemHandler(level, OUTPUT_POS);
+        var handler = getRelativeItemHandler(level, OUTPUT_POS);
         if (handler == null) return;
 
-        try (Transaction tx = Transaction.open(null)) {
-            var resource = getResource();
-            if (resource != null) {
-                long inserted = handler.insert(ItemResource.of(resource), 1, tx);
-                if (inserted == 1) tx.commit();
-            }
-        }
+        var resource = getResource();
+        if (resource == null) return;
+
+        ItemHandlerHelper.insertItem(handler, new ItemStack(resource, 1), false);
     }
 
     @Override

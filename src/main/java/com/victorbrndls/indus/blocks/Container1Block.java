@@ -32,7 +32,7 @@ public class Container1Block extends BaseEntityBlock {
             level.getBlockEntity(pos, IndusTileEntities.CONTAINER_1.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

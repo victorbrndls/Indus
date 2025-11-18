@@ -37,7 +37,7 @@ public class MaintenanceDepotBlock extends BaseStructureBlock {
             level.getBlockEntity(pos, IndusTileEntities.MAINTENANCE_DEPOT.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

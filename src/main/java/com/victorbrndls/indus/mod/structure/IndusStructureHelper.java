@@ -11,7 +11,7 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -89,7 +89,7 @@ public class IndusStructureHelper {
     public static void requestStructure(IndusStructure structure) {
         if (!Indus.STRUCTURE_CACHE.shouldRequest(structure)) return;
         Indus.STRUCTURE_CACHE.onRequestMade(structure);
-        ClientPacketDistributor.sendToServer(new RequestStructureMessage(structure));
+        PacketDistributor.sendToServer(new RequestStructureMessage(structure));
     }
 
     public static IndusStructureOrientation getOrientation(IndusStructure structure, Direction direction) {

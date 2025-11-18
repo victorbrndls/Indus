@@ -37,7 +37,7 @@ public class QuarryBlock extends BaseStructureBlock {
             level.getBlockEntity(pos, IndusTileEntities.QUARRY.get())
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
-        return InteractionResult.SUCCESS_SERVER;
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

@@ -5,7 +5,7 @@ import com.victorbrndls.indus.crafting.AssemblerRecipe;
 import com.victorbrndls.indus.integration.jei.Base4Category;
 import com.victorbrndls.indus.integration.jei.JEIPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,7 +26,7 @@ public class AssemblerCategory extends Base4Category<AssemblerRecipe> {
     }
 
     @Override
-    public IRecipeType<AssemblerRecipe> getRecipeType() {
+    public RecipeType<AssemblerRecipe> getRecipeType() {
         return JEIPlugin.ASSEMBLER_CATEGORY;
     }
 }

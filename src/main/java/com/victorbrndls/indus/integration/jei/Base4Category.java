@@ -44,19 +44,19 @@ public abstract class Base4Category<T extends BaseCustomRecipe> implements IReci
         var ingredients = recipe.inputs();
 
         if (ingredients.size() > 0) {
-            i1.add(new ItemStack(ingredients.get(0).ingredient().getValues().get(0).value(), ingredients.get(0).count()));
+            i1.addItemStack(ingredients.get(0).ingredient().getItems()[0].copyWithCount(ingredients.get(0).count()));
         }
         if (ingredients.size() > 1) {
-            i2.add(new ItemStack(ingredients.get(1).ingredient().getValues().get(0).value(), ingredients.get(1).count()));
+            i2.addItemStack(ingredients.get(1).ingredient().getItems()[0].copyWithCount(ingredients.get(1).count()));
         }
         if (ingredients.size() > 2) {
-            i3.add(new ItemStack(ingredients.get(2).ingredient().getValues().get(0).value(), ingredients.get(2).count()));
+            i3.addItemStack(ingredients.get(2).ingredient().getItems()[0].copyWithCount(ingredients.get(2).count()));
         }
         if (ingredients.size() > 3) {
-            i4.add(new ItemStack(ingredients.get(3).ingredient().getValues().get(0).value(), ingredients.get(3).count()));
+            i4.addItemStack(ingredients.get(3).ingredient().getItems()[0].copyWithCount(ingredients.get(3).count()));
         }
 
-        o1.add(recipe.result());
+        o1.addItemStack(recipe.result());
     }
 
     @Override

@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class IndusNetworkScreen extends Screen {
 
@@ -54,7 +54,7 @@ public class IndusNetworkScreen extends Screen {
         tickCounter++;
         if (tickCounter >= SAMPLE_INTERVAL_TICKS) {
             tickCounter = 0;
-            ClientPacketDistributor.sendToServer(new RequestNetworkSampleMessage(networkId));
+            PacketDistributor.sendToServer(new RequestNetworkSampleMessage(networkId));
         }
     }
 
@@ -121,7 +121,7 @@ public class IndusNetworkScreen extends Screen {
         int yBase = graphY + 1;
 
         gfx.fill(graphX, graphY, graphX + graphW, graphY + graphH, 0xAA000000);
-        gfx.submitOutline(graphX, graphY, graphW, graphH, 0xFFFFFFFF);
+        gfx.renderOutline(graphX, graphY, graphW, graphH, 0xFFFFFFFF);
 
         int tickCount = 4;
         for (int i = 0; i < tickCount; i++) {

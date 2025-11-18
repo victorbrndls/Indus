@@ -3,10 +3,8 @@ package com.victorbrndls.indus.blocks;
 import com.victorbrndls.indus.blocks.tileentity.BaseStructureBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -55,7 +53,7 @@ public abstract class BaseStructureBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player.getMainHandItem().is(Items.BEDROCK)) {
             if (!level.isClientSide()) {
                 if (level.getBlockEntity(pos) instanceof BaseStructureBlockEntity be) {
@@ -66,7 +64,7 @@ public abstract class BaseStructureBlock extends BaseEntityBlock {
             return InteractionResult.FAIL;
         }
 
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Nullable

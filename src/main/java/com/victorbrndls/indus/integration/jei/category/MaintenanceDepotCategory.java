@@ -5,7 +5,7 @@ import com.victorbrndls.indus.crafting.MaintenanceDepotRecipe;
 import com.victorbrndls.indus.integration.jei.Base4Category;
 import com.victorbrndls.indus.integration.jei.JEIPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,7 +26,7 @@ public class MaintenanceDepotCategory extends Base4Category<MaintenanceDepotReci
     }
 
     @Override
-    public IRecipeType<MaintenanceDepotRecipe> getRecipeType() {
+    public RecipeType<MaintenanceDepotRecipe> getRecipeType() {
         return JEIPlugin.MAINTENANCE_DEPOT_CATEGORY;
     }
 }
