@@ -1,6 +1,5 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
-import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.items.MaintenanceTier;
@@ -19,7 +18,8 @@ public class CrusherBlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos INPUT_POS = new BlockPos(3, 1, -6);
     private final static BlockPos OUTPUT_POS = new BlockPos(3, 1, 0);
 
-    private final static int MAINTENANCE_RATE = 1;
+    private final static int ENERGY_CONSUMPTION = 10;
+    private final static int MAINTENANCE_CONSUMPTION = 1;
 
     public CrusherBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.CRUSHER.get(), pos, state);
@@ -34,6 +34,9 @@ public class CrusherBlockEntity extends BaseStructureBlockEntity {
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
 
+        if (networkId < 0) return;
+        var networkManager = IndusNetworkManager.get((ServerLevel) level);
+
         ResourceHandler<ItemResource> inputHandler = getRelativeItemHandler(level, INPUT_POS);
         ResourceHandler<ItemResource> outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
@@ -46,8 +49,14 @@ public class CrusherBlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_RATE);
+        var fits = IndusRecipeHelper.fits(outputHandler, recipe);
+        if (!fits) return;
+
+        var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_CONSUMPTION);
         if (!canRun) return;
+
+        var consumedEnergy = networkManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
+        if (!consumedEnergy) return;
 
         IndusRecipeHelper.craftRecipe(
                 recipe,

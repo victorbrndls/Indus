@@ -4,6 +4,7 @@ import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +19,8 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos INPUT_4_POS = new BlockPos(5, 0, -5);
     private final static BlockPos OUTPUT_POS = new BlockPos(5, 0, 0);
 
-    private final static int MAINTENANCE_RATE = 2;
+    private final static int ENERGY_CONSUMPTION = 10;
+    private final static int MAINTENANCE_CONSUMPTION = 2;
 
     public Assembler1BlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.ASSEMBLER_1.get(), pos, state);
@@ -32,6 +34,9 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
+
+        if (networkId < 0) return;
+        var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         var input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
         var input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
@@ -54,8 +59,14 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_RATE);
+        var fits = IndusRecipeHelper.fits(outputHandler, recipe);
+        if (!fits) return;
+
+        var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_CONSUMPTION);
         if (!canRun) return;
+
+        var consumedEnergy = networkManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
+        if (!consumedEnergy) return;
 
         IndusRecipeHelper.craftRecipe(
                 recipe,

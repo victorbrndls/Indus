@@ -107,6 +107,13 @@ public class IndusRecipeHelper {
         return need;
     }
 
+    public static boolean fits(ResourceHandler<ItemResource> out, BaseCustomRecipe r) {
+        try (var tx = Transaction.open(null)) {
+            ItemStack result = r.result();
+            return out.insert(ItemResource.of(result), result.getCount(), tx) > 0;
+        }
+    }
+
     public static boolean insertAll(ResourceHandler<ItemResource> out, ItemStack stack, TransactionContext tx) {
         return out.insert(ItemResource.of(stack), stack.getCount(), tx) == stack.getCount();
     }
