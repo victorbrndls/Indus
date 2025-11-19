@@ -126,7 +126,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
     }
 
     public BlockPos inputPos() {
-        return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 0, 0, 1);
+        return BlockHelper.offsetFrontFacing(getBlockPos(), getBlockState(), 0, 1, 0);
     }
 
     protected IItemHandler getRelativeItemHandler(Level level, BlockPos relativePos) {

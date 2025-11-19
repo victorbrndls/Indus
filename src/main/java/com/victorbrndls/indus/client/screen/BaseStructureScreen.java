@@ -84,7 +84,7 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
                 pose.pushPose();
                 pose.translate(left + 8, top + 18, 0);
                 pose.scale(0.75f, 0.75f, 1f);
-                g.drawString(font, "Put a container on top with items", 0, 0, 0xFF292929, false);
+                g.drawString(font, "Put a container to the right with items", 0, 0, 0xFF292929, false);
                 pose.popPose();
 
                 renderRequirements(g, left + 8, top + 30);

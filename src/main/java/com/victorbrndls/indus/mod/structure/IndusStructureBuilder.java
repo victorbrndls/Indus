@@ -3,6 +3,7 @@ package com.victorbrndls.indus.mod.structure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -64,6 +65,14 @@ public class IndusStructureBuilder {
         if (worldPos.getY() > serverLevel.getMaxBuildHeight()) return index + 1;
 
         serverLevel.setBlock(worldPos, state, Block.UPDATE_ALL);
+        serverLevel.playSound(
+                null,
+                worldPos,
+                state.getSoundType(level, worldPos, null).getPlaceSound(),
+                SoundSource.BLOCKS,
+                1.0F,
+                1.0F
+        );
 
         if (states.get(arrayIndex).isAir()) {
             // If we placed air, continue immediately
@@ -107,6 +116,15 @@ public class IndusStructureBuilder {
             return destroy(info, level, pos, direction, index + 1);
         } else {
             serverLevel.setBlock(worldPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+            serverLevel.playSound(
+                    null,
+                    worldPos,
+                    existingBlock.getSoundType(level, worldPos, null).getBreakSound(),
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    1.0F
+            );
+
             return index + 1;
         }
     }

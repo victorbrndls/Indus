@@ -35,7 +35,7 @@ public class ProspectorItem extends Item {
         }
 
         player.displayClientMessage(
-                Component.literal("You found a " + ore.getDescription() + " vein!"),
+                Component.literal("You found a " + ore.getDescription().getString() + " vein!"),
                 false
         );
 
