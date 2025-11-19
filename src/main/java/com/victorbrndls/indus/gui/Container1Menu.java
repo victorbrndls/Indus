@@ -32,8 +32,42 @@ public class Container1Menu extends AbstractContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int slotId) {
-        return ItemStack.EMPTY;
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack tmpStack = slot.getItem();
+            itemstack = tmpStack.copy();
+            if (index == 0) {
+                if (!this.moveItemStackTo(tmpStack, 1, 37, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(tmpStack, 0, 1, false)) {
+                if (index < 28) {
+                    if (!this.moveItemStackTo(tmpStack, 28, 37, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < 37) {
+                    if (!this.moveItemStackTo(tmpStack, 1, 28, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            }
+
+            if (tmpStack.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (tmpStack.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, tmpStack);
+        }
+
+        return itemstack;
     }
 
     @Override
@@ -41,8 +75,7 @@ public class Container1Menu extends AbstractContainerMenu {
         return stillValid(
                 ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos()),
                 player,
-                entity.getBlockState().getBlock()
-        );
+                entity.getBlockState().getBlock());
     }
 
 }
