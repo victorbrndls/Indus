@@ -73,6 +73,8 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.WATER_CELL.get()));
                         output.accept(new ItemStack(IndusItems.CRUDE_OIL_CELL.get()));
                         output.accept(new ItemStack(IndusItems.CHUNK_LOADER_MINECART.get()));
+                        output.accept(new ItemStack(IndusItems.CART_LOADER.get()));
+                        output.accept(new ItemStack(IndusItems.CART_UNLOADER.get()));
 
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
                         output.accept(new ItemStack(IndusItems.WRENCH.get()));

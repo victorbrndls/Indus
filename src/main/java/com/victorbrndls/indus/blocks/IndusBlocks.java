@@ -61,6 +61,16 @@ public class IndusBlocks {
             Container1Block::new
     );
 
+    public static final DeferredHolder<Block, CartUnloaderBlock> CART_UNLOADER = BLOCKS.registerBlock(
+            "cart_unloader",
+            CartUnloaderBlock::new
+    );
+
+    public static final DeferredHolder<Block, CartLoaderBlock> CART_LOADER = BLOCKS.registerBlock(
+            "cart_loader",
+            CartLoaderBlock::new
+    );
+
     public static void init(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }

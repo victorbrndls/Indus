@@ -64,6 +64,15 @@ public class IndusTileEntities {
             "container_1", Container1BlockEntity::new, IndusBlocks.CONTAINER_1::get
     );
 
+    // Cart
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<UnloaderBlockEntity>> CART_UNLOADER = register(
+            "cart_unloader", UnloaderBlockEntity::new, IndusBlocks.CART_UNLOADER::get
+    );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LoaderBlockEntity>> CART_LOADER = register(
+            "cart_loader", LoaderBlockEntity::new, IndusBlocks.CART_LOADER::get
+    );
+
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITY_REGISTER.register(eventBus);
     }
@@ -72,6 +81,16 @@ public class IndusTileEntities {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 IndusTileEntities.CONTAINER_1.get(),
+                (entity, direction) -> new InvWrapper(entity.getContainer())
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                IndusTileEntities.CART_UNLOADER.get(),
+                (entity, direction) -> new InvWrapper(entity.getContainer())
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                IndusTileEntities.CART_LOADER.get(),
                 (entity, direction) -> new InvWrapper(entity.getContainer())
         );
     }

@@ -89,8 +89,7 @@ public class IndusItems {
 
     public static final DeferredItem<BlockItem> CONTAINER_1 = ITEMS.registerItem(
             "container_1", properties -> new BlockItem(
-                    IndusBlocks.CONTAINER_1.get(),
-                    properties
+                    IndusBlocks.CONTAINER_1.get(), properties
             )
     );
 
@@ -160,10 +159,20 @@ public class IndusItems {
             CrudeOilCellItem::new
     );
 
-    // Minecarts
+    // Carts
     public static final DeferredItem<Item> CHUNK_LOADER_MINECART = ITEMS.registerItem(
             "chunk_loader_minecart",
             properties -> new ChunkLoaderMinecartItem(properties.stacksTo(1))
+    );
+    public static final DeferredItem<BlockItem> CART_UNLOADER = ITEMS.registerItem(
+            "cart_unloader", properties -> new BlockItem(
+                    IndusBlocks.CART_UNLOADER.get(), properties
+            )
+    );
+    public static final DeferredItem<BlockItem> CART_LOADER = ITEMS.registerItem(
+            "cart_loader", properties -> new BlockItem(
+                    IndusBlocks.CART_LOADER.get(), properties
+            )
     );
 
     public static void init(IEventBus eventBus) {
