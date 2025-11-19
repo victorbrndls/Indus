@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "up": "indus:block/cart_loader_up",
+    "side": "indus:block/cart_loader_side",
+    "particle": "indus:block/cart_loader_side"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#up"
+        },
+        "down": {
+          "texture": "#up"
+        }
+      }
+    }
+  ]
+}

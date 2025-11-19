@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "indus:item/chunk_loader_minecart"
+  }
+}

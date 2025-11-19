@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "indus:block/cart_unloader"
+    }
+  }
+}
