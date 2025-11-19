@@ -2,13 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "SSS",
+    "ICI",
     "WWW",
-    "SSS"
+    "ICI"
   ],
   "key": {
-    "S": {
+    "I": {
       "item": "indus:iron_plate"
+    },
+    "C": {
+      "item": "indus:copper_plate"
     },
     "W": {
       "item": "indus:concrete_slab"

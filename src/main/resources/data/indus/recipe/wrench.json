@@ -2,13 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    " W ",
-    "WWW",
-    " W "
+    " I ",
+    "ICI",
+    " I "
   ],
   "key": {
-    "W": {
-      "item": "minecraft:iron_pickaxe"
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "indus:concrete_slab"
     }
   },
   "result": {
