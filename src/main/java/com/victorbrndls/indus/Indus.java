@@ -6,6 +6,7 @@ import com.victorbrndls.indus.client.IndusStructureCache;
 import com.victorbrndls.indus.client.screen.BaseStructureScreen;
 import com.victorbrndls.indus.client.screen.Container1Screen;
 import com.victorbrndls.indus.crafting.IndusRecipes;
+import com.victorbrndls.indus.entities.IndusEntities;
 import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.network.ReceiveNetworkSampleMessage;
@@ -71,6 +72,7 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.COPPER_PLATE.get()));
                         output.accept(new ItemStack(IndusItems.WATER_CELL.get()));
                         output.accept(new ItemStack(IndusItems.CRUDE_OIL_CELL.get()));
+                        output.accept(new ItemStack(IndusItems.CHUNK_LOADER_MINECART.get()));
 
                         output.accept(new ItemStack(IndusItems.PROSPECTOR.get()));
                         output.accept(new ItemStack(IndusItems.WRENCH.get()));
@@ -81,6 +83,7 @@ public class Indus {
 
         IndusBlocks.init(eventBus);
         IndusItems.init(eventBus);
+        IndusEntities.init(eventBus);
         IndusTileEntities.init(eventBus);
         IndusMenus.init(eventBus);
         IndusRecipes.init(eventBus);

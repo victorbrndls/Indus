@@ -160,6 +160,12 @@ public class IndusItems {
             CrudeOilCellItem::new
     );
 
+    // Minecarts
+    public static final DeferredItem<Item> CHUNK_LOADER_MINECART = ITEMS.registerItem(
+            "chunk_loader_minecart",
+            properties -> new ChunkLoaderMinecartItem(properties.stacksTo(1))
+    );
+
     public static void init(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
