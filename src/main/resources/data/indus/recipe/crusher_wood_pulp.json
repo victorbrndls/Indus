@@ -1,0 +1,15 @@
+{
+  "type": "indus:crusher",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:oak_log"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "id": "indus:wood_pulp",
+    "count": 8
+  }
+}

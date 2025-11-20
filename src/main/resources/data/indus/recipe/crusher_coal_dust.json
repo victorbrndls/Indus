@@ -1,0 +1,15 @@
+{
+  "type": "indus:crusher",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:coal"
+      },
+      "count": 6
+    }
+  ],
+  "result": {
+    "id": "indus:coal_dust",
+    "count": 6
+  }
+}

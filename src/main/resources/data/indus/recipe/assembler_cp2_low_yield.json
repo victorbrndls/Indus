@@ -1,0 +1,27 @@
+{
+  "type": "indus:assembler",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "indus:construction_part_1"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "indus:carbon_fiber"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "indus:copper_plate"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "indus:construction_part_2",
+    "count": 1
+  }
+}

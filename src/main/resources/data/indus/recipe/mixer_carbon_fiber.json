@@ -1,0 +1,21 @@
+{
+  "type": "indus:mixer",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "indus:coal_dust"
+      },
+      "count": 4
+    },
+    {
+      "ingredient": {
+        "item": "indus:wood_pulp"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "indus:carbon_fiber",
+    "count": 1
+  }
+}
