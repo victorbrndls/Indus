@@ -1,5 +1,6 @@
 package com.victorbrndls.indus.items;
 
+import com.victorbrndls.indus.shared.FluidLocator;
 import com.victorbrndls.indus.shared.OreLocator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +26,9 @@ public class ProspectorItem extends Item {
 
         var pos = player.blockPosition();
         var ore = OreLocator.prospect(level, pos);
+        var fluid = FluidLocator.prospect(level, pos);
 
-        if (ore == null) {
+        if (ore == null && fluid == null) {
             player.displayClientMessage(
                     Component.literal("Nothing found..."),
                     false
@@ -34,17 +36,25 @@ public class ProspectorItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        player.displayClientMessage(
-                Component.literal("You found a " + ore.getDescription().getString() + " vein!"),
-                false
-        );
+        if (ore != null) {
+            player.displayClientMessage(
+                    Component.literal("You found a " + ore.getDescription().getString() + " vein!"),
+                    false
+            );
+        }
+        if (fluid != null) {
+            player.displayClientMessage(
+                    Component.literal("You found a " + fluid.getDescription().getString() + " source!"),
+                    false
+            );
+        }
 
         return InteractionResult.SUCCESS;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("Right click to prospect for ores"));
+        tooltipComponents.add(Component.literal("Right click to prospect for ores and fluids"));
     }
 
 }

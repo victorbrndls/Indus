@@ -1,15 +1,17 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
-import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.shared.FluidLocator;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 public class PumpBlockEntity extends BaseStructureBlockEntity {
 
@@ -17,6 +19,10 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
 
     private final static int ENERGY_CONSUMPTION = 8;
     private final static int RATE = 8;
+
+    @Nullable
+    private Item prospectedFluid = null;
+    private boolean hasProspected = false;
 
     public PumpBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.PUMP.get(), pos, state);
@@ -27,9 +33,21 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         return IndusStructure.PUMP;
     }
 
+    private Item getResource() {
+        if (!hasProspected) {
+            prospectedFluid = FluidLocator.prospect(level, getBlockPos());
+            hasProspected = true;
+        }
+
+        return prospectedFluid;
+    }
+
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
+
+        var resource = getResource();
+        if (resource == null) return;
 
         if (networkId < 0) return;
         var networkManager = IndusNetworkManager.get((ServerLevel) level);
@@ -37,7 +55,7 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         var handler = getRelativeItemHandler(level, OUTPUT_POS);
         if (handler == null) return;
 
-        ItemStack output = new ItemStack(IndusItems.WATER_CELL.get(), RATE);
+        ItemStack output = new ItemStack(resource, RATE);
 
         var remainder = ItemHandlerHelper.insertItem(handler, output, true);
         if (!remainder.isEmpty()) return;
