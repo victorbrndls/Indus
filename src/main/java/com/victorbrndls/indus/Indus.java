@@ -61,6 +61,9 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.ASSEMBLER_1.get()));
                         output.accept(new ItemStack(IndusItems.CONTAINER_1.get()));
                         output.accept(new ItemStack(IndusItems.CONCRETE_SLAB.get()));
+                        output.accept(new ItemStack(IndusItems.COAL_DUST.get()));
+                        output.accept(new ItemStack(IndusItems.WOOD_PULP.get()));
+                        output.accept(new ItemStack(IndusItems.CARBON_FIBER.get()));
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_1.get()));
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_2.get()));
                         output.accept(new ItemStack(IndusItems.CONSTRUCTION_PART_3.get()));
@@ -70,6 +73,7 @@ public class Indus {
                         output.accept(new ItemStack(IndusItems.MAINTENANCE_3.get()));
                         output.accept(new ItemStack(IndusItems.IRON_PLATE.get()));
                         output.accept(new ItemStack(IndusItems.COPPER_PLATE.get()));
+                        output.accept(new ItemStack(IndusItems.STEEL_PLATE.get()));
                         output.accept(new ItemStack(IndusItems.WATER_CELL.get()));
                         output.accept(new ItemStack(IndusItems.CRUDE_OIL_CELL.get()));
                         output.accept(new ItemStack(IndusItems.CHUNK_LOADER_MINECART.get()));

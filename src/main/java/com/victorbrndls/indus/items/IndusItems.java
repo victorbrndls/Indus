@@ -102,11 +102,6 @@ public class IndusItems {
             properties -> new WrenchItem(properties.stacksTo(1))
     );
 
-    public static final DeferredItem<Item> CONCRETE_SLAB = ITEMS.registerItem(
-            "concrete_slab",
-            ConcreteSlabItem::new
-    );
-
     // Construction Parts
     public static final DeferredItem<Item> CONSTRUCTION_PART_1 = ITEMS.registerItem(
             "construction_part_1",
@@ -147,6 +142,28 @@ public class IndusItems {
     public static final DeferredItem<Item> COPPER_PLATE = ITEMS.registerItem(
             "copper_plate",
             CopperPlateItem::new
+    );
+    public static final DeferredItem<Item> STEEL_PLATE = ITEMS.registerItem(
+            "steel_plate",
+            Item::new
+    );
+
+    // Materials
+    public static final DeferredItem<Item> CONCRETE_SLAB = ITEMS.registerItem(
+            "concrete_slab",
+            ConcreteSlabItem::new
+    );
+    public static final DeferredItem<Item> CARBON_FIBER = ITEMS.registerItem(
+            "carbon_fiber",
+            Item::new
+    );
+    public static final DeferredItem<Item> WOOD_PULP = ITEMS.registerItem(
+            "wood_pulp",
+            Item::new
+    );
+    public static final DeferredItem<Item> COAL_DUST = ITEMS.registerItem(
+            "coal_dust",
+            Item::new
     );
 
     // Cells

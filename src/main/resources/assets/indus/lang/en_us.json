@@ -30,6 +30,9 @@
   "item.indus.prospector": "Ore/Fluid Prospector",
   "item.indus.wrench": "Wrench",
   "item.indus.concrete_slab": "Concrete Slab",
+  "item.indus.coal_dust": "Coal Dust",
+  "item.indus.wood_pulp": "Wood Pulp",
+  "item.indus.carbon_fiber": "Carbon Fiber",
   "item.indus.construction_part_1": "Construction Part 1",
   "item.indus.construction_part_2": "Construction Part 2",
   "item.indus.construction_part_3": "Construction Part 3",
@@ -39,6 +42,7 @@
   "item.indus.maintenance_3": "Maintenance 3",
   "item.indus.iron_plate": "Iron Plate",
   "item.indus.copper_plate": "Copper Plate",
+  "item.indus.steel_plate": "Steel Plate",
   "item.indus.water_cell": "Water Cell",
   "item.indus.crude_oil_cell": "Crude Oil Cell"
 }
