@@ -2,21 +2,12 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
-import com.victorbrndls.indus.items.IndusItems;
-import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.registries.DeferredItem;
-
-import java.util.Map;
 
 public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
 

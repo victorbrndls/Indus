@@ -17,6 +17,8 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
 
     private static final BlockPos OUTPUT_POS = new BlockPos(7, 1, 0);
 
+    private static final int RATE = 2;
+
     @Nullable
     private Item prospectedOre = null;
     private boolean hasProspected = false;
@@ -64,7 +66,7 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
         var resource = getResource();
         if (resource == null) return;
 
-        ItemHandlerHelper.insertItem(handler, new ItemStack(resource, 1), false);
+        ItemHandlerHelper.insertItem(handler, new ItemStack(resource, RATE), false);
     }
 
     @Override
