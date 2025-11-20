@@ -13,6 +13,9 @@ public class IndusRecipes {
 
     private static final DeferredRecipeSerializerRegister RECIPE_SERIALIZERS = DeferredRecipeSerializerRegister.create(Indus.MODID);
 
+    public static final DeferredRecipeSerializer<BlastFurnaceRecipe> BLAST_FURNACE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
+            "blast_furnace", BlastFurnaceRecipe.CODEC, BlastFurnaceRecipe.STREAM_CODEC
+    );
     public static final DeferredRecipeSerializer<MixerRecipe> MIXER_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.registerRecipeSerializer(
             "mixer", MixerRecipe.CODEC, MixerRecipe.STREAM_CODEC
     );
@@ -26,6 +29,9 @@ public class IndusRecipes {
             "maintenance_depot", MaintenanceDepotRecipe.CODEC, MaintenanceDepotRecipe.STREAM_CODEC
     );
 
+    public static final DeferredRecipeType<BlastFurnaceRecipe> BLAST_FURNACE_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
+            "blast_furnace"
+    );
     public static final DeferredRecipeType<MixerRecipe> MIXER_RECIPE_TYPE = RECIPE_TYPES.registerRecipeType(
             "mixer"
     );

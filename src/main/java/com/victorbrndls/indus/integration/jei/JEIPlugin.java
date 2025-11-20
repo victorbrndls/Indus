@@ -3,10 +3,7 @@ package com.victorbrndls.indus.integration.jei;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.crafting.*;
-import com.victorbrndls.indus.integration.jei.category.AssemblerCategory;
-import com.victorbrndls.indus.integration.jei.category.CrusherCategory;
-import com.victorbrndls.indus.integration.jei.category.MaintenanceDepotCategory;
-import com.victorbrndls.indus.integration.jei.category.MixerCategory;
+import com.victorbrndls.indus.integration.jei.category.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -19,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
+    public static final RecipeType<BlastFurnaceRecipe> BLAST_FURNACE_CATEGORY = RecipeType.create(Indus.MODID, "blast_furnace", BlastFurnaceRecipe.class);
     public static final RecipeType<MixerRecipe> MIXER_CATEGORY = RecipeType.create(Indus.MODID, "mixer", MixerRecipe.class);
     public static final RecipeType<CrusherRecipe> CRUSHER_CATEGORY = RecipeType.create(Indus.MODID, "crusher", CrusherRecipe.class);
     public static final RecipeType<AssemblerRecipe> ASSEMBLER_CATEGORY = RecipeType.create(Indus.MODID, "assembler", AssemblerRecipe.class);
@@ -31,6 +29,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalysts(BLAST_FURNACE_CATEGORY, new ItemStack(IndusBlocks.BLAST_FURNACE.get()));
         registration.addRecipeCatalysts(MIXER_CATEGORY, new ItemStack(IndusBlocks.MIXER.get()));
         registration.addRecipeCatalysts(CRUSHER_CATEGORY, new ItemStack(IndusBlocks.CRUSHER.get()));
         registration.addRecipeCatalysts(ASSEMBLER_CATEGORY, new ItemStack(IndusBlocks.ASSEMBLER_1.get()));
@@ -39,6 +38,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        registration.addRecipeCategories(new BlastFurnaceCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new MixerCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CrusherCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new AssemblerCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -47,6 +47,10 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(
+                BLAST_FURNACE_CATEGORY,
+                IndusRecipeCacheClient.getRecipes(IndusRecipes.BLAST_FURNACE_RECIPE_TYPE.get())
+        );
         registration.addRecipes(
                 MIXER_CATEGORY,
                 IndusRecipeCacheClient.getRecipes(IndusRecipes.MIXER_RECIPE_TYPE.get())

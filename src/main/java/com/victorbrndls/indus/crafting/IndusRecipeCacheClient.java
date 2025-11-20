@@ -23,6 +23,7 @@ public class IndusRecipeCacheClient {
 
         RecipeManager manager = level.getRecipeManager();
 
+        addRecipes(manager, IndusRecipes.BLAST_FURNACE_RECIPE_TYPE.get());
         addRecipes(manager, IndusRecipes.MIXER_RECIPE_TYPE.get());
         addRecipes(manager, IndusRecipes.CRUSHER_RECIPE_TYPE.get());
         addRecipes(manager, IndusRecipes.ASSEMBLER_RECIPE_TYPE.get());

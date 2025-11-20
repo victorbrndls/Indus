@@ -1,0 +1,21 @@
+{
+  "type": "indus:blast_furnace",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "minecraft:raw_iron"
+      },
+      "count": 4
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:coal"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "indus:iron_plate",
+    "count": 4
+  }
+}

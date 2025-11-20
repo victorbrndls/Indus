@@ -1,9 +1,13 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
+import com.victorbrndls.indus.crafting.IndusRecipeHelper;
+import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.items.IndusItems;
+import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -16,16 +20,9 @@ import java.util.Map;
 
 public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
 
-    private final static BlockPos FUEL_POS = new BlockPos(4, 2, -5);
-    private final static BlockPos ORE_POS = new BlockPos(1, 1, -5);
+    private final static BlockPos INPUT_1_POS = new BlockPos(4, 2, -5);
+    private final static BlockPos INPUT_2_POS = new BlockPos(1, 1, -5);
     private final static BlockPos OUTPUT_POS = new BlockPos(3, 1, 0);
-
-    private final static int RATE = 4; // items per operation
-
-    private final static Map<Item, DeferredItem<Item>> RECIPES = Map.of(
-            Items.RAW_IRON, IndusItems.IRON_PLATE,
-            Items.RAW_COPPER, IndusItems.COPPER_PLATE
-    );
 
     public BlastFurnaceBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.BLAST_FURNACE.get(), pos, state);
@@ -38,52 +35,31 @@ public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        if ((level.getGameTime() % 20) != 0) return;
+        if ((level.getGameTime() % 80) != 0) return;
 
-        var fuelHandler = getRelativeItemHandler(level, FUEL_POS);
-        var oreHandler = getRelativeItemHandler(level, ORE_POS);
+        var input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
+        var input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
         var outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
-        if (fuelHandler == null || oreHandler == null || outputHandler == null) return;
+        if (input1Handler == null || input2Handler == null || outputHandler == null) return;
 
-        int chosenIndex = -1;
-        Item outItem = null;
+        var recipe = IndusRecipeHelper.getRecipe(
+                (ServerLevel) level,
+                IndusRecipes.BLAST_FURNACE_RECIPE_TYPE.get(),
+                input1Handler,
+                input2Handler
+        );
+        if (recipe == null) return;
 
-        int size = oreHandler.getSlots();
-        for (int i = 0; i < size; i++) {
-            ItemStack stack = oreHandler.getStackInSlot(i);
-            if (stack.isEmpty() || stack.getCount() < RATE) continue;
+        var fits = IndusRecipeHelper.fits(outputHandler, recipe);
+        if (!fits) return;
 
-            DeferredItem<Item> mapped = RECIPES.get(stack.getItem());
-            if (mapped == null) continue;
-
-            chosenIndex = i;
-            outItem = mapped.get();
-            break;
-        }
-        if (chosenIndex == -1 || outItem == null) return;
-
-        int coalSlot = -1;
-        int fuelSlots = fuelHandler.getSlots();
-        for (int i = 0; i < fuelSlots; i++) {
-            ItemStack stack = fuelHandler.getStackInSlot(i);
-            if (stack.is(Items.COAL) && stack.getCount() >= 1) {
-                coalSlot = i;
-                break;
-            }
-        }
-        if (coalSlot == -1) return;
-
-        ItemStack toInsert = new ItemStack(outItem, RATE);
-        ItemStack remainder = ItemHandlerHelper.insertItem(outputHandler, toInsert, true);
-        if (!remainder.isEmpty()) {
-            // not enough space for full RATE, abort
-            return;
-        }
-
-        fuelHandler.extractItem(coalSlot, 1, false);
-        oreHandler.extractItem(chosenIndex, RATE, false);
-        ItemHandlerHelper.insertItem(outputHandler, new ItemStack(outItem, RATE), false);
+        IndusRecipeHelper.craftRecipe(
+                recipe,
+                outputHandler,
+                input1Handler,
+                input2Handler
+        );
     }
 
     @Override
