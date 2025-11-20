@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "redstone",
+    "pattern": [
+        "CCC",
+        " H ",
+        "IRI"
+    ],
+    "key": {
+        "C": {
+            "item": "indus:construction_part_1"
+        },
+        "I": {
+            "item": "minecraft:iron_block"
+        },
+        "H": {
+            "item": "minecraft:hopper"
+        },
+        "R": {
+            "item": "minecraft:detector_rail"
+        }
+    },
+    "result": {
+        "id": "indus:cart_loader",
+        "count": 1
+    }
+}

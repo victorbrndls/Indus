@@ -1,0 +1,21 @@
+{
+  "type": "indus:maintenance_depot",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "indus:construction_part_1"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "indus:copper_plate"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "id": "indus:maintenance_1",
+    "count": 1
+  }
+}

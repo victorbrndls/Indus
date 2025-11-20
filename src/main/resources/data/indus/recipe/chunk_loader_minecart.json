@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "pattern": [
+        "CGC",
+        "OMO",
+        "CGC"
+    ],
+    "key": {
+        "C": {
+            "item": "indus:construction_part_1"
+        },
+        "O": {
+            "item": "minecraft:obsidian"
+        },
+        "G": {
+            "item": "minecraft:gold_block"
+        },
+        "M": {
+            "item": "minecraft:hopper_minecart"
+        }
+    },
+    "result": {
+        "id": "indus:chunk_loader_minecart",
+        "count": 1
+    }
+}
