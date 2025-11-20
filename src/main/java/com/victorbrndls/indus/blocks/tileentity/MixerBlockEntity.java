@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class MixerBlockEntity extends BaseStructureBlockEntity {
 
     private final static BlockPos INPUT_1_POS = new BlockPos(2, 1, -5);
-    private final static BlockPos INPUT_2_POS = new BlockPos(3, 2, -5);
-    private final static BlockPos INPUT_3_POS = new BlockPos(4, 3, -5);
+    private final static BlockPos INPUT_2_POS = new BlockPos(3, 1, -5);
+    private final static BlockPos INPUT_3_POS = new BlockPos(4, 1, -5);
     private final static BlockPos OUTPUT_POS = new BlockPos(4, 1, 0);
 
     public MixerBlockEntity(BlockPos pos, BlockState state) {

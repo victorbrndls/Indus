@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
 
-    private final static BlockPos INPUT_1_POS = new BlockPos(4, 2, -5);
+    private final static BlockPos INPUT_1_POS = new BlockPos(4, 1, -5);
     private final static BlockPos INPUT_2_POS = new BlockPos(1, 1, -5);
     private final static BlockPos OUTPUT_POS = new BlockPos(3, 1, 0);
 
