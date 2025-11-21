@@ -10,9 +10,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class IndusBlockLoot extends BlockLootSubProvider {
 
@@ -22,12 +23,18 @@ public class IndusBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        this.add(IndusBlocks.QUARRY.get(), IndusBlockLoot::createStandardTable);
+        for (var entry : IndusBlocks.getEntries()) {
+            Block block = entry.get();
+            add(block, IndusBlockLoot::createStandardTable);
+        }
     }
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return List.of(IndusBlocks.QUARRY.get());
+        return IndusBlocks.getEntries()
+                .stream()
+                .map(DeferredHolder::get)
+                .collect(Collectors.toSet());
     }
 
     private static LootTable.Builder createStandardTable(Block block) {

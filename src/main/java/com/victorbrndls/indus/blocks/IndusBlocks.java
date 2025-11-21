@@ -7,6 +7,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.Collection;
+
 public class IndusBlocks {
 
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Indus.MODID);
@@ -73,6 +75,10 @@ public class IndusBlocks {
 
     public static void init(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+    }
+
+    public static Collection<DeferredHolder<Block, ? extends Block>> getEntries() {
+        return BLOCKS.getEntries();
     }
 
 }

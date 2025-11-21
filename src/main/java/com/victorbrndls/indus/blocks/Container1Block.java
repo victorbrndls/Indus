@@ -5,6 +5,7 @@ import com.victorbrndls.indus.blocks.tileentity.Container1BlockEntity;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -39,6 +40,18 @@ public class Container1Block extends BaseEntityBlock {
                     .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (
+                !state.is(newState.getBlock()) &&
+                        level.getBlockEntity(pos) instanceof Container1BlockEntity blockEntity
+        ) {
+            Containers.dropContents(level, pos, blockEntity.getContainer());
+            level.updateNeighbourForOutputSignal(pos, this);
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
