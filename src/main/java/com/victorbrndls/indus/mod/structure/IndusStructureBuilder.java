@@ -62,7 +62,11 @@ public class IndusStructureBuilder {
         state = rotateState(level, relRot, state, toRotation(360 - orientation.rotationDegrees()));
 
         if (!serverLevel.isLoaded(worldPos)) return index;
-        if (worldPos.getY() > serverLevel.getMaxBuildHeight()) return index + 1;
+        if (serverLevel.isOutsideBuildHeight(worldPos)) return index + 1;
+
+        if (level.getBlockEntity(worldPos) != null) {
+            return index + 1; // don't replace tile entities
+        }
 
         serverLevel.setBlock(worldPos, state, Block.UPDATE_ALL);
         serverLevel.playSound(
@@ -104,14 +108,14 @@ public class IndusStructureBuilder {
         BlockPos worldPos = pos.offset(offset).offset(relRot);
 
         if (!serverLevel.isLoaded(worldPos)) return index;
-        if (worldPos.getY() > serverLevel.getMaxBuildHeight()) return index + 1;
+        if (serverLevel.isOutsideBuildHeight(worldPos)) return index + 1;
 
-        var existingBlock = level.getBlockState(worldPos);
+        var existingState = level.getBlockState(worldPos);
 
-        if (existingBlock.getBlock() instanceof BaseEntityBlock) {
+        if (existingState.getBlock() instanceof BaseEntityBlock) {
             // don't destroy tile entities
             return destroy(info, level, pos, direction, index + 1);
-        } else if (existingBlock.isAir()) {
+        } else if (existingState.isAir()) {
             // if it's air, continue immediately
             return destroy(info, level, pos, direction, index + 1);
         } else {
@@ -119,7 +123,7 @@ public class IndusStructureBuilder {
             serverLevel.playSound(
                     null,
                     worldPos,
-                    existingBlock.getSoundType(level, worldPos, null).getBreakSound(),
+                    existingState.getSoundType(level, worldPos, null).getBreakSound(),
                     SoundSource.BLOCKS,
                     1.0F,
                     1.0F
