@@ -27,53 +27,54 @@ public class IndusStructureRequirements {
             case BLAST_FURNACE -> List.of(
                     new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
                     new ItemStack(Items.BRICKS, 48),
-                    new ItemStack(Items.BLAST_FURNACE, 16),
+                    new ItemStack(Items.BLAST_FURNACE, 12),
                     new ItemStack(Items.FURNACE, 16),
                     new ItemStack(Items.HOPPER, 12)
             );
             // available: construction part 1
             case MIXER -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 32),
-                    new ItemStack(Items.STONE_BRICKS, 48),
-                    new ItemStack(Items.CAULDRON, 16),
-                    new ItemStack(Items.HOPPER, 12),
-                    new ItemStack(Items.CRAFTING_TABLE, 4)
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 48),
+                    new ItemStack(Items.STONE_BRICKS, 128),
+                    new ItemStack(Items.CAULDRON, 32),
+                    new ItemStack(Items.HOPPER, 24),
+                    new ItemStack(Items.CRAFTING_TABLE, 32)
             );
             case PUMP -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 40),
-                    new ItemStack(Items.STONE_BRICKS, 48),
-                    new ItemStack(Items.CAULDRON, 16),
-                    new ItemStack(Items.HOPPER, 12),
-                    new ItemStack(Items.PISTON, 16)
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 64),
+                    new ItemStack(Items.STONE_BRICKS, 128),
+                    new ItemStack(Items.CAULDRON, 32),
+                    new ItemStack(Items.HOPPER, 32),
+                    new ItemStack(Items.PISTON, 40)
             );
             case STEAM_GENERATOR -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 64),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 128),
                     new ItemStack(Items.COPPER_BLOCK, 32),
                     new ItemStack(Items.CAULDRON, 16),
                     new ItemStack(Items.HOPPER, 12),
                     new ItemStack(Items.PISTON, 16)
             );
             case CRUSHER -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 64),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 196),
                     new ItemStack(Items.IRON_BLOCK, 32),
                     new ItemStack(Items.GRINDSTONE, 16),
                     new ItemStack(Items.HOPPER, 16),
                     new ItemStack(Items.PISTON, 32)
             );
             case MAINTENANCE_DEPOT -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 96),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 128),
                     new ItemStack(Items.IRON_BLOCK, 16),
                     new ItemStack(Items.COPPER_BLOCK, 16),
                     new ItemStack(Items.CRAFTING_TABLE, 16),
                     new ItemStack(Items.PISTON, 32)
             );
             case ASSEMBLER_1 -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 96),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 256),
                     new ItemStack(Items.IRON_BLOCK, 8),
                     new ItemStack(Items.COPPER_BLOCK, 8),
                     new ItemStack(Items.CRAFTING_TABLE, 32),
                     new ItemStack(Items.CRAFTER, 40)
             );
+            // available: construction part 2
         };
     }
 
