@@ -4,6 +4,7 @@ import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.blocks.IndusBlocks;
 import com.victorbrndls.indus.crafting.*;
 import com.victorbrndls.indus.integration.jei.category.*;
+import com.victorbrndls.indus.mod.structure.IndusStructureRequirements;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -21,6 +22,7 @@ public class JEIPlugin implements IModPlugin {
     public static final RecipeType<CrusherRecipe> CRUSHER_CATEGORY = RecipeType.create(Indus.MODID, "crusher", CrusherRecipe.class);
     public static final RecipeType<AssemblerRecipe> ASSEMBLER_CATEGORY = RecipeType.create(Indus.MODID, "assembler", AssemblerRecipe.class);
     public static final RecipeType<MaintenanceDepotRecipe> MAINTENANCE_DEPOT_CATEGORY = RecipeType.create(Indus.MODID, "maintenance_depot", MaintenanceDepotRecipe.class);
+    public static final RecipeType<AssemblerRecipe> STRUCTURE_REQUIREMENTS_CATEGORY = RecipeType.create(Indus.MODID, "structure_requirements", AssemblerRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -34,6 +36,7 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalysts(CRUSHER_CATEGORY, new ItemStack(IndusBlocks.CRUSHER.get()));
         registration.addRecipeCatalysts(ASSEMBLER_CATEGORY, new ItemStack(IndusBlocks.ASSEMBLER_1.get()));
         registration.addRecipeCatalysts(MAINTENANCE_DEPOT_CATEGORY, new ItemStack(IndusBlocks.MAINTENANCE_DEPOT.get()));
+//        registration.addRecipeCatalysts(STRUCTURE_REQUIREMENTS_CATEGORY, new ItemStack(IndusItems.WRENCH.get()));
     }
 
     @Override
@@ -43,6 +46,7 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCategories(new CrusherCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new AssemblerCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new MaintenanceDepotCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new StructureRequirementsCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -66,6 +70,10 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipes(
                 MAINTENANCE_DEPOT_CATEGORY,
                 IndusRecipeCacheClient.getRecipes(IndusRecipes.MAINTENANCE_DEPOT_RECIPE_TYPE.get())
+        );
+        registration.addRecipes(
+                STRUCTURE_REQUIREMENTS_CATEGORY,
+                IndusStructureRequirements.getRecipes()
         );
     }
 

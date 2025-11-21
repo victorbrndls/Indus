@@ -1,9 +1,13 @@
 package com.victorbrndls.indus.mod.structure;
 
+import com.victorbrndls.indus.crafting.AssemblerRecipe;
+import com.victorbrndls.indus.crafting.CountedIngredient;
 import com.victorbrndls.indus.items.IndusItems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class IndusStructureRequirements {
@@ -76,6 +80,29 @@ public class IndusStructureRequirements {
             );
             // available: construction part 2
         };
+    }
+
+    public static List<AssemblerRecipe> getRecipes() {
+        return Arrays.stream(IndusStructure.values()).map(s -> {
+                    var reqs = getRequirements(s);
+                    var output = switch (s) {
+                        case TREE_FARM -> IndusItems.TREE_FARM;
+                        case QUARRY -> IndusItems.QUARRY;
+                        case BLAST_FURNACE -> IndusItems.BLAST_FURNACE;
+                        case MIXER -> IndusItems.MIXER;
+                        case PUMP -> IndusItems.PUMP;
+                        case STEAM_GENERATOR -> IndusItems.STEAM_GENERATOR;
+                        case CRUSHER -> IndusItems.CRUSHER;
+                        case MAINTENANCE_DEPOT -> IndusItems.MAINTENANCE_DEPOT;
+                        case ASSEMBLER_1 -> IndusItems.ASSEMBLER_1;
+                    };
+
+                    return new AssemblerRecipe(
+                            reqs.stream().map(r -> new CountedIngredient(Ingredient.of(r.getItem()), r.getCount())).toList(),
+                            new ItemStack(output.get(), 1)
+                    );
+                })
+                .toList();
     }
 
 }
