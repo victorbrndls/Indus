@@ -24,7 +24,7 @@ public class ProspectorItem extends Item {
 
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-        var pos = player.blockPosition();
+        var pos = context.getClickedPos();
         var ore = OreLocator.prospect(level, pos);
         var fluid = FluidLocator.prospect(level, pos);
 

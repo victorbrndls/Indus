@@ -19,7 +19,7 @@ public class Container1Block extends BaseEntityBlock {
     public static final MapCodec<Container1Block> CODEC = simpleCodec(Container1Block::new);
 
     public Container1Block(Properties props) {
-        super(props);
+        super(props.strength(1.0F, 6.0F));
     }
 
     @Override

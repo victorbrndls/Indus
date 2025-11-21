@@ -1,7 +1,6 @@
 package com.victorbrndls.indus.blocks;
 
 import com.victorbrndls.indus.blocks.tileentity.BaseStructureBlockEntity;
-import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.items.IndusItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +28,7 @@ public abstract class BaseStructureBlock extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public BaseStructureBlock(Properties properties) {
-        super(properties);
+        super(properties.strength(4.0F, 6.0F));
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

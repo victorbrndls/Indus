@@ -29,7 +29,7 @@ public class CartUnloaderBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public CartUnloaderBlock(Properties props) {
-        super(props);
+        super(props.strength(1.0F, 6.0F));
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
 

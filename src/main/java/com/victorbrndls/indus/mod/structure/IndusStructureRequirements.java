@@ -15,14 +15,14 @@ public class IndusStructureRequirements {
                     new ItemStack(IndusItems.CONCRETE_SLAB.get(), 64),
                     new ItemStack(Items.STONECUTTER, 8),
                     new ItemStack(Items.OAK_SAPLING, 32),
-                    new ItemStack(Items.DIAMOND_AXE, 4)
+                    new ItemStack(Items.DIAMOND_AXE, 2)
             );
             case QUARRY -> List.of(
                     new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),
                     new ItemStack(Items.HOPPER, 8),
                     new ItemStack(Items.TORCH, 64),
-                    new ItemStack(Items.DIAMOND_PICKAXE, 4),
-                    new ItemStack(Items.DIAMOND_SHOVEL, 4)
+                    new ItemStack(Items.DIAMOND_PICKAXE, 2),
+                    new ItemStack(Items.DIAMOND_SHOVEL, 2)
             );
             case BLAST_FURNACE -> List.of(
                     new ItemStack(IndusItems.CONCRETE_SLAB.get(), 96),

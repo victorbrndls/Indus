@@ -6,6 +6,7 @@ import com.victorbrndls.indus.client.IndusStructureCache;
 import com.victorbrndls.indus.client.screen.BaseStructureScreen;
 import com.victorbrndls.indus.client.screen.Container1Screen;
 import com.victorbrndls.indus.crafting.IndusRecipes;
+import com.victorbrndls.indus.datagen.IndusLootTableProvider;
 import com.victorbrndls.indus.entities.IndusEntities;
 import com.victorbrndls.indus.gui.IndusMenus;
 import com.victorbrndls.indus.items.IndusItems;
@@ -25,6 +26,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -97,6 +99,7 @@ public class Indus {
 
         eventBus.addListener(this::handleRegisterMenuScreens);
         eventBus.addListener(this::registerPayloads);
+        eventBus.addListener(this::handleGatherData);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -118,5 +121,13 @@ public class Indus {
     private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(IndusMenus.BASE_STRUCTURE.get(), BaseStructureScreen::new);
         event.register(IndusMenus.CONTAINER_1.get(), Container1Screen::new);
+    }
+
+    private void handleGatherData(GatherDataEvent event) {
+        var generator = event.getGenerator();
+        var packOutput = generator.getPackOutput();
+        var lookupProvider = event.getLookupProvider();
+
+        generator.addProvider(event.includeServer(), new IndusLootTableProvider(packOutput, lookupProvider));
     }
 }
