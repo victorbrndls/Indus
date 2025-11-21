@@ -5,19 +5,19 @@
       "ingredient": {
         "item": "indus:construction_part_1"
       },
-      "count": 1
+      "count": 4
     },
     {
       "ingredient": {
         "item": "indus:carbon_fiber"
       },
-      "count": 1
+      "count": 2
     },
     {
       "ingredient": {
         "item": "indus:copper_plate"
       },
-      "count": 2
+      "count": 3
     }
   ],
   "result": {
