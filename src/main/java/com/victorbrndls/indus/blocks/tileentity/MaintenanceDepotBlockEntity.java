@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.items.MaintenanceTier;
+import com.victorbrndls.indus.items.wrapper.VoidingItemHandler;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
@@ -11,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 
 public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
 
@@ -19,9 +19,9 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
     private final static BlockPos INPUT_2_POS = new BlockPos(7, 1, -3);
     private final static BlockPos INPUT_3_POS = new BlockPos(7, 1, -2);
 
-    private final static IItemHandler voidingOutput = EmptyItemHandler.INSTANCE;
+    private final static IItemHandler voidingOutput = new VoidingItemHandler();
 
-    private final static int MAINTENANCE_RATE = 10;
+    private final static int MAINTENANCE_RATE = 100;
 
     public MaintenanceDepotBlockEntity(BlockPos pos, BlockState state) {
         super(IndusTileEntities.MAINTENANCE_DEPOT.get(), pos, state);
@@ -58,13 +58,14 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
         );
         if (recipe == null) return;
 
-        IndusRecipeHelper.craftRecipe(
+        var crafted = IndusRecipeHelper.craftRecipe(
                 recipe,
                 voidingOutput,
                 input1Handler,
                 input2Handler,
                 input3Handler
         );
+        if (!crafted) return;
 
         networkManager.addMaintenance(networkId, MaintenanceTier.BASIC, MAINTENANCE_RATE);
     }
