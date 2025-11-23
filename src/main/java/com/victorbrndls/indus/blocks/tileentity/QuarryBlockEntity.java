@@ -51,6 +51,12 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
             return Items.COAL;
         } else if (prospectedOre.equals(Items.GOLD_ORE)) {
             return Items.RAW_GOLD;
+        } else if (prospectedOre.equals(Items.QUARTZ)) {
+            return Items.QUARTZ;
+        } else if (prospectedOre.equals(Items.REDSTONE_ORE)) {
+            return Items.REDSTONE;
+        } else if (prospectedOre.equals(Items.ANCIENT_DEBRIS)) {
+            return Items.NETHERITE_SCRAP;
         } else {
             Indus.LOGGER.warn("Quarry found unsupported ore type: {}", prospectedOre);
             return null;

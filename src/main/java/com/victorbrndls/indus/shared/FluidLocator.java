@@ -18,8 +18,10 @@ public class FluidLocator {
         long seed = mixedSeed(sl, pos);
         float random = RandomSource.create(seed).nextFloat();
 
-        if (random < 0.35f) return IndusItems.WATER_CELL.get();
-        if (random < 0.45f) return IndusItems.CRUDE_OIL_CELL.get();
+        if (sl.dimension() == Level.OVERWORLD) {
+            if (random < 0.35f) return IndusItems.WATER_CELL.get();
+            if (random < 0.45f) return IndusItems.CRUDE_OIL_CELL.get();
+        }
 
         return null;
     }
