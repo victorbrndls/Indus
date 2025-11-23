@@ -58,7 +58,7 @@ public class IndusStructureRequirements {
                     new ItemStack(Items.PISTON, 16)
             );
             case CRUSHER -> List.of(
-                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 196),
+                    new ItemStack(IndusItems.CONSTRUCTION_PART_1.get(), 192),
                     new ItemStack(Items.IRON_BLOCK, 32),
                     new ItemStack(Items.GRINDSTONE, 16),
                     new ItemStack(Items.HOPPER, 16),

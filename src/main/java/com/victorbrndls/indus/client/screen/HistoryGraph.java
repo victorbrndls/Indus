@@ -66,7 +66,8 @@ public class HistoryGraph {
     }
 
     public void renderLabel(GuiGraphics gfx, Font font, int x, int y) {
-        gfx.drawString(font, label, x, y, color);
+        var value = !history.isEmpty() ? history.getInt(history.size() - 1) : 0;
+        gfx.drawString(font, label + " " + value, x, y, color);
     }
 
     private static void drawLine(GuiGraphics gfx, int x0, int y0, int x1, int y1, int color) {

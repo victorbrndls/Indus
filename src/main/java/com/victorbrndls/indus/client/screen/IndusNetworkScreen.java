@@ -77,12 +77,12 @@ public class IndusNetworkScreen extends Screen {
         gfx.drawString(this.font, this.title, 10, 18, 0xFFFFFFFF);
 
         int labelY = 18;
-        int baseX = graphW - 84;
+        int baseX = graphW - 150;
 
         switch (mode) {
             case ENERGY -> {
                 energyGraph.renderLabel(gfx, this.font, baseX, labelY);
-                capacityGraph.renderLabel(gfx, this.font, baseX + 50, labelY);
+                capacityGraph.renderLabel(gfx, this.font, baseX + 80, labelY);
             }
             case MAINTENANCE -> {
                 maintenanceGraph.renderLabel(gfx, this.font, baseX + 30, labelY);
