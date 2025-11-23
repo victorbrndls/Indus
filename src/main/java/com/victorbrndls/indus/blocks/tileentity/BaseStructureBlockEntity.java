@@ -40,6 +40,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
 
     // Only after built state
     protected long networkId = -1;
+    protected IndusStructureStatus status = IndusStructureStatus.IDLE;
 
     public BaseStructureBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -149,6 +150,19 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
         }
     }
 
+    public IndusStructureStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(IndusStructureStatus status) {
+        if (this.status == status) return;
+        this.status = status;
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        }
+    }
+
     public long getNetworkId() {
         return networkId;
     }
@@ -207,6 +221,7 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
             tag.putInt("lastBuiltIndex", lastBuiltIndex);
         } else if (state == IndusStructureState.BUILT) {
             tag.putLong("networkId", networkId);
+            tag.putInt("status", status.ordinal());
         }
     }
 
@@ -219,13 +234,8 @@ public abstract class BaseStructureBlockEntity extends BlockEntity implements Me
             lastBuiltIndex = tag.getInt("lastBuiltIndex");
         } else if (state == IndusStructureState.BUILT) {
             networkId = tag.getLong("networkId");
+            status = IndusStructureStatus.values()[tag.getInt("status")];
         }
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        super.handleUpdateTag(tag, lookupProvider);
-        loadAdditional(tag, lookupProvider);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.victorbrndls.indus.client.screen;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.gui.BaseStructureMenu;
 import com.victorbrndls.indus.mod.structure.IndusStructureState;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -100,7 +101,7 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
                         false);
             }
             case BUILT -> {
-                String state = "Working...";
+                Component state = getDisplayName(menu.getStatus());
                 var stateWidth = font.width(state);
                 g.drawString(font,
                         state,
@@ -159,6 +160,19 @@ public class BaseStructureScreen extends AbstractContainerScreen<BaseStructureMe
             pose.popPose();
             row++;
         }
+    }
+
+    private Component getDisplayName(IndusStructureStatus status) {
+        return switch (status) {
+            case IDLE -> Component.literal("Idle");
+            case WORKING -> Component.literal("Working");
+            case NO_MAINTENANCE -> Component.literal("Missing maintenance");
+            case NO_ENERGY -> Component.literal("No Energy");
+            case OUTPUT_FULL -> Component.literal("Output Full");
+            case INVALID_STRUCTURE -> Component.literal("Invalid Structure");
+            case NOT_CONNECTED -> Component.literal("Not Connected");
+            case NO_RESOURCE -> Component.literal("No Resource Found");
+        };
     }
 
 }

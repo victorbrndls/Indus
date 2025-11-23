@@ -1,6 +1,7 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import com.victorbrndls.indus.shared.FluidLocator;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
@@ -47,22 +48,38 @@ public class PumpBlockEntity extends BaseStructureBlockEntity {
         if ((level.getGameTime() % 80) != 0) return;
 
         var resource = getResource();
-        if (resource == null) return;
+        if (resource == null) {
+            setStatus(IndusStructureStatus.NO_RESOURCE);
+            return;
+        }
 
-        if (networkId < 0) return;
+        if (networkId < 0) {
+            setStatus(IndusStructureStatus.NOT_CONNECTED);
+            return;
+        }
         var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         var handler = getRelativeItemHandler(level, OUTPUT_POS);
-        if (handler == null) return;
+        if (handler == null) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         ItemStack output = new ItemStack(resource, RATE);
 
         var remainder = ItemHandlerHelper.insertItem(handler, output, true);
-        if (!remainder.isEmpty()) return;
+        if (!remainder.isEmpty()) {
+            setStatus(IndusStructureStatus.OUTPUT_FULL);
+            return;
+        }
 
         var energy = networkManager.getEnergy(networkId);
-        if (energy < ENERGY_CONSUMPTION) return;
+        if (energy < ENERGY_CONSUMPTION) {
+            setStatus(IndusStructureStatus.NO_ENERGY);
+            return;
+        }
 
+        setStatus(IndusStructureStatus.WORKING);
         ItemHandlerHelper.insertItem(handler, output, false);
         networkManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
     }

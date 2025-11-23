@@ -49,7 +49,7 @@ public class IndusStructureItem extends BlockItem {
             case TREE_FARM, QUARRY, BLAST_FURNACE, MIXER, STEAM_GENERATOR, MAINTENANCE_DEPOT -> {
             }
             case PUMP -> {
-                usesMaintenance = true;
+                usesEnergy = true;
             }
             case CRUSHER, ASSEMBLER_1 -> {
                 usesEnergy = true;
