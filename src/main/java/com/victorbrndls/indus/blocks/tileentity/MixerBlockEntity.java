@@ -54,15 +54,19 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
             return;
         }
 
-        setStatus(IndusStructureStatus.WORKING);
-
-        IndusRecipeHelper.craftRecipe(
+        var crafted = IndusRecipeHelper.craftRecipe(
                 recipe,
                 outputHandler,
                 input1Handler,
                 input2Handler,
                 input3Handler
         );
+
+        if (crafted) {
+            setStatus(IndusStructureStatus.WORKING);
+        } else {
+            setStatus(IndusStructureStatus.OUTPUT_FULL);
+        }
     }
 
     @Override
