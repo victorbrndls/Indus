@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -32,7 +33,10 @@ public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
         var input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
         var outputHandler = getRelativeItemHandler(level, OUTPUT_POS);
 
-        if (input1Handler == null || input2Handler == null || outputHandler == null) return;
+        if (input1Handler == null || input2Handler == null || outputHandler == null) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         var recipe = IndusRecipeHelper.getRecipe(
                 (ServerLevel) level,
@@ -40,10 +44,18 @@ public class BlastFurnaceBlockEntity extends BaseStructureBlockEntity {
                 input1Handler,
                 input2Handler
         );
-        if (recipe == null) return;
+        if (recipe == null) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
 
         var fits = IndusRecipeHelper.fits(outputHandler, recipe);
-        if (!fits) return;
+        if (!fits) {
+            setStatus(IndusStructureStatus.OUTPUT_FULL);
+            return;
+        }
+
+        setStatus(IndusStructureStatus.WORKING);
 
         IndusRecipeHelper.craftRecipe(
                 recipe,

@@ -1,6 +1,7 @@
 package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -27,8 +28,12 @@ public class TreeFarmBlockEntity extends BaseStructureBlockEntity {
         if ((level.getGameTime() % 80) != 0) return;
 
         var handler = getRelativeItemHandler(level, OUTPUT_POS);
-        if (handler == null) return;
+        if (handler == null) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
+        setStatus(IndusStructureStatus.WORKING);
         ItemHandlerHelper.insertItem(handler, new ItemStack(Items.OAK_LOG, 1), false);
     }
 

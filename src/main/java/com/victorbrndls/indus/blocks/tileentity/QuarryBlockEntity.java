@@ -2,6 +2,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import com.victorbrndls.indus.shared.OreLocator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -61,10 +62,18 @@ public class QuarryBlockEntity extends BaseStructureBlockEntity {
         if ((level.getGameTime() % 80) != 0) return;
 
         var handler = getRelativeItemHandler(level, OUTPUT_POS);
-        if (handler == null) return;
+        if (handler == null) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         var resource = getResource();
-        if (resource == null) return;
+        if (resource == null) {
+            setStatus(IndusStructureStatus.NO_RESOURCE);
+            return;
+        }
+
+        setStatus(IndusStructureStatus.WORKING);
 
         ItemHandlerHelper.insertItem(handler, new ItemStack(resource, RATE), false);
     }

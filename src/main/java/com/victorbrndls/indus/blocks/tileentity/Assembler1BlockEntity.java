@@ -4,6 +4,7 @@ import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -35,7 +36,10 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
 
-        if (networkId < 0) return;
+        if (networkId < 0) {
+            setStatus(IndusStructureStatus.NOT_CONNECTED);
+            return;
+        }
         var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         var input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
@@ -47,7 +51,10 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
         if (
                 input1Handler == null || input2Handler == null || input3Handler == null || input4Handler == null ||
                         outputHandler == null
-        ) return;
+        ) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         var recipe = IndusRecipeHelper.getRecipe(
                 (ServerLevel) level,
@@ -57,16 +64,30 @@ public class Assembler1BlockEntity extends BaseStructureBlockEntity {
                 input3Handler,
                 input4Handler
         );
-        if (recipe == null) return;
+        if (recipe == null) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
 
         var fits = IndusRecipeHelper.fits(outputHandler, recipe);
-        if (!fits) return;
+        if (!fits) {
+            setStatus(IndusStructureStatus.OUTPUT_FULL);
+            return;
+        }
 
         var canRun = consumeMaintenanceAndCheck(MaintenanceTier.BASIC, MAINTENANCE_CONSUMPTION);
-        if (!canRun) return;
+        if (!canRun) {
+            setStatus(IndusStructureStatus.NO_MAINTENANCE);
+            return;
+        }
 
         var consumedEnergy = networkManager.consumeEnergy(networkId, ENERGY_CONSUMPTION);
-        if (!consumedEnergy) return;
+        if (!consumedEnergy) {
+            setStatus(IndusStructureStatus.NO_ENERGY);
+            return;
+        }
+
+        setStatus(IndusStructureStatus.WORKING);
 
         IndusRecipeHelper.craftRecipe(
                 recipe,

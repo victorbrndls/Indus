@@ -2,6 +2,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 
 import com.victorbrndls.indus.items.IndusItems;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -38,7 +39,10 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
     @Override
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
-        if (networkId < 0) return;
+        if (networkId < 0) {
+            setStatus(IndusStructureStatus.NOT_CONNECTED);
+            return;
+        }
         var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         if (remainingEnergy > 0) {
@@ -50,7 +54,10 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
 
         var fuelHandler = getRelativeItemHandler(level, FUEL_POS);
         var waterHandler = getRelativeItemHandler(level, WATER_POS);
-        if (fuelHandler == null || waterHandler == null) return;
+        if (fuelHandler == null || waterHandler == null) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         // Find a coal stack
         int fuelSlot = -1;
@@ -60,7 +67,10 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
                 break;
             }
         }
-        if (fuelSlot < 0) return;
+        if (fuelSlot < 0) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
 
         // Find a water cell stack
         int waterSlot = -1;
@@ -70,11 +80,19 @@ public class SteamGeneratorBlockEntity extends BaseStructureBlockEntity {
                 break;
             }
         }
-        if (waterSlot < 0) return;
+        if (waterSlot < 0) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
 
         // Try to add energy to the network. If the network is full, do nothing.
         int addedEnergy = networkManager.addEnergy(networkId, ENERGY_RATE);
-        if (addedEnergy <= 0) return;
+        if (addedEnergy <= 0) {
+            setStatus(IndusStructureStatus.OUTPUT_FULL);
+            return;
+        }
+
+        setStatus(IndusStructureStatus.WORKING);
 
         remainingEnergy = ENERGY_RATE - addedEnergy;
 

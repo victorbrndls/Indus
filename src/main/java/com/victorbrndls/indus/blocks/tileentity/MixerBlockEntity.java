@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks.tileentity;
 import com.victorbrndls.indus.crafting.IndusRecipeHelper;
 import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -36,7 +37,10 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
 
         if (
                 input1Handler == null || input2Handler == null || input3Handler == null || outputHandler == null
-        ) return;
+        ) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         var recipe = IndusRecipeHelper.getRecipe(
                 (ServerLevel) level,
@@ -45,7 +49,12 @@ public class MixerBlockEntity extends BaseStructureBlockEntity {
                 input2Handler,
                 input3Handler
         );
-        if (recipe == null) return;
+        if (recipe == null) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
+
+        setStatus(IndusStructureStatus.WORKING);
 
         IndusRecipeHelper.craftRecipe(
                 recipe,

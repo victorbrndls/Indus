@@ -5,6 +5,7 @@ import com.victorbrndls.indus.crafting.IndusRecipes;
 import com.victorbrndls.indus.items.MaintenanceTier;
 import com.victorbrndls.indus.items.wrapper.VoidingItemHandler;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
+import com.victorbrndls.indus.mod.structure.IndusStructureStatus;
 import com.victorbrndls.indus.world.IndusNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -36,18 +37,27 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
     protected void tickBuilt(Level level, BlockPos pos, BlockState state) {
         if ((level.getGameTime() % 80) != 0) return;
 
-        if (networkId < 0) return;
+        if (networkId < 0) {
+            setStatus(IndusStructureStatus.NOT_CONNECTED);
+            return;
+        }
         var networkManager = IndusNetworkManager.get((ServerLevel) level);
 
         // move this down when we have more types of maintenance
         if (
                 networkManager.getAvailableMaintenanceSpace(networkId, MaintenanceTier.BASIC) <= MAINTENANCE_RATE
-        ) return;
+        ) {
+            setStatus(IndusStructureStatus.OUTPUT_FULL);
+            return;
+        }
 
         var input1Handler = getRelativeItemHandler(level, INPUT_1_POS);
         var input2Handler = getRelativeItemHandler(level, INPUT_2_POS);
         var input3Handler = getRelativeItemHandler(level, INPUT_3_POS);
-        if (input1Handler == null || input2Handler == null || input3Handler == null) return;
+        if (input1Handler == null || input2Handler == null || input3Handler == null) {
+            setStatus(IndusStructureStatus.INVALID_STRUCTURE);
+            return;
+        }
 
         var recipe = IndusRecipeHelper.getRecipe(
                 (ServerLevel) level,
@@ -56,7 +66,10 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
                 input2Handler,
                 input3Handler
         );
-        if (recipe == null) return;
+        if (recipe == null) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
 
         var crafted = IndusRecipeHelper.craftRecipe(
                 recipe,
@@ -65,7 +78,12 @@ public class MaintenanceDepotBlockEntity extends BaseStructureBlockEntity {
                 input2Handler,
                 input3Handler
         );
-        if (!crafted) return;
+        if (!crafted) {
+            setStatus(IndusStructureStatus.IDLE);
+            return;
+        }
+
+        setStatus(IndusStructureStatus.WORKING);
 
         networkManager.addMaintenance(networkId, MaintenanceTier.BASIC, MAINTENANCE_RATE);
     }
