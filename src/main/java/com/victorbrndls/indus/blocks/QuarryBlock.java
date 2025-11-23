@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks;
 import com.mojang.serialization.MapCodec;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.blocks.tileentity.QuarryBlockEntity;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,8 +16,7 @@ public class QuarryBlock extends BaseStructureBlock {
     public static final MapCodec<QuarryBlock> CODEC = simpleCodec(QuarryBlock::new);
 
     public QuarryBlock(Properties properties) {
-        super(properties);
-
+        super(IndusStructure.QUARRY, properties);
     }
 
     @Override

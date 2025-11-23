@@ -1,9 +1,9 @@
 package com.victorbrndls.indus.blocks;
 
 import com.mojang.serialization.MapCodec;
-import com.victorbrndls.indus.blocks.tileentity.Assembler1BlockEntity;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.blocks.tileentity.TreeFarmBlockEntity;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,7 +16,7 @@ public class TreeFarmBlock extends BaseStructureBlock {
     public static final MapCodec<TreeFarmBlock> CODEC = simpleCodec(TreeFarmBlock::new);
 
     public TreeFarmBlock(Properties properties) {
-        super(properties);
+        super(IndusStructure.TREE_FARM, properties);
     }
 
     @Override

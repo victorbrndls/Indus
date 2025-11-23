@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks;
 import com.mojang.serialization.MapCodec;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
 import com.victorbrndls.indus.blocks.tileentity.MixerBlockEntity;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,7 +16,7 @@ public class MixerBlock extends BaseStructureBlock {
     public static final MapCodec<MixerBlock> CODEC = simpleCodec(MixerBlock::new);
 
     public MixerBlock(Properties properties) {
-        super(properties);
+        super(IndusStructure.MIXER, properties);
     }
 
     @Override

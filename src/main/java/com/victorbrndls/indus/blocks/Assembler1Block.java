@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks;
 import com.mojang.serialization.MapCodec;
 import com.victorbrndls.indus.blocks.tileentity.Assembler1BlockEntity;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,7 +16,7 @@ public class Assembler1Block extends BaseStructureBlock {
     public static final MapCodec<Assembler1Block> CODEC = simpleCodec(Assembler1Block::new);
 
     public Assembler1Block(Properties properties) {
-        super(properties);
+        super(IndusStructure.ASSEMBLER_1, properties);
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 @EventBusSubscriber(Dist.CLIENT)
 public class IndusClientEvents {
 
-    //    @SubscribeEvent
     public static void onTick(ClientTickEvent.Post event) {
         if (!isGameActive()) return;
         IndusClient.GHOST_STRUCTURES.tick();

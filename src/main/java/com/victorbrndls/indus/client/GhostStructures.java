@@ -2,6 +2,7 @@ package com.victorbrndls.indus.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.datafixers.util.Pair;
 import com.victorbrndls.indus.Indus;
 import com.victorbrndls.indus.items.IndusStructureItem;
 import com.victorbrndls.indus.mod.structure.IndusStructure;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import org.apache.commons.lang3.tuple.Triple;
 import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;
@@ -33,6 +35,8 @@ import java.util.List;
 public class GhostStructures {
 
     private final List<IndusStructure> ghosts = new ArrayList<>();
+
+    private final List<Triple<BlockPos, Direction, IndusStructure>> fixedGhosts = new ArrayList<>();
 
     public void tick() {
         Item mainHandItem = Minecraft.getInstance().player.getMainHandItem().getItem();
@@ -57,17 +61,47 @@ public class GhostStructures {
         ghosts.add(entry);
     }
 
+    public void toggleFixedGhost(BlockPos pos, Direction direction, IndusStructure structure) {
+        var pair = Triple.of(pos, direction, structure);
+        if (fixedGhosts.contains(pair)) {
+            fixedGhosts.remove(pair);
+        } else {
+            fixedGhosts.add(pair);
+        }
+    }
+
+    public void removeFixedGhost(BlockPos pos) {
+        fixedGhosts.removeIf(triple -> triple.getLeft().equals(pos));
+    }
+
     public boolean shouldRender() {
-        return !ghosts.isEmpty();
+        return !ghosts.isEmpty() || !fixedGhosts.isEmpty();
     }
 
     public void renderAll(PoseStack ms, MultiBufferSource buffer, Vec3 camera, Direction direction) {
-        ghosts.forEach(structure -> {
-            render(ms, buffer, camera, direction, structure);
+        HitResult hitResult = Minecraft.getInstance().hitResult;
+        if (hitResult != null) {
+            ghosts.forEach(structure -> {
+                render(ms, buffer, camera, hitResult.getLocation(), direction, structure);
+            });
+        }
+
+        fixedGhosts.forEach(triple -> {
+            BlockPos blockPos = triple.getLeft();
+
+            Vec3 hit = switch (triple.getMiddle()) {
+                case NORTH -> new Vec3(blockPos.getX() + 0.5f, blockPos.getY(), blockPos.getZ() + 1f);
+                case SOUTH -> new Vec3(blockPos.getX() + 0.5f, blockPos.getY(), blockPos.getZ());
+                case WEST -> new Vec3(blockPos.getX() + 1f, blockPos.getY(), blockPos.getZ() + 0.5f);
+                case EAST -> new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ() + 0.5f);
+                case DOWN, UP -> new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            };
+
+            render(ms, buffer, camera, hit, triple.getMiddle(), triple.getRight());
         });
     }
 
-    private void render(PoseStack ms, MultiBufferSource buffer, Vec3 camera, Direction direction, IndusStructure structure) {
+    private void render(PoseStack ms, MultiBufferSource buffer, Vec3 camera, Vec3 hit, Direction direction, IndusStructure structure) {
         var structureInfo = Indus.STRUCTURE_CACHE.get(structure);
         if (structureInfo == null) return;
 
@@ -77,7 +111,7 @@ public class GhostStructures {
         var orientation = IndusStructureHelper.getOrientation(structure, direction);
 
         for (int i = 0; i < blocks.size(); i++) {
-            render(ms, buffer, camera, blocks.get(i), states.get(i), orientation);
+            render(ms, buffer, camera, hit, blocks.get(i), states.get(i), orientation);
         }
     }
 
@@ -85,14 +119,12 @@ public class GhostStructures {
             PoseStack ms,
             MultiBufferSource buffer,
             Vec3 camera,
+            Vec3 hit,
             BlockPos blockPos,
             BlockState blockState,
             IndusStructureOrientation orientation
     ) {
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-
-        HitResult hitResult = Minecraft.getInstance().hitResult;
-        if (hitResult == null) return;
 
         Vec3 blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 
@@ -105,7 +137,7 @@ public class GhostStructures {
         var angleRadians = (float) Math.toRadians(orientation.rotationDegrees());
         var blockPosAfterRotation = blockPosVec.yRot(angleRadians);
 
-        Vec3 blockPosInWorld = hitResult.getLocation().add(
+        Vec3 blockPosInWorld = hit.add(
                 blockPosAfterRotation.x, blockPosAfterRotation.y, blockPosAfterRotation.z
         );
 

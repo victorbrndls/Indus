@@ -3,6 +3,7 @@ package com.victorbrndls.indus.blocks;
 import com.mojang.serialization.MapCodec;
 import com.victorbrndls.indus.blocks.tileentity.BlastFurnaceBlockEntity;
 import com.victorbrndls.indus.blocks.tileentity.IndusTileEntities;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,7 +16,7 @@ public class BlastFurnaceBlock extends BaseStructureBlock {
     public static final MapCodec<BlastFurnaceBlock> CODEC = simpleCodec(BlastFurnaceBlock::new);
 
     public BlastFurnaceBlock(Properties properties) {
-        super(properties);
+        super(IndusStructure.BLAST_FURNACE, properties);
     }
 
     @Override

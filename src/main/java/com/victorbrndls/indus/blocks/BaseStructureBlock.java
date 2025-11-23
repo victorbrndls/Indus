@@ -1,7 +1,9 @@
 package com.victorbrndls.indus.blocks;
 
+import com.victorbrndls.indus.IndusClient;
 import com.victorbrndls.indus.blocks.tileentity.BaseStructureBlockEntity;
 import com.victorbrndls.indus.items.IndusItems;
+import com.victorbrndls.indus.mod.structure.IndusStructure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,15 +22,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseStructureBlock extends BaseEntityBlock {
 
+    private final IndusStructure structure;
+
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public BaseStructureBlock(Properties properties) {
+    public BaseStructureBlock(
+            IndusStructure structure,
+            Properties properties
+    ) {
         super(properties.strength(4.0F, 6.0F));
+        this.structure = structure;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
@@ -60,22 +69,43 @@ public abstract class BaseStructureBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (player.getMainHandItem().is(IndusItems.WRENCH.get())) {
+        if (stack.is(IndusItems.WRENCH.get())) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        } else if (player.getMainHandItem().is(Items.BEDROCK)) {
+        }
+
+        if (stack.is(Items.BEDROCK)) {
             if (level.getBlockEntity(pos) instanceof BaseStructureBlockEntity be) {
                 be.startBuilding(true);
                 return ItemInteractionResult.SUCCESS;
             }
+        }
+
+        if (stack.isEmpty() && player.isShiftKeyDown()) {
+            if (level.isClientSide()) {
+                IndusClient.GHOST_STRUCTURES.toggleFixedGhost(pos, state.getValue(FACING).getOpposite(), structure);
+            }
             return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
 
-        if (player instanceof ServerPlayer serverPlayer) {
-            level.getBlockEntity(pos, getBlockEntityType())
-                    .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
+        if (!player.isShiftKeyDown()) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                level.getBlockEntity(pos, getBlockEntityType())
+                        .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
+            }
         }
 
+        if (level.isClientSide()) {
+            IndusClient.GHOST_STRUCTURES.removeFixedGhost(pos);
+        }
         return ItemInteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        if (level.isClientSide()) {
+            IndusClient.GHOST_STRUCTURES.removeFixedGhost(pos);
+        }
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Nullable
