@@ -1,0 +1,27 @@
+{
+  "type": "indus:mixer",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "ae2:certus_quartz_dust"
+      },
+      "count": 4
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:quartz"
+      },
+      "count": 16
+    },
+    {
+      "ingredient": {
+        "item": "indus:water_cell"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "id": "ae2:certus_quartz_crystal",
+    "count": 6
+  }
+}
